@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nevsao.system.domain.user.mapper.MenuMapper">
+  <resultMap id="menu" type="cn.nevsao.system.domain.user.entity.Menu">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parensys_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="perms" jdbcType="VARCHAR" property="perms" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="menu_type" jdbcType="INTEGER" property="menuType" />
+    <result column="order_seq" jdbcType="INTEGER" property="orderSeq" />
+
+  </resultMap>
+  
+  <select id="findUserPermissions" resultMap="menu">
+  	select m.perms from sys_role r
+        left join sys_user_role ur on(r.role_id = ur.role_id) 
+        left join sys_user u on(u.id = ur.user_id)
+        left join sys_role_menu rm on(rm.role_id = r.role_id) 
+        left join sys_menu m on(m.id = rm.menu_id ) 
+        where u.username = #{userName} and m.perms is not null and m.perms &lt;&gt; ''
+  </select>
+  
+  <select id="findUserMenus" resultMap="menu">
+  	select m.* from sys_menu m
+    where m.menu_type &lt;&gt; 1 and m.id in
+        (select distinct rm.menu_id from sys_role_menu rm 
+		left join sys_role r on(rm.role_id = r.id)
+        left join sys_user_role ur on(ur.role_id = r.role_id)
+        left join sys_user u on (u.id = ur.user_id)
+        where u.username = #{userName}) order by m.create_time
+  </select>
+  
+   <update id="changeToTop" parameterType="java.util.List">
+  	update sys_menu set parent_id = 0 where id in ( select a.id from (
+  	(select id from sys_menu where parent_id in
+  	<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+  		#{id}
+  	</foreach>
+  	) ) a )
+  </update>
+</mapper>

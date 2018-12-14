@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nevsao.system.domain.dept.mapper.DeptMapper">
+  <resultMap id="deptMap" type="cn.nevsao.system.domain.dept.entity.Dept">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="order_seq" jdbcType="INTEGER" property="orderSeq" />
+    <result column="create_time"  property="createTime" />
+      <result column="modify_time"  property="createTime" />
+  </resultMap>
+  
+  <update id="changeToTop" parameterType="java.util.List">
+  	update sys_dept set parent_id = 0 where id in ( select a.id from (
+  	(select id from sys_dept where parent_id in
+  	<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+  		#{id}
+  	</foreach>
+  	) ) a )
+  </update>
+</mapper>

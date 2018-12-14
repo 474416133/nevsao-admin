@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nevsao.system.domain.user.mapper.RoleMapper">
+  <resultMap id="roleMap" type="cn.nevsao.system.domain.user.entity.Role">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="DECIMAL" property="roleId" />
+    <result column="name" jdbcType="VARCHAR" property="roleName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+  <select id="findUserRole" resultMap="roleMap">
+  	select r.* from sys_role r 
+  	left join sys_user_role ur on(r.role_id = ur.role_id)
+	left join sys_user u on(u.id = ur.user_id)
+	where u.username = #{userName}
+  </select>
+  
+  <select id="findById" resultType="cn.nevsao.system.domain.user.entity.RoleWithMenu">
+  	select r.id, r.name, r.remark,
+  	rm.menu_id as menuId from sys_role r
+	left join sys_role_menu rm on(r.id = rm.role_id)
+	where r.id = #{roleId}
+  </select>
+  
+</mapper>

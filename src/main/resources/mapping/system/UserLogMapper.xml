@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nevsao.system.domain.user.mapper.UserLogMapper">
+  <resultMap id="BaseResultMap" type="cn.nevsao.system.domain.user.entity.UserLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="op_desc" jdbcType="VARCHAR" property="operation" />
+    <result column="op_time" jdbcType="INTEGER" property="time" />
+    <result column="op_method" jdbcType="VARCHAR" property="method" />
+    <result column="op_params" jdbcType="VARCHAR" property="params" />
+    <result column="op_ip" jdbcType="INTEGER" property="ip" />
+    <result column="op_location" jdbcType="VARCHAR" property="location" />
+    <result column="create_time"  property="createTime" />
+  </resultMap>
+</mapper>

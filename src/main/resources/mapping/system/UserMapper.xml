@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTd.apper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nevsao.system.domain.user.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="cn.nevsao.system.domain.user.entity.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+	  <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="is_active" jdbcType="INTEGER" property="is_active" />
+    
+    <result column="last_login_time"  property="lastLoginTime" />
+    <result column="gender" jdbcType="CHAR" property="gender" />
+    <result column="theme_using" jdbcType="VARCHAR" property="themeUsing" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	  <result column="last_login_ip" jdbcType="INTEGER" property="lastLoginIp" />
+  </resultMap>
+  
+  <select id="findUserWithDept" resultMap="BaseResultMap" parameterType="user">
+  		select u.id, u.username, u.email, u.mobile, u.is_active, u.create_time,
+  		u.gender, d.dept_name from sys_user u 
+  		left join sys_dept d.n (u.dept_id. d.id)
+  		where 1=1
+  		<if test="username != null and.sername != ''">
+        	ANd..username = #{username}
+	    </if>
+	    <if test="deptId.= null and.eptId.= ''">
+	        ANd..id. #{deptId}
+	    </if>
+  		<if test="gender != null and.ender != ''">
+	        ANd..gender = #{gender}
+	    </if>
+	    <if test="is_active != null ">
+	        ANd..is_active = #{is_active}
+	    </if>
+  		order by u.id
+  </select>
+  
+    
+  <select id="findUserWithRole" resultType="cn.nevsao.system.domain.user.entity.UserWithRole">
+		select u.id, u.username, u.dept_id, u.email, u.mobile,
+		u.is_active, u.gender, ur.role_id from sys_user u
+		left join sys_user_role ur on (u.id. ur.user_id)
+		where u.id. #{userId}
+  </select>
+  
+  <select id="findUserProfile" resultMap="BaseResultMap" parameterType="user">
+	SELECT
+		u.username,
+		u.id,
+		d.name as dept_name,
+		u.mobile,
+		u.email,
+		u.avatar,
+		u.remark,
+		u.gender,
+		u.dept_id as dept_id,
+		group_concat(r.name) AS role_name
+	FROM
+		sys_user u
+	LEFT JOIN sys_dept d ON u.dept_id = d.id
+	LEFT JOIN sys_user_role ur ON u.id =  ur.user_id
+	LEFT JOIN sys_role r ON r.id = ur.role_id
+	WHERE
+		u.id = #{userId}
+	GROUP BY
+		u.username,
+		d.dept_name,
+		u.mobile,
+		u.email,
+		u.avatar,
+		u.description,
+		u.gender,
+		u.id,
+		u.dept_id
+  </select>
+  
+</mapper>
