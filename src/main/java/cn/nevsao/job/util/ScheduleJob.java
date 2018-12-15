@@ -1,9 +1,10 @@
 package cn.nevsao.job.util;
 
 import cn.nevsao.common.util.SpringContextUtils;
-import cn.nevsao.job.domain.Job;
-import cn.nevsao.job.domain.JobLog;
+import cn.nevsao.job.entity.Job;
+import cn.nevsao.job.entity.JobLog;
 import cn.nevsao.job.service.JobLogService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
@@ -20,8 +21,10 @@ import java.util.concurrent.Future;
  *
  * @author MrBird
  */
+
+@Slf4j
 public class ScheduleJob extends QuartzJobBean {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     private ExecutorService service = Executors.newSingleThreadExecutor();
 
     @Override
@@ -31,37 +34,37 @@ public class ScheduleJob extends QuartzJobBean {
         // 获取spring bean
         JobLogService scheduleJobLogService = (JobLogService) SpringContextUtils.getBean("JobLogService");
 
-        JobLog log = new JobLog();
-        log.setJobId(scheduleJob.getId());
-        log.setBeanName(scheduleJob.getBeanName());
-        log.setMethodName(scheduleJob.getMethodName());
-        log.setParams(scheduleJob.getParams());
-        log.setCreateTime(new Date());
+        JobLog jobLog = new JobLog();
+        jobLog.setJobId(scheduleJob.getId());
+        jobLog.setBeanName(scheduleJob.getBeanName());
+        jobLog.setMethodName(scheduleJob.getMethodName());
+        jobLog.setMethodParams(scheduleJob.getMethodParams());
+        jobLog.setCreateTime(new Date());
 
         long startTime = System.currentTimeMillis();
 
         try {
             // 执行任务
-            logger.info("任务准备执行，任务ID：{}", scheduleJob.getId());
+            log.info("任务准备执行，任务ID：{}", scheduleJob.getId());
             ScheduleRunnable task = new ScheduleRunnable(scheduleJob.getBeanName(), scheduleJob.getMethodName(),
-                    scheduleJob.getParams());
+                    scheduleJob.getMethodParams());
             Future<?> future = service.submit(task);
             future.get();
             long times = System.currentTimeMillis() - startTime;
-            log.setPeriodTime(times);
+            jobLog.setPeriodTime(times);
             // 任务状态 0：成功 1：失败
-            log.setStatus("0");
+            jobLog.setRetStatus("0");
 
-            logger.info("任务执行完毕，任务ID：{} 总共耗时：{} 毫秒", scheduleJob.getId(), times);
+            log.info("任务执行完毕，任务ID：{} 总共耗时：{} 毫秒", scheduleJob.getId(), times);
         } catch (Exception e) {
-            logger.error("任务执行失败，任务ID：" + scheduleJob.getId(), e);
+            log.error("任务执行失败，任务ID：" + scheduleJob.getId(), e);
             long times = System.currentTimeMillis() - startTime;
-            log.setPeriodTime(times);
+            jobLog.setPeriodTime(times);
             // 任务状态 0：成功 1：失败
-            log.setStatus("1");
-            log.setError(StringUtils.substring(e.toString(), 0, 2000));
+            jobLog.setRetStatus("1");
+            jobLog.setRetRemark(StringUtils.substring(e.toString(), 0, 2000));
         } finally {
-            scheduleJobLogService.saveJobLog(log);
+            scheduleJobLogService.insert(jobLog);
         }
     }
 }

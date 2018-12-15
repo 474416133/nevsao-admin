@@ -36,13 +36,15 @@ public class DeptController {
     @RequestMapping("dept/tree")
     @ResponseBody
     public ResponseBo getDeptTree() {
-        try {
-            Tree<Dept> tree = this.deptService.getDeptTree();
-            return ResponseBo.ok(tree);
-        } catch (Exception e) {
-            log.error("获取部门树失败", e);
-            return ResponseBo.error("获取部门树失败！");
-        }
+//        try {
+//            Tree<Dept> tree = this.deptService.getDeptTree();
+//            return ResponseBo.ok(tree);
+//        } catch (Exception e) {
+//            log.error("获取部门树失败", e);
+//            return ResponseBo.error("获取部门树失败！");
+//        }
+        Tree<Dept> tree = this.deptService.getDeptTree();
+        return ResponseBo.ok(tree);
     }
 
     @RequestMapping("dept/getDept")

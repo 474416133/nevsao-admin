@@ -1,7 +1,7 @@
 package cn.nevsao.job.service;
 
 import cn.nevsao.common.mvc.service.IService;
-import cn.nevsao.job.domain.Job;
+import cn.nevsao.job.entity.Job;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -12,7 +12,7 @@ public interface JobService extends IService<Job> {
 
     List<Job> findAllJobs(Job job);
 
-    int updateBatch(String jobIds, String status);
+    int updateBatch(String jobIds, Integer status);
 
     void run(String jobIds);
 

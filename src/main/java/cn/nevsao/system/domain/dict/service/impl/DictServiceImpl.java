@@ -1,11 +1,14 @@
 package cn.nevsao.system.domain.dict.service.impl;
 
 import cn.nevsao.common.domain.QueryRequest;
+import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.system.domain.dict.entity.Dict;
+import cn.nevsao.system.domain.dict.mapper.DictMapper;
 import cn.nevsao.system.domain.dict.service.DictService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +23,13 @@ import java.util.List;
 @Slf4j
 public class DictServiceImpl extends ExtraService<Dict> implements DictService {
 
+    @Autowired
+    private DictMapper dictMapper;
 
+    @Override
+    public MyMapper getMapper(){
+        return dictMapper;
+    }
     @Override
     public List<Dict> all(Dict dict, QueryRequest request) {
         try {

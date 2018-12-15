@@ -5,14 +5,14 @@ $(function () {
 function initTreeTable() {
     var $menuTableForm = $(".menu-table-form");
     var setting = {
-        id: 'menuId',
-        code: 'menuId',
+        id: 'id',
+        code: 'id',
         url: ctx + 'menu/list',
         expandAll: true,
         expandColumn: "2",
         ajaxParams: {
-            menuName: $menuTableForm.find("input[name='menuName']").val().trim(),
-            type: $menuTableForm.find("select[name='type']").val()
+            name: $menuTableForm.find("input[name='name']").val().trim(),
+            menuType: $menuTableForm.find("select[name='menuType']").val()
         },
         columns: [
             {
@@ -21,12 +21,12 @@ function initTreeTable() {
             },
             {
                 title: '编号',
-                field: 'menuId',
+                field: 'id',
                 width: '50px'
             },
             {
                 title: '名称',
-                field: 'menuName'
+                field: 'name'
             },
 
             {
@@ -39,10 +39,10 @@ function initTreeTable() {
             },
             {
                 title: '类型',
-                field: 'type',
+                field: 'menuType',
                 formatter: function (item, index) {
-                    if (item.type === '0') return '<span class="badge badge-success">菜单</span>';
-                    if (item.type === '1') return '<span class="badge badge-warning">按钮</span>';
+                    if (item.menuType === 0) return '<span class="badge badge-success">菜单</span>';
+                    if (item.menuType === 1) return '<span class="badge badge-warning">按钮</span>';
                 }
 
             },

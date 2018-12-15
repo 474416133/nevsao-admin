@@ -1,6 +1,7 @@
 package cn.nevsao.system.domain.dept.service.impl;
 
 import cn.nevsao.common.domain.Tree;
+import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.util.TreeUtils;
 import cn.nevsao.system.domain.dept.entity.Dept;
@@ -26,7 +27,10 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 	@Autowired
 	private DeptMapper deptMapper;
 
-
+	@Override
+	public MyMapper getMapper(){
+		return deptMapper;
+	}
 	@Override
 	public Tree<Dept> getDeptTree() {
 		List<Tree<Dept>> trees = new ArrayList<>();
@@ -43,17 +47,24 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 
 	@Override
 	public List<Dept> findAllDepts(Dept dept) {
-		try {
-			Example example = new Example(Dept.class);
-			if (StringUtils.isNotBlank(dept.getName())) {
-				example.createCriteria().andCondition("name=", dept.getName());
-			}
-			example.setOrderByClause("id");
-			return this.findByExample(example);
-		} catch (Exception e) {
-			log.error("获取部门列表失败", e);
-			return new ArrayList<>();
+//		try {
+//			Example example = new Example(Dept.class);
+//			if (StringUtils.isNotBlank(dept.getName())) {
+//				example.createCriteria().andCondition("name=", dept.getName());
+//			}
+//			example.setOrderByClause("id");
+//			return this.findByExample(example);
+//		} catch (Exception e) {
+//			log.error("获取部门列表失败", e);
+//			return new ArrayList<>();
+//		}
+
+		Example example = new Example(Dept.class);
+		if (StringUtils.isNotBlank(dept.getName())) {
+			example.createCriteria().andCondition("name=", dept.getName());
 		}
+		example.setOrderByClause("id");
+		return this.findByExample(example);
 
 	}
 

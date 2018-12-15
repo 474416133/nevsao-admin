@@ -8,7 +8,7 @@ spring:
       # 数据库访问配置, 使用druid数据源 
       db-type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/mrbird?useUnicode=true&characterEncoding=utf8
+      url: jdbc:mysql://127.0.0.1:3306/nevsao_admin?useUnicode=true&characterEncoding=utf8
       username: root
       password: root
       # 连接池配置
@@ -126,14 +126,14 @@ jasypt:
 
 mybatis:
   # type-aliases扫描路径
-  type-aliases-package: cc.mrbird.system.domain,cc.mrbird.job.domain
+  type-aliases-package: cn.nevsao.system.domain.dept.entity, cn.nevsao.system.domain.dict.entity, cn.nevsao.system.domain.user.entity, cn.nevsao.job.entity
   # mapper xml实现扫描路径
-  mapper-locations: classpath:mapper/*/*.xml
+  mapper-locations: classpath:mapping/*/*.xml
   configuration:
     jdbc-type-for-null: null
 
 mapper:
-  mappers: cc.mrbird.common.config.MyMapper
+  mappers: cn.nevsao.common.mvc.mapper.MyMapper
   not-empty: false
   identity: MYSQL
 

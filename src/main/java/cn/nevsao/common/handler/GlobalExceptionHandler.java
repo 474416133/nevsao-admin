@@ -10,6 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,6 +42,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = FileDownloadException.class)
     public ResponseBo handleFileDownloadException(FileDownloadException e) {
         return ResponseBo.error(e.getMessage());
+    }
+
+    @ExceptionHandler(value = NotImplementedException.class)
+    public ResponseBo handleNotImplementException(NotImplementedException e) {
+        return ResponseBo.error("服务器错误");
     }
 
     private static boolean isAjaxRequest(HttpServletRequest request) {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.job.dao.JobLogMapper">
+  <resultMap id="BaseResultMap" type="JobLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="job_id" jdbcType="VARCHAR" property="jobId" />
+    <result column="bean_name" jdbcType="VARCHAR" property="beanName" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="method_params" jdbcType="VARCHAR" property="methodParams" />
+    <result column="ret_status" jdbcType="CHAR" property="retStatus" />
+    <result column="ret_remark" jdbcType="VARCHAR" property="retRemark" />
+    <result column="period_time"  property="periodTime" />
+
+  </resultMap>
+</mapper>

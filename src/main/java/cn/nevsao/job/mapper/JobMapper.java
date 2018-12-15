@@ -1,7 +1,7 @@
-package cn.nevsao.job.dao;
+package cn.nevsao.job.mapper;
 
 import cn.nevsao.common.mvc.mapper.MyMapper;
-import cn.nevsao.job.domain.Job;
+import cn.nevsao.job.entity.Job;
 
 import java.util.List;
 

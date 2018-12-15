@@ -1,4 +1,4 @@
-package cn.nevsao.job.domain;
+package cn.nevsao.job.entity;
 
 import cn.nevsao.common.annotation.ExportConfig;
 import cn.nevsao.common.mvc.entity.BaseEntity;
@@ -6,13 +6,9 @@ import com.google.common.base.MoreObjects;
 import lombok.Data;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
 
-@Table(name = "sys_job")
+@Table(name = "task_job")
 @Data
 public class Job extends BaseEntity {
 
@@ -44,27 +40,27 @@ public class Job extends BaseEntity {
         }
     }
 
-    @Column(name = "BEAN_NAME")
+    @Column(name = "bean_name")
     @ExportConfig(value = "Bean名称")
     private String beanName;
 
-    @Column(name = "METHOD_NAME")
+    @Column(name = "method_name")
     @ExportConfig(value = "方法名称")
     private String methodName;
 
-    @Column(name = "PARAMS")
+    @Column(name = "method_params")
     @ExportConfig(value = "参数")
-    private String params;
+    private String methodParams;
 
-    @Column(name = "CRON_EXPRESSION")
+    @Column(name = "cron_expression")
     @ExportConfig(value = "cron表达式")
     private String cronExpression;
 
-    @Column(name = "STATUS")
+    @Column(name = "status")
     @ExportConfig(value = "状态", convert = "s:0=正常,1=暂停")
-    private String status;
+    private Integer status;
 
-    @Column(name = "REMARK")
+    @Column(name = "remark")
     @ExportConfig(value = "备注")
     private String remark;
 
@@ -75,7 +71,7 @@ public class Job extends BaseEntity {
                 .add("id", getId())
                 .add("beanName", beanName)
                 .add("methodName", methodName)
-                .add("params", params)
+                .add("params", methodParams)
                 .add("cronExpression", cronExpression)
                 .add("status", status)
                 .add("remark", remark)

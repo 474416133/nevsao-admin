@@ -1,12 +1,13 @@
 package cn.nevsao.system.domain.user.service.impl;
 
 import cn.nevsao.common.domain.Tree;
-import cn.nevsao.common.mvc.service.impl.BaseService;
+import cn.nevsao.common.mvc.mapper.MyMapper;
+import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.util.TreeUtils;
 import cn.nevsao.system.domain.user.entity.Menu;
 import cn.nevsao.system.domain.user.mapper.MenuMapper;
 import cn.nevsao.system.domain.user.service.MenuService;
-import cn.nevsao.system.domain.user.service.RoleMenuServie;
+import cn.nevsao.system.domain.user.service.RoleMenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -26,16 +27,21 @@ import java.util.*;
 @Service("menuService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 @Slf4j
-public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
+public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
 
     @Autowired
     private MenuMapper menuMapper;
 
     @Autowired
-    private RoleMenuServie roleMenuService;
+    private RoleMenuService roleMenuService;
 
     @Autowired
     private WebApplicationContext applicationContext;
+
+    @Override
+    public MyMapper getMapper() {
+        return menuMapper;
+    }
 
     @Override
     public List<Menu> findUserPermissions(String userName) {
@@ -58,7 +64,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
             if (StringUtils.isNotBlank(menu.getMenuType())) {
                 criteria.andCondition("menu_type=", menu.getMenuType());
             }
-            example.setOrderByClause("menu_id");
+            example.setOrderByClause("id");
             return this.findByExample(example);
         } catch (NumberFormatException e) {
             log.error("error", e);
@@ -78,7 +84,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
     public Tree<Menu> getMenuTree() {
         List<Tree<Menu>> trees = new ArrayList<>();
         Example example = new Example(Menu.class);
-        example.createCriteria().andCondition("type =", 0);
+        example.createCriteria().andCondition("menu_type =", 0);
         example.setOrderByClause("create_time");
         List<Menu> menus = this.findByExample(example);
         buildTrees(trees, menus);
@@ -89,7 +95,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         menus.forEach(menu -> {
             Tree<Menu> tree = new Tree<>();
             tree.setId(menu.getId());
-            tree.setParentId(menu.getParentId().toString());
+            tree.setParentId(menu.getParentId());
             tree.setText(menu.getName());
             trees.add(tree);
         });
@@ -102,7 +108,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         menus.forEach(menu -> {
             Tree<Menu> tree = new Tree<>();
             tree.setId(menu.getId());
-            tree.setParentId(menu.getParentId().toString());
+            tree.setParentId(menu.getParentId());
             tree.setText(menu.getName());
             tree.setIcon(menu.getIcon());
             tree.setUrl(menu.getUrl());
@@ -115,7 +121,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
     public Menu getByNameAndType(String menuName, String type) {
         Example example = new Example(Menu.class);
         example.createCriteria().andCondition("lower(menu_name)=", menuName.toLowerCase())
-                .andEqualTo("type", Long.valueOf(type));
+                .andEqualTo("menu_type", Long.valueOf(type));
         List<Menu> list = this.findByExample(example);
         return list.isEmpty() ? null : list.get(0);
     }

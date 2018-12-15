@@ -5,19 +5,19 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="id" jdbcType="DECIMAL" property="roleId" />
-    <result column="name" jdbcType="VARCHAR" property="roleName" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   
   <select id="findUserRole" resultMap="roleMap">
   	select r.* from sys_role r 
-  	left join sys_user_role ur on(r.role_id = ur.role_id)
+  	left join sys_user_role ur on(r.id = ur.role_id)
 	left join sys_user u on(u.id = ur.user_id)
 	where u.username = #{userName}
   </select>
   
-  <select id="findById" resultType="cn.nevsao.system.domain.user.entity.RoleWithMenu">
+  <select id="findById" resultType="RoleWithMenu">
   	select r.id, r.name, r.remark,
   	rm.menu_id as menuId from sys_role r
 	left join sys_role_menu rm on(r.id = rm.role_id)

@@ -1,17 +1,13 @@
-package cn.nevsao.job.domain;
+package cn.nevsao.job.entity;
 
 import cn.nevsao.common.annotation.ExportConfig;
 import cn.nevsao.common.mvc.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
 
-@Table(name = "sys_job_log")
+@Table(name = "task_job_log")
 @Data
 public class JobLog extends BaseEntity {
 
@@ -32,15 +28,15 @@ public class JobLog extends BaseEntity {
 
 	@Column(name = "method_params")
 	@ExportConfig(value = "参数")
-	private String params;
+	private String methodParams;
 
 	@Column(name = "ret_status")
 	@ExportConfig(value = "状态", convert = "s:0=成功,1=失败")
-	private String status;
+	private String retStatus;
 
 	@Column(name = "ret_remark")
 	@ExportConfig(value = "异常信息")
-	private String error;
+	private String retRemark;
 
 	@Column(name = "period_time")
 	@ExportConfig(value = "耗时（毫秒）")

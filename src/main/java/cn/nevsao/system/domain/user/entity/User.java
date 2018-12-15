@@ -59,7 +59,7 @@ public class User extends BaseEntityExtra {
 
     @Column(name = "gender")
     @ExportConfig(value = "性别", convert = "s:0=男,1=女,2=保密")
-    private char gender;
+    private Character gender;
 
     @Column(name = "theme_using")
     private String themeUsing;
@@ -76,6 +76,7 @@ public class User extends BaseEntityExtra {
     @Transient
     private String roleName;
 
+    @Transient
     private String genderRemark;
 
 

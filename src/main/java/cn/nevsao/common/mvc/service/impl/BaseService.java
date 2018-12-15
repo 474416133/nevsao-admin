@@ -1,6 +1,7 @@
 package cn.nevsao.common.mvc.service.impl;
 
 import cn.nevsao.common.mvc.entity.BaseEntity;
+import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.common.util.PKUtil;
 import cn.nevsao.system.domain.user.entity.User;
@@ -19,7 +20,7 @@ import java.util.List;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public  class BaseService<T extends BaseEntity> implements IService<T> {
 
-	protected Mapper<T> getMapper() {
+	protected MyMapper<T> getMapper() {
 		throw new NotImplementedException();
 	}
 

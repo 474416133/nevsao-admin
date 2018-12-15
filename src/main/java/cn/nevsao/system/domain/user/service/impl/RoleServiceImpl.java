@@ -1,12 +1,13 @@
 package cn.nevsao.system.domain.user.service.impl;
 
-import cn.nevsao.common.mvc.service.impl.BaseService;
-import cn.nevsao.system.domain.user.mapper.RoleMapper;
-import cn.nevsao.system.domain.user.mapper.RoleMenuMapper;
+import cn.nevsao.common.mvc.mapper.MyMapper;
+import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.system.domain.user.entity.Role;
 import cn.nevsao.system.domain.user.entity.RoleMenu;
 import cn.nevsao.system.domain.user.entity.RoleWithMenu;
-import cn.nevsao.system.domain.user.service.RoleMenuServie;
+import cn.nevsao.system.domain.user.mapper.RoleMapper;
+import cn.nevsao.system.domain.user.mapper.RoleMenuMapper;
+import cn.nevsao.system.domain.user.service.RoleMenuService;
 import cn.nevsao.system.domain.user.service.RoleService;
 import cn.nevsao.system.domain.user.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +20,13 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("roleService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 @Slf4j
-public class RoleServiceImpl extends BaseService<Role> implements RoleService {
+public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
@@ -38,7 +38,12 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     private UserRoleService userRoleService;
 
     @Autowired
-    private RoleMenuServie roleMenuService;
+    private RoleMenuService roleMenuService;
+
+    @Override
+    public MyMapper getMapper() {
+        return roleMapper;
+    }
 
     @Override
     public List<Role> findUserRole(String userName) {
@@ -98,8 +103,9 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     public RoleWithMenu getRoleWithMenus(String roleId) {
         List<RoleWithMenu> list = this.roleMapper.findById(roleId);
         List<Long> menuList = list.stream().map(RoleWithMenu::getMenuId).collect(Collectors.toList());
-        if (list.isEmpty()){
-            return null;}
+        if (list.isEmpty()) {
+            return null;
+        }
         RoleWithMenu roleWithMenu = list.get(0);
         roleWithMenu.setMenuIds(menuList);
         return roleWithMenu;

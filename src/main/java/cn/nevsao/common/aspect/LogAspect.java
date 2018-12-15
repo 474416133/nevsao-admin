@@ -65,7 +65,7 @@ public class LogAspect {
             UserLog log = new UserLog();
             log.setUsername(user.getUsername());
             //log.setIp(ip);
-            log.setPeriodTime(time);
+            log.setTime(time);
             userLogService.saveLog(point, log);
         }
         return result;

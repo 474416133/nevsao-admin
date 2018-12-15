@@ -26,9 +26,9 @@ public class UserLog extends BaseEntity {
     @ExportConfig(value = "描述")
     private String operation;
 
-    @Column(name = "period_time")
+    @Column(name = "op_time")
     @ExportConfig(value = "耗时（毫秒）")
-    private Long periodTime;
+    private Long Time;
 
     @Column(name = "op_method")
     @ExportConfig(value = "操作方法")

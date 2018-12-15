@@ -1,6 +1,6 @@
 package cn.nevsao.job.util;
 
-import cn.nevsao.job.domain.Job;
+import cn.nevsao.job.entity.Job;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

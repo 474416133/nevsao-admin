@@ -1,9 +1,8 @@
 package cn.nevsao.system.domain.user.service.impl;
 
 import cn.nevsao.common.annotation.Log;
+import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.BaseService;
-import cn.nevsao.common.mvc.service.impl.ExtraService;
-import cn.nevsao.common.util.AddressUtils;
 import cn.nevsao.system.domain.user.entity.UserLog;
 import cn.nevsao.system.domain.user.mapper.UserLogMapper;
 import cn.nevsao.system.domain.user.service.UserLogService;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
@@ -40,7 +38,7 @@ public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogS
     UserLogMapper userLogMapper;
 
     @Override
-    protected Mapper<UserLog> getMapper(){
+    protected MyMapper<UserLog> getMapper() {
         return userLogMapper;
     }
 

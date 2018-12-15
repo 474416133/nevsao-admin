@@ -39,7 +39,7 @@
 <script data-th-inline="javascript">
 	var ctx = [[@{/}]];
 	var userName = [[${user.username}]];
-	var theme = [[${user.theme}]];
+	var theme = [[${user.themeUsing}]];
 	var avatar = ctx + "img/avatar/" + [[${user.avatar}]];
 </script>
 <script data-th-src="@{js/app/index.js}"></script>

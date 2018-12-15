@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTd.apper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.nevsao.system.domain.user.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="cn.nevsao.system.domain.user.entity.User">
+  <resultMap id="BaseResultMap" type="User">
     <!--
       WARNING - @mbg.generated
     -->
@@ -15,14 +15,14 @@
     <result column="is_active" jdbcType="INTEGER" property="is_active" />
     
     <result column="last_login_time"  property="lastLoginTime" />
-    <result column="gender" jdbcType="CHAR" property="gender" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="theme_using" jdbcType="VARCHAR" property="themeUsing" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	  <result column="last_login_ip" jdbcType="INTEGER" property="lastLoginIp" />
   </resultMap>
   
-  <select id="findUserWithDept" resultMap="BaseResultMap" parameterType="user">
+  <select id="findUserWithDept" resultMap="BaseResultMap" parameterType="User">
   		select u.id, u.username, u.email, u.mobile, u.is_active, u.create_time,
   		u.gender, d.dept_name from sys_user u 
   		left join sys_dept d.n (u.dept_id. d.id)
@@ -43,14 +43,14 @@
   </select>
   
     
-  <select id="findUserWithRole" resultType="cn.nevsao.system.domain.user.entity.UserWithRole">
+  <select id="findUserWithRole" resultType="UserWithRole">
 		select u.id, u.username, u.dept_id, u.email, u.mobile,
 		u.is_active, u.gender, ur.role_id from sys_user u
 		left join sys_user_role ur on (u.id. ur.user_id)
 		where u.id. #{userId}
   </select>
   
-  <select id="findUserProfile" resultMap="BaseResultMap" parameterType="user">
+  <select id="findUserProfile" resultMap="BaseResultMap" parameterType="User">
 	SELECT
 		u.username,
 		u.id,

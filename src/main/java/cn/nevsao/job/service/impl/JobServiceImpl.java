@@ -1,17 +1,17 @@
 package cn.nevsao.job.service.impl;
 
 import cn.nevsao.common.annotation.CronTag;
+import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.BaseService;
-import cn.nevsao.job.dao.JobMapper;
-import cn.nevsao.job.domain.Job;
+import cn.nevsao.job.entity.Job;
+import cn.nevsao.job.mapper.JobMapper;
 import cn.nevsao.job.service.JobService;
 import cn.nevsao.job.util.ScheduleUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.reflections.Reflections;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,20 +22,27 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service("JobService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class JobServiceImpl extends BaseService<Job> implements JobService {
-
-    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private Scheduler scheduler;
 
     @Autowired
     private JobMapper jobMapper;
+
+    @Override
+    public MyMapper getMapper() {
+        return jobMapper;
+    }
 
     /**
      * 项目启动时，初始化定时器
@@ -66,7 +73,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
             if (StringUtils.isNotBlank(job.getMethodName())) {
                 criteria.andCondition("method_name=", job.getMethodName());
             }
-            if (StringUtils.isNotBlank(job.getStatus())) {
+            if (job.getStatus() != null) {
                 criteria.andCondition("status=", Long.valueOf(job.getStatus()));
             }
             example.setOrderByClause("id");
@@ -77,11 +84,12 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
         }
     }
 
+
     @Override
     @Transactional
     public int insert(Job job) {
 
-        job.setStatus(Job.ScheduleStatus.PAUSE.getValue());
+        job.setStatus(0);
         int ret = super.insert(job);
         ScheduleUtils.createScheduleJob(scheduler, job);
         return ret;
@@ -106,7 +114,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 
     @Override
     @Transactional
-    public int updateBatch(String jobIds, String status) {
+    public int updateBatch(String jobIds, Integer status) {
         List<String> list = Arrays.asList(jobIds.split(","));
         Example example = new Example(Job.class);
         example.createCriteria().andIn("id", list);
@@ -127,7 +135,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
     public void pause(String jobIds) {
         String[] list = jobIds.split(",");
         Arrays.stream(list).forEach(jobId -> ScheduleUtils.pauseJob(scheduler, jobId));
-        this.updateBatch(jobIds, Job.ScheduleStatus.PAUSE.getValue());
+        this.updateBatch(jobIds, 0);
     }
 
     @Override
@@ -135,7 +143,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
     public void resume(String jobIds) {
         String[] list = jobIds.split(",");
         Arrays.stream(list).forEach(jobId -> ScheduleUtils.resumeJob(scheduler, jobId));
-        this.updateBatch(jobIds, Job.ScheduleStatus.NORMAL.getValue());
+        this.updateBatch(jobIds, 1);
     }
 
     @SuppressWarnings("rawtypes")
@@ -156,7 +164,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
 
                 job1.setBeanName(StringUtils.uncapitalize(clsSimpleName));
                 job1.setMethodName(methodName);
-                job1.setParams(params);
+                job1.setMethodParams(params);
                 jobList.add(job1);
             }
         }

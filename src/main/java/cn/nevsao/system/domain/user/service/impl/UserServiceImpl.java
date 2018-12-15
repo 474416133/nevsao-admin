@@ -2,7 +2,8 @@ package cn.nevsao.system.domain.user.service.impl;
 
 import cn.nevsao.common.domain.QueryRequest;
 import cn.nevsao.common.enu.GenderEnum;
-import cn.nevsao.common.mvc.service.impl.BaseService;
+import cn.nevsao.common.mvc.mapper.MyMapper;
+import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.util.MD5Utils;
 import cn.nevsao.system.domain.user.entity.User;
 import cn.nevsao.system.domain.user.entity.UserRole;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 @Service("userService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 @Slf4j
-public class UserServiceImpl extends BaseService<User> implements UserService {
+public class UserServiceImpl extends ExtraService<User> implements UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -38,6 +39,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Override
+    public MyMapper getMapper() {
+        return userMapper;
+    }
 
     @Override
     public User getByName(String userName) {

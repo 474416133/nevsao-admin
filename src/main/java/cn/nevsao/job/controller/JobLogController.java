@@ -5,7 +5,7 @@ import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.domain.QueryRequest;
 import cn.nevsao.common.domain.ResponseBo;
 import cn.nevsao.common.util.FileUtil;
-import cn.nevsao.job.domain.JobLog;
+import cn.nevsao.job.entity.JobLog;
 import cn.nevsao.job.service.JobLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class JobLogController extends BaseController {
 	@ResponseBody
 	public ResponseBo deleteJobLog(String ids) {
 		try {
-			this.jobLogService.deleteBatch(ids);
+			this.jobLogService.delete(ids);
 			return ResponseBo.ok("删除调度日志成功！");
 		} catch (Exception e) {
 			log.error("删除调度日志失败", e);

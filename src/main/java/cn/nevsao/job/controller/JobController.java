@@ -5,7 +5,7 @@ import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.domain.QueryRequest;
 import cn.nevsao.common.domain.ResponseBo;
 import cn.nevsao.common.util.FileUtil;
-import cn.nevsao.job.domain.Job;
+import cn.nevsao.job.entity.Job;
 import cn.nevsao.job.service.JobService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.quartz.CronExpression;
