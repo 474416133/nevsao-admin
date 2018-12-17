@@ -2,8 +2,8 @@ package cn.nevsao.job.controller;
 
 import cn.nevsao.common.annotation.Log;
 import cn.nevsao.common.mvc.controller.BaseController;
-import cn.nevsao.common.domain.QueryRequest;
-import cn.nevsao.common.domain.ResponseBo;
+import cn.nevsao.common.mvc.vo.QueryRequest;
+import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.util.FileUtil;
 import cn.nevsao.job.entity.Job;
 import cn.nevsao.job.service.JobService;

@@ -1,8 +1,8 @@
 package cn.nevsao.system.domain.dict.controller.v1;
 
 import cn.nevsao.common.annotation.Log;
-import cn.nevsao.common.domain.QueryRequest;
-import cn.nevsao.common.domain.ResponseBo;
+import cn.nevsao.common.mvc.vo.QueryRequest;
+import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.util.FileUtil;
 import cn.nevsao.system.domain.dict.entity.Dict;
@@ -43,37 +43,44 @@ public class DictController extends BaseController {
     @RequestMapping("dict/excel")
     @ResponseBody
     public ResponseBo dictExcel(Dict dict) {
-        try {
-            List<Dict> list = this.dictService.all(dict, null);
-            return FileUtil.createExcelByPOIKit("字典表", list, Dict.class);
-        } catch (Exception e) {
-            log.error("导出字典信息Excel失败", e);
-            return ResponseBo.error("导出Excel失败，请联系网站管理员！");
-        }
+//        try {
+//            List<Dict> list = this.dictService.all(dict, null);
+//            return FileUtil.createExcelByPOIKit("字典表", list, Dict.class);
+//        } catch (Exception e) {
+//            log.error("导出字典信息Excel失败", e);
+//            return ResponseBo.error("导出Excel失败，请联系网站管理员！");
+//        }
+
+        List<Dict> list = this.dictService.all(dict, null);
+        return FileUtil.createExcelByPOIKit("字典表", list, Dict.class);
     }
 
     @RequestMapping("dict/csv")
     @ResponseBody
     public ResponseBo dictCsv(Dict dict) {
-        try {
-            List<Dict> list = this.dictService.all(dict, null);
-            return FileUtil.createCsv("字典表", list, Dict.class);
-        } catch (Exception e) {
-            log.error("导出字典信息Csv失败", e);
-            return ResponseBo.error("导出Csv失败，请联系网站管理员！");
-        }
+//        try {
+//            List<Dict> list = this.dictService.all(dict, null);
+//            return FileUtil.createCsv("字典表", list, Dict.class);
+//        } catch (Exception e) {
+//            log.error("导出字典信息Csv失败", e);
+//            return ResponseBo.error("导出Csv失败，请联系网站管理员！");
+//        }
+        List<Dict> list = this.dictService.all(dict, null);
+        return FileUtil.createCsv("字典表", list, Dict.class);
     }
 
     @RequestMapping("dict/getDict")
     @ResponseBody
     public ResponseBo getDict(String dictId) {
-        try {
-            Dict dict = this.dictService.get(dictId);
-            return ResponseBo.ok(dict);
-        } catch (Exception e) {
-            log.error("获取字典信息失败", e);
-            return ResponseBo.error("获取字典信息失败，请联系网站管理员！");
-        }
+//        try {
+//            Dict dict = this.dictService.get(dictId);
+//            return ResponseBo.ok(dict);
+//        } catch (Exception e) {
+//            log.error("获取字典信息失败", e);
+//            return ResponseBo.error("获取字典信息失败，请联系网站管理员！");
+//        }
+        Dict dict = this.dictService.get(dictId);
+        return ResponseBo.ok(dict);
     }
 
     @Log("新增字典 ")
@@ -81,13 +88,15 @@ public class DictController extends BaseController {
     @RequestMapping("dict/add")
     @ResponseBody
     public ResponseBo addDict(Dict dict) {
-        try {
-            this.dictService.insert(dict);
-            return ResponseBo.ok("新增字典成功！");
-        } catch (Exception e) {
-            log.error("新增字典失败", e);
-            return ResponseBo.error("新增字典失败，请联系网站管理员！");
-        }
+//        try {
+//            this.dictService.insert(dict);
+//            return ResponseBo.ok("新增字典成功！");
+//        } catch (Exception e) {
+//            log.error("新增字典失败", e);
+//            return ResponseBo.error("新增字典失败，请联系网站管理员！");
+//        }
+        this.dictService.insert(dict);
+        return ResponseBo.ok("新增字典成功！");
     }
 
     @Log("删除字典")
@@ -95,13 +104,15 @@ public class DictController extends BaseController {
     @RequestMapping("dict/delete")
     @ResponseBody
     public ResponseBo deleteDicts(String ids) {
-        try {
-            this.dictService.delete(ids);
-            return ResponseBo.ok("删除字典成功！");
-        } catch (Exception e) {
-            log.error("删除字典失败", e);
-            return ResponseBo.error("删除字典失败，请联系网站管理员！");
-        }
+//        try {
+//            this.dictService.delete(ids);
+//            return ResponseBo.ok("删除字典成功！");
+//        } catch (Exception e) {
+//            log.error("删除字典失败", e);
+//            return ResponseBo.error("删除字典失败，请联系网站管理员！");
+//        }
+        this.dictService.delete(ids);
+        return ResponseBo.ok("删除字典成功！");
     }
 
     @Log("修改字典 ")
@@ -109,12 +120,14 @@ public class DictController extends BaseController {
     @RequestMapping("dict/update")
     @ResponseBody
     public ResponseBo updateDict(Dict dict) {
-        try {
-            this.dictService.update(dict);
-            return ResponseBo.ok("修改字典成功！");
-        } catch (Exception e) {
-            log.error("修改字典失败", e);
-            return ResponseBo.error("修改字典失败，请联系网站管理员！");
-        }
+//        try {
+//            this.dictService.update(dict);
+//            return ResponseBo.ok("修改字典成功！");
+//        } catch (Exception e) {
+//            log.error("修改字典失败", e);
+//            return ResponseBo.error("修改字典失败，请联系网站管理员！");
+//        }
+        this.dictService.update(dict);
+        return ResponseBo.ok("修改字典成功！");
     }
 }

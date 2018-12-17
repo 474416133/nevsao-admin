@@ -1,6 +1,6 @@
 package cn.nevsao.common.annotation;
 
-import cn.nevsao.common.domain.LimitType;
+import cn.nevsao.common.mvc.vo.LimitType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

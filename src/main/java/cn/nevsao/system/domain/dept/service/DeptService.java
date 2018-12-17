@@ -1,6 +1,6 @@
 package cn.nevsao.system.domain.dept.service;
 
-import cn.nevsao.common.domain.Tree;
+import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.system.domain.dept.entity.Dept;
 

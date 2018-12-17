@@ -1,6 +1,6 @@
 package cn.nevsao.system.domain.user.service;
 
-import cn.nevsao.common.domain.QueryRequest;
+import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.system.domain.user.entity.User;
 import cn.nevsao.system.domain.user.entity.UserWithRole;

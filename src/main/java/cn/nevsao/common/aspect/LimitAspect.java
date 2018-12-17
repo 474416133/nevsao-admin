@@ -1,7 +1,7 @@
 package cn.nevsao.common.aspect;
 
 import cn.nevsao.common.annotation.Limit;
-import cn.nevsao.common.domain.LimitType;
+import cn.nevsao.common.mvc.vo.LimitType;
 import cn.nevsao.common.exception.LimitAccessException;
 import cn.nevsao.common.util.IPUtils;
 import com.google.common.collect.ImmutableList;

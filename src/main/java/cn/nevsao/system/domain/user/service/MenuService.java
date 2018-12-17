@@ -1,6 +1,6 @@
 package cn.nevsao.system.domain.user.service;
 
-import cn.nevsao.common.domain.Tree;
+import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.system.domain.user.entity.Menu;
 import org.springframework.cache.annotation.CacheConfig;

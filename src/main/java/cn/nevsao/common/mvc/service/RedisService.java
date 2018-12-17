@@ -1,6 +1,6 @@
 package cn.nevsao.common.mvc.service;
 
-import cn.nevsao.common.domain.RedisInfo;
+import cn.nevsao.common.mvc.vo.RedisInfo;
 
 import java.util.List;
 import java.util.Map;

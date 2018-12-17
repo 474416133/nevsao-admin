@@ -1,4 +1,4 @@
-package cn.nevsao.common.domain;
+package cn.nevsao.common.mvc.vo;
 
 public class ValidateCodeProperties {
 

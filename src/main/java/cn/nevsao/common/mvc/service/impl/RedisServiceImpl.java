@@ -1,6 +1,6 @@
 package cn.nevsao.common.mvc.service.impl;
 
-import cn.nevsao.common.domain.RedisInfo;
+import cn.nevsao.common.mvc.vo.RedisInfo;
 import cn.nevsao.common.mvc.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

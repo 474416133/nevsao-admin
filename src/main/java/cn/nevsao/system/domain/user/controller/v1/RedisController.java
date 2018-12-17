@@ -1,8 +1,8 @@
 package cn.nevsao.system.domain.user.controller.v1;
 
 import cn.nevsao.common.annotation.Log;
-import cn.nevsao.common.domain.RedisInfo;
-import cn.nevsao.common.domain.ResponseBo;
+import cn.nevsao.common.mvc.vo.RedisInfo;
+import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.mvc.service.RedisService;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

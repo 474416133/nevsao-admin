@@ -1,6 +1,6 @@
 package cn.nevsao.system.domain.user.service.impl;
 
-import cn.nevsao.common.domain.QueryRequest;
+import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.enu.GenderEnum;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;

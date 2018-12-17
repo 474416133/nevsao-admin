@@ -1,6 +1,6 @@
 package cn.nevsao.common.util;
 
-import cn.nevsao.common.domain.ResponseBo;
+import cn.nevsao.common.mvc.vo.ResponseBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

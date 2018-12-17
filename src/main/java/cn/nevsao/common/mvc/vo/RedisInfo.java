@@ -1,4 +1,4 @@
-package cn.nevsao.common.domain;
+package cn.nevsao.common.mvc.vo;
 
 import java.util.HashMap;
 import java.util.Map;

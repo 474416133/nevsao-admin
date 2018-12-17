@@ -1,8 +1,8 @@
 package cn.nevsao.system.domain.user.service.impl;
 
-import cn.nevsao.common.domain.Tree;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
+import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.util.TreeUtils;
 import cn.nevsao.system.domain.user.entity.Menu;
 import cn.nevsao.system.domain.user.mapper.MenuMapper;

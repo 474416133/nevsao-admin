@@ -1,6 +1,6 @@
 package cn.nevsao.system.domain.dict.service;
 
-import cn.nevsao.common.domain.QueryRequest;
+import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.system.domain.dict.entity.Dict;
 import org.springframework.cache.annotation.CacheConfig;

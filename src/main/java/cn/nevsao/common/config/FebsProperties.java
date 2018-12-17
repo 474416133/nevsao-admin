@@ -1,6 +1,6 @@
 package cn.nevsao.common.config;
 
-import cn.nevsao.common.domain.ValidateCodeProperties;
+import cn.nevsao.common.mvc.vo.ValidateCodeProperties;
 import cn.nevsao.common.shiro.ShiroProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

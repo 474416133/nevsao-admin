@@ -1,6 +1,6 @@
 package cn.nevsao.common.handler;
 
-import cn.nevsao.common.domain.ResponseBo;
+import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.exception.FileDownloadException;
 import cn.nevsao.common.exception.LimitAccessException;
 import org.apache.shiro.authz.AuthorizationException;

@@ -1,6 +1,6 @@
 package cn.nevsao.system.domain.dept.service.impl;
 
-import cn.nevsao.common.domain.Tree;
+import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.util.TreeUtils;

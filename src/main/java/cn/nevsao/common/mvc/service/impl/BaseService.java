@@ -38,6 +38,7 @@ public  class BaseService<T extends BaseEntity> implements IService<T> {
 	@Transactional
 	public int insert(T entity) {
 		entity.setId(PKUtil.newId());
+		entity.setCreateTime(new Date());
 		return getMapper().insert(entity);
 	}
 

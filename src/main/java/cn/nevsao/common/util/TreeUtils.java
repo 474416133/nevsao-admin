@@ -1,6 +1,6 @@
 package cn.nevsao.common.util;
 
-import cn.nevsao.common.domain.Tree;
+import cn.nevsao.common.mvc.vo.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;

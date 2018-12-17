@@ -1,8 +1,8 @@
 package cn.nevsao.system.domain.user.controller.v1;
 
 import cn.nevsao.common.annotation.Log;
-import cn.nevsao.common.domain.ResponseBo;
-import cn.nevsao.common.domain.Tree;
+import cn.nevsao.common.mvc.vo.ResponseBo;
+import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.util.FileUtil;
 import cn.nevsao.system.domain.user.entity.Menu;
@@ -39,37 +39,45 @@ public class MenuController extends BaseController {
     @RequestMapping("menu/menu")
     @ResponseBody
     public ResponseBo getMenuByUsername(String userName) {
-        try {
-            List<Menu> menus = this.menuService.findUserMenus(userName);
-            return ResponseBo.ok(menus);
-        } catch (Exception e) {
-            logger.error("获取菜单失败", e);
-            return ResponseBo.error("获取菜单失败！");
-        }
+//        try {
+//            List<Menu> menus = this.menuService.findUserMenus(userName);
+//            return ResponseBo.ok(menus);
+//        } catch (Exception e) {
+//            logger.error("获取菜单失败", e);
+//            return ResponseBo.error("获取菜单失败！");
+//        }
+
+        List<Menu> menus = this.menuService.findUserMenus(userName);
+        return ResponseBo.ok(menus);
     }
 
     @RequestMapping("menu/getMenu")
     @ResponseBody
     public ResponseBo getMenu(String menuId) {
-        try {
-            Menu menu = this.menuService.get(menuId);
-            return ResponseBo.ok(menu);
-        } catch (Exception e) {
-            logger.error("获取菜单信息失败", e);
-            return ResponseBo.error("获取信息失败，请联系网站管理员！");
-        }
+//        try {
+//            Menu menu = this.menuService.get(menuId);
+//            return ResponseBo.ok(menu);
+//        } catch (Exception e) {
+//            logger.error("获取菜单信息失败", e);
+//            return ResponseBo.error("获取信息失败，请联系网站管理员！");
+//        }
+
+        Menu menu = this.menuService.get(menuId);
+        return ResponseBo.ok(menu);
     }
 
     @RequestMapping("menu/menuButtonTree")
     @ResponseBody
     public ResponseBo getMenuButtonTree() {
-        try {
-            Tree<Menu> tree = this.menuService.getMenuButtonTree();
-            return ResponseBo.ok(tree);
-        } catch (Exception e) {
-            logger.error("获取菜单列表失败", e);
-            return ResponseBo.error("获取菜单列表失败！");
-        }
+//        try {
+//            Tree<Menu> tree = this.menuService.getMenuButtonTree();
+//            return ResponseBo.ok(tree);
+//        } catch (Exception e) {
+//            logger.error("获取菜单列表失败", e);
+//            return ResponseBo.error("获取菜单列表失败！");
+//        }
+        Tree<Menu> tree = this.menuService.getMenuButtonTree();
+        return ResponseBo.ok(tree);
     }
 
     @RequestMapping("menu/tree")
