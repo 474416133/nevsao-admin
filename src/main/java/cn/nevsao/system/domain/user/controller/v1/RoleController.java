@@ -1,9 +1,9 @@
 package cn.nevsao.system.domain.user.controller.v1;
 
 import cn.nevsao.common.annotation.Log;
+import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.mvc.vo.ResponseBo;
-import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.util.FileUtil;
 import cn.nevsao.system.domain.user.entity.Role;
 import cn.nevsao.system.domain.user.service.RoleService;
@@ -44,13 +44,7 @@ public class RoleController extends BaseController {
     @RequestMapping("role/excel")
     @ResponseBody
     public ResponseBo roleExcel(Role role) {
-//        try {
-//            List<Role> list = this.roleService.all(role);
-//            return FileUtil.createExcelByPOIKit("角色表", list, Role.class);
-//        } catch (Exception e) {
-//            log.error("导出角色信息Excel失败", e);
-//            return ResponseBo.error("导出Excel失败，请联系网站管理员！");
-//        }
+
         List<Role> list = this.roleService.all(role);
         return FileUtil.createExcelByPOIKit("角色表", list, Role.class);
     }
@@ -58,13 +52,6 @@ public class RoleController extends BaseController {
     @RequestMapping("role/csv")
     @ResponseBody
     public ResponseBo roleCsv(Role role) {
-//        try {
-//            List<Role> list = this.roleService.all(role);
-//            return FileUtil.createCsv("角色表", list, Role.class);
-//        } catch (Exception e) {
-//            log.error("导出角色信息Csv失败", e);
-//            return ResponseBo.error("导出Csv失败，请联系网站管理员！");
-//        }
         List<Role> list = this.roleService.all(role);
         return FileUtil.createCsv("角色表", list, Role.class);
     }
@@ -72,13 +59,7 @@ public class RoleController extends BaseController {
     @RequestMapping("role/getRole")
     @ResponseBody
     public ResponseBo getRole(String roleId) {
-//        try {
-//            Role role = this.roleService.getRoleWithMenus(roleId);
-//            return ResponseBo.ok(role);
-//        } catch (Exception e) {
-//            log.error("获取角色信息失败", e);
-//            return ResponseBo.error("获取角色信息失败，请联系网站管理员！");
-//        }
+
         Role role = this.roleService.getRoleWithMenus(roleId);
         return ResponseBo.ok(role);
     }
@@ -98,14 +79,6 @@ public class RoleController extends BaseController {
     @RequestMapping("role/add")
     @ResponseBody
     public ResponseBo addRole(Role role, String[] menuId) {
-//        try {
-//            this.roleService.insert(role, menuId);
-//            return ResponseBo.ok("新增角色成功！");
-//        } catch (Exception e) {
-//            log.error("新增角色失败", e);
-//            return ResponseBo.error("新增角色失败，请联系网站管理员！");
-//        }
-
         this.roleService.insert(role, menuId);
         return ResponseBo.ok("新增角色成功！");
     }
@@ -115,13 +88,6 @@ public class RoleController extends BaseController {
     @RequestMapping("role/delete")
     @ResponseBody
     public ResponseBo deleteRoles(String ids) {
-//        try {
-//            this.roleService.delete(ids);
-//            return ResponseBo.ok("删除角色成功！");
-//        } catch (Exception e) {
-//            log.error("删除角色失败", e);
-//            return ResponseBo.error("删除角色失败，请联系网站管理员！");
-//        }
 
         this.roleService.delete(ids);
         return ResponseBo.ok("删除角色成功！");
@@ -132,13 +98,7 @@ public class RoleController extends BaseController {
     @RequestMapping("role/update")
     @ResponseBody
     public ResponseBo updateRole(Role role, String[] menuId) {
-//        try {
-//            this.roleService.update(role, menuId);
-//            return ResponseBo.ok("修改角色成功！");
-//        } catch (Exception e) {
-//            log.error("修改角色失败", e);
-//            return ResponseBo.error("修改角色失败，请联系网站管理员！");
-//        }
+
         this.roleService.update(role, menuId);
         return ResponseBo.ok("修改角色成功！");
     }

@@ -40,13 +40,7 @@ public class UserLogController extends BaseController {
     @RequestMapping("log/excel")
     @ResponseBody
     public ResponseBo logExcel(UserLog log) {
-//        try {
-//            List<UserLog> list = this.userLogService.findAllLogs(log);
-//            return FileUtil.createExcelByPOIKit("系统日志表", list, UserLog.class);
-//        } catch (Exception e) {
-//            logger.error("导出系统日志Excel失败", e);
-//            return ResponseBo.error("导出Excel失败，请联系网站管理员！");
-//        }
+
 
         List<UserLog> list = this.userLogService.findAllLogs(log);
         return FileUtil.createExcelByPOIKit("系统日志表", list, UserLog.class);
@@ -55,13 +49,7 @@ public class UserLogController extends BaseController {
     @RequestMapping("log/csv")
     @ResponseBody
     public ResponseBo logCsv(UserLog log) {
-//        try {
-//            List<UserLog> list = this.userLogService.findAllLogs(log);
-//            return FileUtil.createCsv("系统日志表", list, UserLog.class);
-//        } catch (Exception e) {
-//            logger.error("导出系统日志Csv失败", e);
-//            return ResponseBo.error("导出Csv失败，请联系网站管理员！");
-//        }
+
         List<UserLog> list = this.userLogService.findAllLogs(log);
         return FileUtil.createCsv("系统日志表", list, UserLog.class);
     }
@@ -70,13 +58,7 @@ public class UserLogController extends BaseController {
     @RequestMapping("log/delete")
     @ResponseBody
     public ResponseBo deleteLogss(String ids) {
-//        try {
-//            this.userLogService.delete(ids);
-//            return ResponseBo.ok("删除日志成功！");
-//        } catch (Exception e) {
-//            logger.error("删除日志失败", e);
-//            return ResponseBo.error("删除日志失败，请联系网站管理员！");
-//        }
+
         this.userLogService.delete(ids);
         return ResponseBo.ok("删除日志成功！");
     }
