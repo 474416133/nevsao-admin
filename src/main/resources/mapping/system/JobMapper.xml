@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nevsao.system.job.mapper.JobMapper">
+  <resultMap id="BaseResultMap" type="Job">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="DECIMAL" property="id" />
+    <result column="bean_name" jdbcType="VARCHAR" property="beanName" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="method_params" jdbcType="VARCHAR" property="methodParams" />
+    <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  
+  <select id="queryList" resultType="Job">
+  	select id ,bean_name beanName,method_name methodName,
+  	method_params methodParams,cron_expression cronExpression,status,remark,create_time createTime
+    from task_job order by id
+  </select>
+</mapper>

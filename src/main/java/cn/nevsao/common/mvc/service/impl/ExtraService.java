@@ -11,8 +11,7 @@
 package cn.nevsao.common.mvc.service.impl;
 
 import cn.nevsao.common.mvc.entity.BaseEntityExtra;
-import cn.nevsao.system.domain.user.entity.User;
-import org.apache.catalina.security.SecurityUtil;
+import cn.nevsao.system.user.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.transaction.annotation.Transactional;
 

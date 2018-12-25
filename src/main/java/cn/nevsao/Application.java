@@ -16,7 +16,7 @@ import java.time.LocalTime;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan({"cn.nevsao.system.domain.*.mapper", "cn.nevsao.job.mapper"})
+@MapperScan({"cn.nevsao.system.*.mapper"})
 @EnableConfigurationProperties({FebsProperties.class})
 @EnableCaching
 @EnableAsync

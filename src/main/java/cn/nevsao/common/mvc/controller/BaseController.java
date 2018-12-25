@@ -1,7 +1,7 @@
 package cn.nevsao.common.mvc.controller;
 
 import cn.nevsao.common.mvc.vo.QueryRequest;
-import cn.nevsao.system.domain.user.entity.User;
+import cn.nevsao.system.user.entity.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;

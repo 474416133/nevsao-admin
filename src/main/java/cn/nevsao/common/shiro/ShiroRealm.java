@@ -1,11 +1,11 @@
 package cn.nevsao.common.shiro;
 
-import cn.nevsao.system.domain.user.entity.Menu;
-import cn.nevsao.system.domain.user.entity.Role;
-import cn.nevsao.system.domain.user.entity.User;
-import cn.nevsao.system.domain.user.service.MenuService;
-import cn.nevsao.system.domain.user.service.RoleService;
-import cn.nevsao.system.domain.user.service.UserService;
+import cn.nevsao.system.menu.entity.Menu;
+import cn.nevsao.system.role.entity.Role;
+import cn.nevsao.system.user.entity.User;
+import cn.nevsao.system.menu.service.MenuService;
+import cn.nevsao.system.role.service.RoleService;
+import cn.nevsao.system.user.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
