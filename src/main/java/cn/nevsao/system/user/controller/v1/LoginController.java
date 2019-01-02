@@ -7,6 +7,7 @@ import cn.nevsao.common.mvc.controller.BaseController;
 import cn.nevsao.common.util.MD5Utils;
 import cn.nevsao.common.util.vcode.Captcha;
 import cn.nevsao.common.util.vcode.GifCaptcha;
+import cn.nevsao.system.menu.service.MenuService;
 import cn.nevsao.system.user.entity.User;
 import cn.nevsao.system.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +38,9 @@ public class LoginController extends BaseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MenuService menuService;
 
     @GetMapping("/login")
     public String login() {
@@ -108,7 +112,11 @@ public class LoginController extends BaseController {
     public String index(Model model) {
         // 登录成后，即可通过 Subject 获取登录的用户信息
         User user = super.getCurrentUser();
+        //设置默认主题
+        user.setThemeUsing("skin-default");
         model.addAttribute("user", user);
+        model.addAttribute("menus", menuService.getUserMenu(user.getUsername()));
         return "index";
     }
+
 }

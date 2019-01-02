@@ -1,1 +1,148 @@
-html{width:100%;height:100%}body{background:#f3f3f3;color:rgba(0,0,0,.6);font-family:Lato,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.3em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.form-panel.one:before,.overlay{position:absolute;top:0;left:0;display:none;background:rgba(0,0,0,.8);width:100%;height:100%}.form{z-index:15;position:relative;background:#fff;width:500px;border-radius:1px;-webkit-box-shadow:0 0 1px rgba(0,0,0,.1);box-shadow:0 0 1px rgba(0,0,0,.1);-webkit-box-sizing:border-box;box-sizing:border-box;margin:4rem auto 10px;overflow:hidden}.form-toggle{z-index:10;position:absolute;top:60px;right:60px;background:#fff;width:60px;height:60px;border-radius:100%;-webkit-transform-origin:center;transform-origin:center;-webkit-transform:translate(0,-25%) scale(0);transform:translate(0,-25%) scale(0);opacity:0;cursor:pointer;-webkit-transition:all .3s ease;transition:all .3s ease}.form-toggle:after,.form-toggle:before{content:'';display:block;position:absolute;top:50%;left:50%;width:30px;height:4px;background:#32c787;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.form-toggle:before{-webkit-transform:translate(-50%,-50%) rotate(45deg);transform:translate(-50%,-50%) rotate(45deg)}.form-toggle:after{-webkit-transform:translate(-50%,-50%) rotate(-45deg);transform:translate(-50%,-50%) rotate(-45deg)}.form-toggle.visible{-webkit-transform:translate(0,-25%) scale(1);transform:translate(0,-25%) scale(1);opacity:1}.form-group{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;margin-bottom:1rem!important}.form-group:last-child{margin:0}.form-group label{display:block;margin:0 0 10px;color:rgba(0,0,0,.6);font-size:13px;line-height:1;text-transform:uppercase;letter-spacing:.2em}.two .form-group label{color:#fff}.form-group input{outline:0;display:block;background:rgba(0,0,0,.1);width:100%;border:0;border-radius:4px;-webkit-box-sizing:border-box;box-sizing:border-box;padding:10px;color:rgba(0,0,0,.6);font-family:inherit;font-size:inherit;font-weight:500;line-height:inherit;-webkit-transition:.3s ease;transition:.3s ease}.form-group input:focus{color:rgba(0,0,0,.8)}.two .form-group input{color:#fff}.two .form-group input:focus{color:#fff}.form-group button{outline:0;background:#32c787;width:100%;border:0;border-radius:4px;padding:12px 20px;color:#fff;font-family:inherit;font-size:inherit;font-weight:500;line-height:inherit;text-transform:uppercase;cursor:pointer}.two .form-group button{background:#fff;color:#32c787}.form-group .form-remember{font-size:12px;font-weight:400;letter-spacing:0;text-transform:none}.form-group .form-remember input[type=checkbox]{display:inline-block;width:auto;margin:0 10px 0 0}.form-group .form-recovery{color:#32c787;font-size:12px;text-decoration:none}.form-panel{padding:60px calc(5% + 60px) 60px 60px;-webkit-box-sizing:border-box;box-sizing:border-box}.form-panel.one:before{content:'';display:block;opacity:0;visibility:hidden;-webkit-transition:.3s ease;transition:.3s ease}.form-panel.one.hidden:before{display:block;opacity:1;visibility:visible}.form-panel.two{z-index:5;position:absolute;top:0;left:95%;background:#32c787;width:100%;min-height:100%;padding:60px calc(10% + 60px) 60px 60px;-webkit-transition:.3s ease;transition:.3s ease;cursor:pointer}.form-panel.two:after,.form-panel.two:before{content:'';display:block;position:absolute;top:60px;left:1.5%;background:rgba(255,255,255,.2);height:30px;width:2px;-webkit-transition:.3s ease;transition:.3s ease}.form-panel.two:after{left:3%}.form-panel.two:hover{left:93%;-webkit-box-shadow:0 0 10px rgba(0,0,0,.2);box-shadow:0 0 10px rgba(0,0,0,.2)}.form-panel.two:hover:after,.form-panel.two:hover:before{opacity:0}.form-panel.two.active{left:10%;-webkit-box-shadow:0 0 10px rgba(0,0,0,.2);box-shadow:0 0 10px rgba(0,0,0,.2);cursor:default}.form-panel.two.active:after,.form-panel.two.active:before{opacity:0}.form-header{margin:0 0 40px}.form-header h1{padding:4px 0;color:#32c787;font-size:24px;font-weight:700;text-transform:uppercase}.two .form-header h1{position:relative;z-index:40;color:#fff}.pen-footer{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;width:600px;margin:20px auto 100px}.pen-footer a{color:#fff;font-size:12px;text-decoration:none;text-shadow:1px 2px 0 rgba(0,0,0,.1)}.pen-footer a .material-icons{width:12px;margin:0 5px;vertical-align:middle;font-size:12px}.cp-fab{background:#fff!important;color:#32c787!important}.login-loader{box-sizing:border-box;display:-ms-flexbox;display:flex;background:#42b983;-ms-flex:0 1 auto;flex:0 1 auto;-ms-flex-direction:column;flex-direction:column;-ms-flex-positive:1;flex-grow:1;-ms-flex-negative:0;flex-shrink:0;-ms-flex-preferred-size:25%;flex-basis:25%;max-width:25%;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center}@-webkit-keyframes line-scale{0%,100%{-webkit-transform:scaley(1);transform:scaley(1)}50%{-webkit-transform:scaley(.4);transform:scaley(.4)}}@keyframes line-scale{0%,100%{-webkit-transform:scaley(1);transform:scaley(1)}50%{-webkit-transform:scaley(.4);transform:scaley(.4)}}.line-scale>div{border-radius:1px;margin:0 2px;background-color:#fff;width:3px;height:14px;display:inline-block}.line-scale>div:nth-child(1){-webkit-animation:line-scale 1s -.4s infinite cubic-bezier(.2,.68,.18,1.08);animation:line-scale 1s -.4s infinite cubic-bezier(.2,.68,.18,1.08)}.line-scale>div:nth-child(2){-webkit-animation:line-scale 1s -.3s infinite cubic-bezier(.2,.68,.18,1.08);animation:line-scale 1s -.3s infinite cubic-bezier(.2,.68,.18,1.08)}.line-scale>div:nth-child(3){-webkit-animation:line-scale 1s -.2s infinite cubic-bezier(.2,.68,.18,1.08);animation:line-scale 1s -.2s infinite cubic-bezier(.2,.68,.18,1.08)}.line-scale>div:nth-child(4){-webkit-animation:line-scale 1s -.1s infinite cubic-bezier(.2,.68,.18,1.08);animation:line-scale 1s -.1s infinite cubic-bezier(.2,.68,.18,1.08)}.line-scale>div:nth-child(5){-webkit-animation:line-scale 1s 0s infinite cubic-bezier(.2,.68,.18,1.08);animation:line-scale 1s 0s infinite cubic-bezier(.2,.68,.18,1.08)}.line-scale>div{-webkit-animation-fill-mode:both;animation-fill-mode:both}
+html {
+	height:100%
+}
+body.signin {
+	height:auto;
+	background:url(../img/login-background.jpg) no-repeat center fixed;
+	-webkit-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	background-size:cover;
+	color:rgba(255,255,255,.95)
+}
+.signinpanel {
+	width:750px;
+	margin:10% auto 0
+}
+.signinpanel .logopanel {
+	float:none;
+	width:auto;
+	padding:0;
+	background:0 0
+}
+.signinpanel .signin-info ul {
+	list-style:none;
+	padding:0;
+	margin:20px 0
+}
+.signinpanel .form-control {
+	display:block;
+	margin-top:15px
+}
+.signinpanel .uname {
+	background:#fff url(../img/user.png) no-repeat 95% center;
+	color:#333
+}
+.signinpanel .pword {
+	background:#fff url(../img/locked.png) no-repeat 95% center;
+	color:#333
+}
+.signinpanel .code {
+    background: #fff no-repeat 95% center;color:#333; margin:0 0 15px 0;
+}
+.signinpanel .btn {
+	margin-top:15px
+}
+.signinpanel form {
+	background:rgba(255,255,255,.2);
+	border:1px solid rgba(255,255,255,.3);
+	-moz-box-shadow:0 3px 0 rgba(12,12,12,.03);
+	-webkit-box-shadow:0 3px 0 rgba(12,12,12,.03);
+	box-shadow:0 3px 0 rgba(12,12,12,.03);
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	padding:30px
+}
+.signup-footer {
+	border-top:solid 1px rgba(255,255,255,.3);
+	margin:20px 0;
+	padding-top:15px
+}
+@media screen and (max-width:768px) {
+	.signinpanel,.signuppanel {
+	margin:0 auto;
+	width:420px!important;
+	padding:20px
+}
+.signinpanel form {
+	margin-top:20px
+}
+.signup-footer,.signuppanel .form-control {
+	margin-bottom:10px
+}
+.signup-footer .pull-left,.signup-footer .pull-right {
+	float:none!important;
+	text-align:center
+}
+.signinpanel .signin-info ul {
+	display:none
+}
+}@media screen and (max-width:320px) {
+	.signinpanel,.signuppanel {
+	margin:0 20px;
+	width:auto
+}
+}
+/*
+登录界面check样式
+*/ 
+.checkbox-custom {
+    position: relative;
+    padding: 0 15px 0 25px;
+    margin-bottom: 7px;
+    margin-top: 0;
+    display: inline-block;
+}
+/*
+将初始的checkbox的样式改变
+*/
+.checkbox-custom input[type="checkbox"] {
+    opacity: 0;/*将初始的checkbox隐藏起来*/
+    position: absolute;
+    cursor: pointer;
+    z-index: 2;
+    margin: -6px 0 0 0;
+    top: 50%;
+    left: 3px;
+}
+/*
+设计新的checkbox，位置
+*/
+.checkbox-custom label:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -9px;
+    width: 18px;
+    height: 17px;
+    display: inline-block;
+    border-radius: 2px;
+    border: 1px solid #bbb;
+    background: #fff;
+}
+/*
+点击初始的checkbox，将新的checkbox关联起来
+*/
+.checkbox-custom input[type="checkbox"]:checked +label:after {
+    position: absolute;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    content: "\e013";
+    top: 42%;
+    left: 3px;
+    margin-top: -5px;
+    font-size: 11px;
+    line-height: 1;
+    width: 16px;
+    height: 16px;
+    color: #333;
+}
+.checkbox-custom label {
+    cursor: pointer;
+    line-height: 1.2;
+    font-weight: normal;/*改变了rememberme的字体*/
+    margin-bottom: 0;
+    text-align: left;
+}
