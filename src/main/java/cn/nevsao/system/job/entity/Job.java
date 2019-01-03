@@ -8,7 +8,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-@Table(name = "task_job")
+@Table(name = "sys_job")
 @Data
 public class Job extends BaseEntity {
 

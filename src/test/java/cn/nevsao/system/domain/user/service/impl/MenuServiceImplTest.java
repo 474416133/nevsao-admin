@@ -30,7 +30,7 @@ public class MenuServiceImplTest {
 
     @Test
     public void getMenuButtonTree() throws Exception {
-        Tree<Menu> menus = service.getMenuButtonTree();
+        Tree<Menu> menus = service.getUserMenu("Mrbird");
         System.out.println("ok");
     }
 

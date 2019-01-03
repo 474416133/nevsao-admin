@@ -17,6 +17,6 @@
   <select id="queryList" resultType="Job">
   	select id ,bean_name beanName,method_name methodName,
   	method_params methodParams,cron_expression cronExpression,status,remark,create_time createTime
-    from task_job order by id
+    from sys_job order by id
   </select>
 </mapper>

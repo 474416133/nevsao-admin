@@ -75,11 +75,16 @@ public class User extends BaseEntityExtra {
     @Column(name = "last_login_ip")
     private Long lastLoginIp;
 
+    @Column(name = "degrees")
+    private String degrees;
+
     @Transient
     private String roleName;
 
     @Transient
     private String genderRemark;
+
+
 
 
     @Override

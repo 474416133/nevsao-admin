@@ -199,12 +199,12 @@ create unique index UNIQUE_INDEX_USERNAME on sys_user
    username
 );
 
-drop table if exists 菜单表;
+drop table if exists sys_menu;
 
 /*==============================================================*/
-/* Table: 菜单表                                                   */
+/* Table: sys_menu                                                   */
 /*==============================================================*/
-create table 菜单表
+create table sys_menu
 (
    id                   varchar(32) not null comment 'id',
    name                 varchar(64) comment '名字',
@@ -219,3 +219,37 @@ create table 菜单表
    modifier_id          varchar(32) comment '修改人',
    primary key (id)
 );
+
+-- ----------------------------
+-- Table structure for sys_job
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_job`;
+CREATE TABLE `sys_job` (
+  `id` varchar(32) NOT NULL  COMMENT '任务id',
+  `bean_name` varchar(100) NOT NULL COMMENT 'spring bean名称',
+  `method_name` varchar(100) NOT NULL COMMENT '方法名',
+  `method_params` varchar(200) DEFAULT NULL COMMENT '参数',
+  `cron_expression` varchar(100) NOT NULL COMMENT 'cron表达式',
+  `status` tinyint NOT NULL COMMENT '任务状态  0：正常  1：暂停',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for sys_job_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_job_log`;
+CREATE TABLE `sys_job_log` (
+  `id` varchar(32) NOT NULL  COMMENT '任务日志id',
+  `job_id` varchar(32) NOT NULL COMMENT '任务id',
+  `bean_name` varchar(100) NOT NULL COMMENT 'spring bean名称',
+  `method_name` varchar(100) NOT NULL COMMENT '方法名',
+  `method_params` varchar(200) DEFAULT NULL COMMENT '参数',
+  `ret_status` tinyint NOT NULL COMMENT '任务状态    0：成功    1：失败',
+  `ret_remark` text COMMENT '失败信息',
+  `period_time` decimal(11,0) DEFAULT NULL COMMENT '耗时(单位：毫秒)',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
