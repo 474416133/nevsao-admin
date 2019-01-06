@@ -17,12 +17,7 @@
 							<li>
 								权限字符：<input type="text" name="roleKey"/>
 							</li>
-							<li>
-								角色状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
-									<option value="">所有</option>
-									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								</select>
-							</li>
+
 							<li class="select-time">
 								<label>创建时间： </label>
 								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
@@ -62,9 +57,8 @@
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:role:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:role:remove')}]];
-		var datas = [[${@dict.getType('sys_normal_disable')}]];
-		var prefix = ctx + "system/role";
-		
+		//var prefix = ctx + "system/role";
+		var prefix = ctx + "role";
 
 		$(function() {
 		    var options = {
@@ -81,32 +75,21 @@
 		            checkbox: true
 		        },
 		        {
-		            field: 'roleId',
+		            field: 'id',
 		            title: '角色编号'
 		        },
 		        {
-		            field: 'roleName',
+		            field: 'name',
 		            title: '角色名称',
 		            sortable: true
 		        },
+
 		        {
-		            field: 'roleKey',
-		            title: '权限字符',
-		            sortable: true
-		        },
-		        {
-		            field: 'roleSort',
+		            field: 'remark',
 		            title: '显示顺序',
 		            sortable: true
 		        },
-		        {
-		            field: 'status',
-		            title: '状态',
-		            align: 'center',
-		            formatter: function(value, row, index) {
-		            	return $.table.selectDictLabel(datas, value);
-		            }
-		        },
+
 		        {
 		            field: 'createTime',
 		            title: '创建时间',

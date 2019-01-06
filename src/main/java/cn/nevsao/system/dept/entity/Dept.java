@@ -25,8 +25,8 @@ public class Dept extends BaseEntityExtra {
     @Column(name = "order_seq")
     private Long orderSeq;
 
-    @Column(name = "manager_id")
-    private String managerId;
+    @Column(name = "principal_id")
+    private String principalId;
 
     @Transient
     private User manager;

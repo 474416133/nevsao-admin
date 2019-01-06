@@ -11,20 +11,11 @@
 				<form id="data-form">
 					<div class="select-list">
 						<ul>
-						    <li>
-								字典名称：<select id="dictType" name="dictType">
-					                      <option th:each="dict : ${dictList}" th:text="${dict['dictName']}" th:value="${dict['dictType']}" th:field="*{dict.dictType}"></option>
-					                  </select>
-							</li>
+
 							<li>
 								字典标签：<input type="text" name="dictLabel"/>
 							</li>
-							<li>
-								数据状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
-									      <option value="">所有</option>
-									      <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								      </select>
-							</li>
+
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -59,9 +50,8 @@
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:dict:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:dict:remove')}]];
-		var datas = [[${@dict.getType('sys_normal_disable')}]];
-		var prefix = ctx + "system/dict/data";
-
+		//var prefix = ctx + "system/dict/data";
+		var prefix = ctx + "dict";
 		$(function() {
 			var options = {
 				url: prefix + "/list",
@@ -79,33 +69,19 @@
 						checkbox: true
 					},
 					{
-						field: 'dictCode',
+						field: 'dictKey',
 						title: '字典编码'
 					},
-					{
-						field: 'dictLabel',
-						title: '字典标签'
-					},
+
 					{
 						field: 'dictValue',
 						title: '字典键值'
 					},
 					{
-						field: 'dictSort',
+						field: 'dictKeyRank',
 						title: '字典排序'
 					},
-					{
-						field: 'status',
-						title: '状态',
-						align: 'center',
-						formatter: function(value, row, index) {
-							return $.table.selectDictLabel(datas, value);
-						}
-					},
-					{
-						field: 'remark',
-						title: '备注'
-					},
+
 					{
 						field: 'createTime',
 						title: '创建时间',
@@ -127,7 +103,7 @@
 		
 		function queryParams(params) {
 			return {
-				dictType:       $("#dictType").val(),
+
 				pageSize:       params.limit,
     			pageNum:        params.offset / params.limit + 1,
     			searchValue:    params.search,

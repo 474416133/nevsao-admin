@@ -22,12 +22,15 @@ public class Dict extends BaseEntityExtra {
     private String dictValue;
 
     @Column(name = "table_name")
-    @ExportConfig(value = "列名")
+    @ExportConfig(value = "表名")
     private String tableName;
 
     @Column(name = "column_name")
-    @ExportConfig(value = "表名")
+    @ExportConfig(value = "列名")
     private String columnName;
+
+    @Column(name = "dict_key_rank")
+    private Integer dictKeyRank;
 
 
 }

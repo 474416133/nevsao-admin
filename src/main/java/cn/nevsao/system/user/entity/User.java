@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_user")
 @Data
@@ -31,8 +32,6 @@ public class User extends BaseEntityExtra {
     @Column(name = "username")
     @ExportConfig(value = "用户名")
     private String username;
-
-
 
     @Column(name = "password")
     private String password;
@@ -75,16 +74,17 @@ public class User extends BaseEntityExtra {
     @Column(name = "last_login_ip")
     private Long lastLoginIp;
 
-    @Column(name = "degrees")
-    private String degrees;
+    @Column(name = "title")
+    private String title;
+
+    @Transient
+    private List<String> titles;
 
     @Transient
     private String roleName;
 
     @Transient
     private String genderRemark;
-
-
 
 
     @Override

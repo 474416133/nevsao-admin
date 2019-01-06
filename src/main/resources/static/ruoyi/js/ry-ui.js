@@ -59,14 +59,14 @@
         		}; 
             },
             // 请求获取数据后处理回调函数
-            responseHandler: function(res) {
-                if (res.code == 0) {
-                    return { rows: res.rows, total: res.total };
-                } else {
-                	$.modal.alertWarning(res.msg);
-                	return { rows: [], total: 0 };
-                }
-            },
+//            responseHandler: function(res) {
+//                if (res.code == 0) {
+//                    return { rows: res.rows, total: res.total };
+//                } else {
+//                	$.modal.alertWarning(res.msg);
+//                	return { rows: [], total: 0 };
+//                }
+//            },
             // 搜索-默认第一个form
             search: function(formId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;

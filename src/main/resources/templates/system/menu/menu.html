@@ -13,12 +13,7 @@
 							<li>
 								菜单名称：<input type="text" name="menuName"/>
 							</li>
-							<li>
-								菜单状态：<select name="visible" th:with="type=${@dict.getType('sys_show_hide')}">
-									<option value="">所有</option>
-									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								</select>
-							</li>
+
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.treeTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -50,14 +45,14 @@
 		var addFlag = [[${@permission.hasPermi('system:menu:add')}]];
 		var editFlag = [[${@permission.hasPermi('system:menu:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:menu:remove')}]];
-		var datas = [[${@dict.getType('sys_show_hide')}]];
-		var prefix = ctx + "system/menu";
 
+		//var prefix = ctx + "system/menu";
+		var prefix = ctx + "menu";
 		$(function() {
 		    var options = {
-		        code: "menuId",
+		        code: "id",
 		        parentCode: "parentId",
-		        uniqueId: "menuId",
+		        uniqueId: "id",
 		        expandAll: false,
 		        expandFirst: true,
 		        url: prefix + "/list",
@@ -71,18 +66,18 @@
                  },
                  {
 		            title: '菜单名称',
-		            field: 'menuName',
+		            field: 'name',
 		            width: '20%',
 		            formatter: function(value, row, index) {
 		                if ($.common.isEmpty(row.icon)) {
-		                    return row.menuName;
+		                    return row.name;
 		                } else {
-		                    return '<i class="' + row.icon + '"></i> <span class="nav-label">' + row.menuName + '</span>';
+		                    return '<i class="' + row.icon + '"></i> <span class="nav-label">' + row.name + '</span>';
 		                }
 		            }
 		        },
 		        {
-		            field: 'orderNum',
+		            field: 'orderSeq',
 		            title: '排序',
 		            width: '10%',
 		            align: "left"
@@ -110,15 +105,7 @@
 		                }
 		            }
 		        },
-		        {
-		            field: 'visible',
-		            title: '可见',
-		            width: '10%',
-		            align: "left",
-		            formatter: function(value, row, index) {
-		            	return $.table.selectDictLabel(datas, row.visible);
-		            }
-		        },
+
 		        {
 		            field: 'perms',
 		            title: '权限标识',

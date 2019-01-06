@@ -87,7 +87,7 @@ public class DeptController {
     @RequiresPermissions("dept:add")
     @RequestMapping("dept/add")
     @ResponseBody
-    public ResponseBo addRole(Dept dept) {
+    public ResponseBo addDept(Dept dept) {
 
         this.deptService.insert(dept);
         return ResponseBo.ok("新增部门成功！");
@@ -108,7 +108,7 @@ public class DeptController {
     @RequiresPermissions("dept:update")
     @RequestMapping("dept/update")
     @ResponseBody
-    public ResponseBo updateRole(Dept dept) {
+    public ResponseBo updateDept(Dept dept) {
 
 
         this.deptService.update(dept);
