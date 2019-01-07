@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class DictController extends BaseController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -28,13 +29,13 @@ public class DictController extends BaseController {
 
     @Log("获取字典信息")
     @RequestMapping("dict")
-    @RequiresPermissions("dict:list")
+    @RequiresPermissions("system:dict:list")
     public String index() {
         return "system/dict/dict";
     }
 
     @RequestMapping("dict/list")
-    @RequiresPermissions("dict:list")
+    @RequiresPermissions("system:dict:list")
     @ResponseBody
     public Map<String, Object> dictList(QueryRequest request, Dict dict) {
         return super.selectByPageNumSize(request, () -> this.dictService.all(dict, request));
@@ -66,7 +67,7 @@ public class DictController extends BaseController {
     }
 
     @Log("新增字典 ")
-    @RequiresPermissions("dict:add")
+    @RequiresPermissions("system:dict:add")
     @RequestMapping("dict/add")
     @ResponseBody
     public ResponseBo addDict(Dict dict) {
@@ -76,7 +77,7 @@ public class DictController extends BaseController {
     }
 
     @Log("删除字典")
-    @RequiresPermissions("dict:delete")
+    @RequiresPermissions("system:dict:delete")
     @RequestMapping("dict/delete")
     @ResponseBody
     public ResponseBo deleteDicts(String ids) {
@@ -86,7 +87,7 @@ public class DictController extends BaseController {
     }
 
     @Log("修改字典 ")
-    @RequiresPermissions("dict:update")
+    @RequiresPermissions("system:dict:update")
     @RequestMapping("dict/update")
     @ResponseBody
     public ResponseBo updateDict(Dict dict) {

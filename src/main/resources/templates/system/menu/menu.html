@@ -45,9 +45,8 @@
 		var addFlag = [[${@permission.hasPermi('system:menu:add')}]];
 		var editFlag = [[${@permission.hasPermi('system:menu:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:menu:remove')}]];
+		var prefix = ctx + "system/menu";
 
-		//var prefix = ctx + "system/menu";
-		var prefix = ctx + "menu";
 		$(function() {
 		    var options = {
 		        code: "id",

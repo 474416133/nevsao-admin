@@ -57,8 +57,7 @@
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:role:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:role:remove')}]];
-		//var prefix = ctx + "system/role";
-		var prefix = ctx + "role";
+		var prefix = ctx + "system/role";
 
 		$(function() {
 		    var options = {

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class UserController extends BaseController {
 
     private static final String ON = "on";
@@ -34,7 +35,7 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @RequestMapping("user")
-    @RequiresPermissions("user:list")
+    @RequiresPermissions("system:user:list")
     public String index(Model model) {
         User user = super.getCurrentUser();
         model.addAttribute("user", user);
@@ -65,7 +66,7 @@ public class UserController extends BaseController {
 
     @Log("获取用户信息")
     @RequestMapping("user/list")
-    @RequiresPermissions("user:list")
+    @RequiresPermissions("system:user:list")
     @ResponseBody
     public Map<String, Object> userList(QueryRequest request, User user) {
         return super.selectByPageNumSize(request, () -> this.userService.findUserWithDept(user, request));
@@ -110,7 +111,7 @@ public class UserController extends BaseController {
     }
 
     @Log("新增用户")
-    @RequiresPermissions("user:add")
+    @RequiresPermissions("system:user:add")
     @RequestMapping("user/add")
     @ResponseBody
     public ResponseBo addUser(User user, String[] roles) {
@@ -124,7 +125,7 @@ public class UserController extends BaseController {
     }
 
     @Log("修改用户")
-    @RequiresPermissions("user:update")
+    @RequiresPermissions("system:user:update")
     @RequestMapping("user/update")
     @ResponseBody
     public ResponseBo updateUser(User user, String[] rolesSelect) {
@@ -138,7 +139,7 @@ public class UserController extends BaseController {
     }
 
     @Log("删除用户")
-    @RequiresPermissions("user:delete")
+    @RequiresPermissions("system:user:delete")
     @RequestMapping("user/delete")
     @ResponseBody
     public ResponseBo deleteUsers(String ids) {

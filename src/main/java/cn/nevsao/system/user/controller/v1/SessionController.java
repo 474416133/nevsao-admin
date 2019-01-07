@@ -18,6 +18,7 @@ import java.util.Map;
 
 
 @Controller
+@RequestMapping(value = "system/")
 public class SessionController {
 
     @Autowired
@@ -26,14 +27,14 @@ public class SessionController {
 
     @Log("获取在线用户信息")
     @RequestMapping("session")
-    @RequiresPermissions("session:list")
+    @RequiresPermissions("system:session:list")
     public String online() {
         return "system/monitor/online";
     }
 
     @ResponseBody
     @RequestMapping("session/list")
-    @RequiresPermissions("session:list")
+    @RequiresPermissions("system:session:list")
     public Map<String, Object> list() {
         List<UserOnline> list = sessionService.list();
         Map<String, Object> rspData = new HashMap<>();
@@ -43,7 +44,7 @@ public class SessionController {
     }
 
     @ResponseBody
-    @RequiresPermissions("user:kickout")
+    @RequiresPermissions("system:user:kickout")
     @RequestMapping("session/forceLogout")
     public ResponseBo forceLogout(String id) {
         try {

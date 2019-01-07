@@ -90,7 +90,6 @@
 		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
 		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
-		var datas = [[${@dict.getType('sys_normal_disable')}]];
 		var prefix = ctx + "system/user";
 
 		$(function() {
@@ -145,7 +144,7 @@
 		            title: '状态',
 		            align: 'center',
 		            formatter: function(value, row, index) {
-		            	return $.table.selectDictLabel(datas, value);
+		            	//return $.table.selectDictLabel(datas, value);
 		            }
 		        },
 		        {

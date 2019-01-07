@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class MenuController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -31,7 +32,7 @@ public class MenuController extends BaseController {
 
     @Log("获取菜单信息")
     @RequestMapping("menu")
-    @RequiresPermissions("menu:list")
+    @RequiresPermissions("system:menu:list")
     public String index() {
         return "system/menu/menu";
     }
@@ -84,7 +85,7 @@ public class MenuController extends BaseController {
     }
 
     @RequestMapping("menu/list")
-    @RequiresPermissions("menu:list")
+    @RequiresPermissions("system:menu:list")
     @ResponseBody
     public List<Menu> menuList(Menu menu) {
         try {
@@ -130,7 +131,7 @@ public class MenuController extends BaseController {
     }
 
     @Log("新增菜单/按钮")
-    @RequiresPermissions("menu:add")
+    @RequiresPermissions("system:menu:add")
     @RequestMapping("menu/add")
     @ResponseBody
     public ResponseBo addMenu(Menu menu) {
@@ -150,7 +151,7 @@ public class MenuController extends BaseController {
     }
 
     @Log("删除菜单")
-    @RequiresPermissions("menu:delete")
+    @RequiresPermissions("system:menu:delete")
     @RequestMapping("menu/delete")
     @ResponseBody
     public ResponseBo deleteMenus(String ids) {
@@ -164,7 +165,7 @@ public class MenuController extends BaseController {
     }
 
     @Log("修改菜单/按钮")
-    @RequiresPermissions("menu:update")
+    @RequiresPermissions("system:menu:update")
     @RequestMapping("menu/update")
     @ResponseBody
     public ResponseBo updateMenu(Menu menu) {

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class JobLogController extends BaseController {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -28,20 +29,20 @@ public class JobLogController extends BaseController {
 
 	@Log("获取调度日志信息")
 	@RequestMapping("jobLog")
-	@RequiresPermissions("jobLog:list")
+	@RequiresPermissions("system:jobLog:list")
 	public String index() {
 		return "job/log/log";
 	}
 
 	@RequestMapping("jobLog/list")
-	@RequiresPermissions("job:list")
+	@RequiresPermissions("system:job:list")
 	@ResponseBody
 	public Map<String, Object> jobLogList(QueryRequest request, JobLog log) {
 		return super.selectByPageNumSize(request, () -> this.jobLogService.findAllJobLogs(log));
 	}
 
 	@Log("删除调度日志")
-	@RequiresPermissions("jobLog:delete")
+	@RequiresPermissions("system:jobLog:delete")
 	@RequestMapping("jobLog/delete")
 	@ResponseBody
 	public ResponseBo deleteJobLog(String ids) {

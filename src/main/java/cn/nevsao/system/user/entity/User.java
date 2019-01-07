@@ -37,7 +37,7 @@ public class User extends BaseEntityExtra {
     private String password;
 
     @Column(name = "dept_id")
-    private Long deptId;
+    private String deptId;
 
     @Transient
     @ExportConfig(value = "部门")

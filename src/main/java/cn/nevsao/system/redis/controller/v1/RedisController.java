@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("redis")
+@RequestMapping("system/redis")
 public class RedisController {
 
     private static final String INTEGER_PREFIX = "(integer) ";
@@ -34,7 +34,7 @@ public class RedisController {
     }
 
     @RequestMapping("info")
-    @RequiresPermissions("redis:list")
+    @RequiresPermissions("system:redis:list")
     public String getRedisInfo(Model model) {
         List<RedisInfo> infoList = this.redisService.getRedisInfo();
         model.addAttribute("infoList", infoList);
@@ -42,7 +42,7 @@ public class RedisController {
     }
 
     @RequestMapping("terminal")
-    @RequiresPermissions("redis:terminal")
+    @RequiresPermissions("system:redis:terminal")
     public String redisTerminal(Model model) {
         String osName = System.getProperty("os.name");
         model.addAttribute("osName", osName);

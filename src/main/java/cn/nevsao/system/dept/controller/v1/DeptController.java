@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "system/")
 public class DeptController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -27,7 +28,7 @@ public class DeptController {
 
     @Log("获取部门信息")
     @RequestMapping("dept")
-    @RequiresPermissions("dept:list")
+    @RequiresPermissions("system:dept:list")
     public String index() {
         return "system/dept/dept";
     }
@@ -49,7 +50,7 @@ public class DeptController {
     }
 
     @RequestMapping("dept/list")
-    @RequiresPermissions("dept:list")
+    @RequiresPermissions("system:dept:list")
     @ResponseBody
     public List<Dept> deptList(Dept dept) {
 
@@ -84,7 +85,7 @@ public class DeptController {
     }
 
     @Log("新增部门 ")
-    @RequiresPermissions("dept:add")
+    @RequiresPermissions("system:dept:add")
     @RequestMapping("dept/add")
     @ResponseBody
     public ResponseBo addDept(Dept dept) {
@@ -94,7 +95,7 @@ public class DeptController {
     }
 
     @Log("删除部门")
-    @RequiresPermissions("dept:delete")
+    @RequiresPermissions("system:dept:delete")
     @RequestMapping("dept/delete")
     @ResponseBody
     public ResponseBo deleteDepts(String ids) {
@@ -105,7 +106,7 @@ public class DeptController {
     }
 
     @Log("修改部门 ")
-    @RequiresPermissions("dept:update")
+    @RequiresPermissions("system:dept:update")
     @RequestMapping("dept/update")
     @ResponseBody
     public ResponseBo updateDept(Dept dept) {

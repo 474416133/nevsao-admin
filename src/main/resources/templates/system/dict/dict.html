@@ -26,7 +26,7 @@
 			</div>
 			
 	       <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-	            <a class="btn btn-success" th:onclick="$.operate.add([[${dict.dictType}]])" shiro:hasPermission="system:dict:add">
+	            <a class="btn btn-success" th:onclick="$.operate.add(100)" shiro:hasPermission="system:dict:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
 	            <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:dict:edit">
@@ -50,8 +50,8 @@
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:dict:edit')}]];
 		var removeFlag = [[${@permission.hasPermi('system:dict:remove')}]];
-		//var prefix = ctx + "system/dict/data";
-		var prefix = ctx + "dict";
+		var prefix = ctx + "system/dict/data";
+
 		$(function() {
 			var options = {
 				url: prefix + "/list",

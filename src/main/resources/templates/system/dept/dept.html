@@ -24,10 +24,10 @@
 			</div>
                 
             <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-		        <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="dept:add">
+		        <a class="btn btn-success" onclick="$.operate.add(100)" shiro:hasPermission="system:dept:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
-                <a class="btn btn-primary" onclick="$.operate.editTree()" shiro:hasPermission="dept:update">
+                <a class="btn btn-primary" onclick="$.operate.editTree()" shiro:hasPermission="system:dept:update">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
                 <a class="btn btn-info" id="expandAllBtn">
@@ -41,11 +41,11 @@
 	</div>
 	<div th:include="include :: footer"></div>
 	<script th:inline="javascript">
-		//var addFlag = [[${@permission.hasPermi('dept:add')}]];
-		var editFlag = [[${@permission.hasPermi('dept:update')}]];
-		var removeFlag = [[${@permission.hasPermi('dept:delete')}]];
-		//var prefix = ctx + "system/dept"
-		var prefix = ctx + "dept"
+		//var addFlag = [[${@permission.hasPermi('system:dept:add')}]];
+		var editFlag = [[${@permission.hasPermi('system:dept:update')}]];
+		var removeFlag = [[${@permission.hasPermi('system:dept:delete')}]];
+		var prefix = ctx + "system/dept"
+
 		$(function() {
 		    var options = {
 		        code: "id",

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class JobController extends BaseController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -29,13 +30,13 @@ public class JobController extends BaseController {
 
     @Log("获取定时任务信息")
     @RequestMapping("job")
-    @RequiresPermissions("job:list")
+    @RequiresPermissions("system:job:list")
     public String index() {
         return "job/job/job";
     }
 
     @RequestMapping("job/list")
-    @RequiresPermissions("job:list")
+    @RequiresPermissions("system:job:list")
     @ResponseBody
     public Map<String, Object> jobList(QueryRequest request, Job job) {
         return super.selectByPageNumSize(request, () -> this.jobService.findAllJobs(job));
@@ -52,7 +53,7 @@ public class JobController extends BaseController {
     }
 
     @Log("新增任务 ")
-    @RequiresPermissions("job:add")
+    @RequiresPermissions("system:job:add")
     @RequestMapping("job/add")
     @ResponseBody
     public ResponseBo addJob(Job job) {
@@ -66,7 +67,7 @@ public class JobController extends BaseController {
     }
 
     @Log("删除任务")
-    @RequiresPermissions("job:delete")
+    @RequiresPermissions("system:job:delete")
     @RequestMapping("job/delete")
     @ResponseBody
     public ResponseBo deleteJob(String ids) {
@@ -92,7 +93,7 @@ public class JobController extends BaseController {
     }
 
     @Log("修改任务 ")
-    @RequiresPermissions("job:update")
+    @RequiresPermissions("system:job:update")
     @RequestMapping("job/update")
     @ResponseBody
     public ResponseBo updateJob(Job job) {
@@ -106,7 +107,7 @@ public class JobController extends BaseController {
     }
 
     @Log("执行任务")
-    @RequiresPermissions("job:run")
+    @RequiresPermissions("system:job:run")
     @RequestMapping("job/run")
     @ResponseBody
     public ResponseBo runJob(String jobIds) {
@@ -120,7 +121,7 @@ public class JobController extends BaseController {
     }
 
     @Log("暂停任务")
-    @RequiresPermissions("job:pause")
+    @RequiresPermissions("system:job:pause")
     @RequestMapping("job/pause")
     @ResponseBody
     public ResponseBo pauseJob(String jobIds) {
@@ -134,7 +135,7 @@ public class JobController extends BaseController {
     }
 
     @Log("恢复任务")
-    @RequiresPermissions("job:resume")
+    @RequiresPermissions("system:job:resume")
     @RequestMapping("job/resume")
     @ResponseBody
     public ResponseBo resumeJob(String jobIds) {

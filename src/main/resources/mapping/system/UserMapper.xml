@@ -25,19 +25,19 @@
   <select id="findUserWithDept" resultMap="BaseResultMap" parameterType="User">
   		select u.id, u.username, u.email, u.mobile, u.is_active, u.create_time,
   		u.gender, d.dept_name from sys_user u 
-  		left join sys_dept d.n (u.dept_id. d.id)
+  		left join sys_dept d on u.dept_id = d.id
   		where 1=1
   		<if test="username != null and.sername != ''">
-        	ANd..username = #{username}
+        	and u.username = #{username}
 	    </if>
-	    <if test="deptId.= null and.eptId.= ''">
-	        ANd..id. #{deptId}
+	    <if test="deptId != null and deptId != ''">
+	        and d.id = #{deptId}
 	    </if>
-  		<if test="gender != null and.ender != ''">
-	        ANd..gender = #{gender}
+  		<if test="gender != null and gender != ''">
+	       and u.gender = #{gender}
 	    </if>
 	    <if test="is_active != null ">
-	        ANd..is_active = #{is_active}
+	        and u.is_active = #{is_active}
 	    </if>
   		order by u.id
   </select>
@@ -46,8 +46,8 @@
   <select id="findUserWithRole" resultType="UserWithRole">
 		select u.id, u.username, u.dept_id, u.email, u.mobile,
 		u.is_active, u.gender, ur.role_id from sys_user u
-		left join sys_user_role ur on (u.id. ur.user_id)
-		where u.id. #{userId}
+		left join sys_user_role ur on u.id = ur.user_id
+		where u.id = #{userId}
   </select>
   
   <select id="findUserProfile" resultMap="BaseResultMap" parameterType="User">

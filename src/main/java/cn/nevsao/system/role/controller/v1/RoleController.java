@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class RoleController extends BaseController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -29,13 +30,13 @@ public class RoleController extends BaseController {
 
     @Log("获取角色信息")
     @RequestMapping("role")
-    @RequiresPermissions("role:list")
+    @RequiresPermissions("system:role:list")
     public String index() {
         return "system/role/role";
     }
 
     @RequestMapping("role/list")
-    @RequiresPermissions("role:list")
+    @RequiresPermissions("system:role:list")
     @ResponseBody
     public Map<String, Object> roleList(QueryRequest request, Role role) {
         return super.selectByPageNumSize(request, () -> this.roleService.all(role));
@@ -75,7 +76,7 @@ public class RoleController extends BaseController {
     }
 
     @Log("新增角色")
-    @RequiresPermissions("role:add")
+    @RequiresPermissions("system:role:add")
     @RequestMapping("role/add")
     @ResponseBody
     public ResponseBo addRole(Role role, String[] menuId) {
@@ -84,7 +85,7 @@ public class RoleController extends BaseController {
     }
 
     @Log("删除角色")
-    @RequiresPermissions("role:delete")
+    @RequiresPermissions("system:role:delete")
     @RequestMapping("role/delete")
     @ResponseBody
     public ResponseBo deleteRoles(String ids) {
@@ -94,7 +95,7 @@ public class RoleController extends BaseController {
     }
 
     @Log("修改角色")
-    @RequiresPermissions("role:update")
+    @RequiresPermissions("system:role:update")
     @RequestMapping("role/update")
     @ResponseBody
     public ResponseBo updateRole(Role role, String[] menuId) {

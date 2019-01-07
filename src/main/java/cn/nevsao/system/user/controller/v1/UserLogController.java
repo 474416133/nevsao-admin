@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "system/")
 public class UserLogController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -26,7 +27,7 @@ public class UserLogController extends BaseController {
     private UserLogService userLogService;
 
     @RequestMapping("log")
-    @RequiresPermissions("log:list")
+    @RequiresPermissions("system:log:list")
     public String index() {
         return "system/log/log";
     }
@@ -54,7 +55,7 @@ public class UserLogController extends BaseController {
         return FileUtil.createCsv("系统日志表", list, UserLog.class);
     }
 
-    @RequiresPermissions("log:delete")
+    @RequiresPermissions("system:log:delete")
     @RequestMapping("log/delete")
     @ResponseBody
     public ResponseBo deleteLogss(String ids) {
