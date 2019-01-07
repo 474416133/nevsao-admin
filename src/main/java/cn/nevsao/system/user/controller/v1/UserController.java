@@ -69,6 +69,7 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:list")
     @ResponseBody
     public Map<String, Object> userList(QueryRequest request, User user) {
+        System.out.println("ok");
         return super.selectByPageNumSize(request, () -> this.userService.findUserWithDept(user, request));
     }
 

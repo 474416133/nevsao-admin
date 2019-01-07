@@ -42,12 +42,7 @@
 							<li>
 								手机号码：<input type="text" name="phonenumber"/>
 							</li>
-							<li>
-								用户状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
-									<option value="">所有</option>
-									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								</select>
-							</li>
+
 							<li class="select-time">
 								<label>创建时间： </label>
 								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
@@ -67,10 +62,10 @@
 	        	<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:user:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-	             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:user:edit">
+	             <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:user:update">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-	            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:user:remove">
+	            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:user:delete">
 	                <i class="fa fa-remove"></i> 删除
 	            </a>
 	            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:user:export">
@@ -87,8 +82,8 @@
 	<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 	<script th:inline="javascript">
-		var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
+		var editFlag = [[${@permission.hasPermi('system:user:update')}]];
+		var removeFlag = [[${@permission.hasPermi('system:user:delete')}]];
 		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
 		var prefix = ctx + "system/user";
 
@@ -114,20 +109,16 @@
 		            checkbox: true
 		        },
 		        {
-		            field: 'userId',
+		            field: 'id',
 		            title: '用户ID'
 		        },
-		        {
-		            field: 'loginName',
-		            title: '登录名称',
-		            sortable: true
-		        },
+
 		        {
 		            field: 'userName',
 		            title: '用户名称'
 		        },
 		        {
-		            field: 'dept.deptName',
+		            field: 'deptName',
 		            title: '部门'
 		        },
 		        {
@@ -136,14 +127,19 @@
 		            visible: false
 		        },
 		        {
-		            field: 'phonenumber',
+		            field: 'mobile',
 		            title: '手机'
 		        },
 		        {
-		            field: 'status',
+		            field: 'isActive',
 		            title: '状态',
 		            align: 'center',
 		            formatter: function(value, row, index) {
+		            	if (value == 1){
+		            		value = '激活';
+		            	}else {
+		            		value = "冻结";
+		            	}
 		            	//return $.table.selectDictLabel(datas, value);
 		            }
 		        },
@@ -157,9 +153,9 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		                var actions = [];
-		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.userId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.userId + '\')"><i class="fa fa-remove"></i>删除</a> ');
-		                actions.push('<a class="btn btn-info btn-xs ' + resetPwdFlag + '" href="#" onclick="resetPwd(\'' + row.userId + '\')"><i class="fa fa-key"></i>重置</a>');
+		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+		                actions.push('<a class="btn btn-info btn-xs ' + resetPwdFlag + '" href="#" onclick="resetPwd(\'' + row.id + '\')"><i class="fa fa-key"></i>重置</a>');
 		                return actions.join('');
 		            }
 		        }]
@@ -169,7 +165,7 @@
 		
 		function queryDeptTree()
 		{
-			var url = ctx + "system/dept/treeData";
+			var url = ctx + "system/dept/list";
 			var options = {
 		        url: url,
 		        expandLevel: 2,
@@ -178,8 +174,8 @@
 			$.tree.init(options);
 			
 			function zOnClick(event, treeId, treeNode) {
-				$("#deptId").val(treeNode.id);
-				$("#parentId").val(treeNode.pId);
+				$("#id").val(treeNode.id);
+				$("#parentId").val(treeNode.parentId);
 				$.table.search();
 			}
 		}

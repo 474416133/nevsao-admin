@@ -27,7 +27,7 @@
 		        <a class="btn btn-success" onclick="$.operate.add(0)" shiro:hasPermission="system:menu:add">
                     <i class="fa fa-plus"></i> 新增
                 </a>
-                <a class="btn btn-primary" onclick="$.operate.editTree()" shiro:hasPermission="system:menu:edit">
+                <a class="btn btn-primary" onclick="$.operate.editTree()" shiro:hasPermission="system:menu:update">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
                 <a class="btn btn-info" id="expandAllBtn">
@@ -43,8 +43,8 @@
 	<div th:include="include :: footer"></div>
 	<script th:inline="javascript">
 		var addFlag = [[${@permission.hasPermi('system:menu:add')}]];
-		var editFlag = [[${@permission.hasPermi('system:menu:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('system:menu:remove')}]];
+		var editFlag = [[${@permission.hasPermi('system:menu:update')}]];
+		var removeFlag = [[${@permission.hasPermi('system:menu:delete')}]];
 		var prefix = ctx + "system/menu";
 
 		$(function() {

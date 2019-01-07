@@ -26,13 +26,13 @@
 			</div>
 			
 	       <div class="btn-group-sm hidden-xs" id="toolbar" role="group">
-	            <a class="btn btn-success" th:onclick="$.operate.add(100)" shiro:hasPermission="system:dict:add">
+	            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:dict:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-	            <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:dict:edit">
+	            <a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="system:dict:update">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-				<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:dict:remove">
+				<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:dict:delete">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
 		        <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:dict:export">
@@ -48,8 +48,8 @@
 	<div th:include="include :: footer"></div>
 	<script th:src="@{/ajax/libs/select/select2.js}"></script>
 	<script th:inline="javascript">
-		var editFlag = [[${@permission.hasPermi('system:dict:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('system:dict:remove')}]];
+		var editFlag = [[${@permission.hasPermi('system:dict:update')}]];
+		var removeFlag = [[${@permission.hasPermi('system:dict:delete')}]];
 		var prefix = ctx + "system/dict/data";
 
 		$(function() {

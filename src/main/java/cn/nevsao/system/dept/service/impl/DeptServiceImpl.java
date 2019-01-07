@@ -37,8 +37,8 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 		List<Dept> depts = this.findAllDepts(new Dept());
 		depts.forEach(dept -> {
 			Tree<Dept> tree = new Tree<>();
-			tree.setId(dept.getId().toString());
-			tree.setParentId(dept.getParentId().toString());
+			tree.setId(dept.getId());
+			tree.setParentId(dept.getParentId());
 			tree.setText(dept.getName());
 			trees.add(tree);
 		});
