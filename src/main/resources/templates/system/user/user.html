@@ -37,10 +37,10 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								登录名称：<input type="text" name="loginName"/>
+								登录名称：<input type="text" name="username"/>
 							</li>
 							<li>
-								手机号码：<input type="text" name="phonenumber"/>
+								手机号码：<input type="text" name="mobile"/>
 							</li>
 
 							<li class="select-time">
@@ -108,13 +108,9 @@
 		        columns: [{
 		            checkbox: true
 		        },
-		        {
-		            field: 'id',
-		            title: '用户ID'
-		        },
 
 		        {
-		            field: 'userName',
+		            field: 'username',
 		            title: '用户名称'
 		        },
 		        {
@@ -131,14 +127,28 @@
 		            title: '手机'
 		        },
 		        {
+		            field: 'gender',
+		            title: '性别',
+		            formatter: function(value, row, index) {
+		            	if (value == '1'){
+		            		return "男";
+		            	}else if (value == '2') {
+		            		return "女";
+		            	}else{
+		            		return "保密";
+		            	}
+		            	//return $.table.selectDictLabel(datas, value);
+		            }
+		        },
+		        {
 		            field: 'isActive',
 		            title: '状态',
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		            	if (value == 1){
-		            		value = '激活';
+		            		return "激活";
 		            	}else {
-		            		value = "冻结";
+		            		return "冻结";
 		            	}
 		            	//return $.table.selectDictLabel(datas, value);
 		            }

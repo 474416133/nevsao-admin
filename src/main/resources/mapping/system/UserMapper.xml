@@ -12,7 +12,7 @@
 	  <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="is_active" jdbcType="INTEGER" property="is_active" />
+    <result column="is_active" jdbcType="INTEGER" property="isActive" />
     
     <result column="last_login_time"  property="lastLoginTime" />
     <result column="gender" jdbcType="VARCHAR" property="gender" />
@@ -21,28 +21,32 @@
     <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	  <result column="last_login_ip" jdbcType="INTEGER" property="lastLoginIp" />
   </resultMap>
-  
+
+
   <select id="findUserWithDept" resultMap="BaseResultMap" parameterType="User">
   		select u.id, u.username, u.email, u.mobile, u.is_active, u.create_time,
-  		u.gender, d.dept_name from sys_user u 
+  		u.gender, d.name as dept_name from sys_user u
   		left join sys_dept d on u.dept_id = d.id
   		where 1=1
-  		<if test="username != null and.sername != ''">
-        	and u.username = #{username}
+  		<if test="username != null and username != ''">
+        	and position(#{username} in username)
 	    </if>
+	    <if test="mobile != null and mobile != ''">
+			and position(#{mobile} in mobile)
+		</if>
 	    <if test="deptId != null and deptId != ''">
 	        and d.id = #{deptId}
 	    </if>
   		<if test="gender != null and gender != ''">
 	       and u.gender = #{gender}
 	    </if>
-	    <if test="is_active != null ">
-	        and u.is_active = #{is_active}
+	    <if test="isActive != null ">
+	        and u.is_active = #{isActive}
 	    </if>
   		order by u.id
   </select>
   
-    
+
   <select id="findUserWithRole" resultType="UserWithRole">
 		select u.id, u.username, u.dept_id, u.email, u.mobile,
 		u.is_active, u.gender, ur.role_id from sys_user u

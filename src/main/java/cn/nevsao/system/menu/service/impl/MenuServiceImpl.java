@@ -59,7 +59,7 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
             Example example = new Example(Menu.class);
             Criteria criteria = example.createCriteria();
             if (StringUtils.isNotBlank(menu.getName())) {
-                criteria.andCondition("name=", menu.getName());
+                criteria.andLike("name", "%"+menu.getName()+"%");
             }
             if (StringUtils.isNotBlank(menu.getMenuType())) {
                 criteria.andCondition("menu_type=", menu.getMenuType());

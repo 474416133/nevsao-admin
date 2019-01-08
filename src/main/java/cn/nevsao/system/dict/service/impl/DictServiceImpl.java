@@ -39,7 +39,7 @@ public class DictServiceImpl extends ExtraService<Dict> implements DictService {
                 criteria.andCondition("dict_key=", dict.getDictKey());
             }
             if (StringUtils.isNotBlank(dict.getDictValue())) {
-                criteria.andCondition("dict_value=", dict.getDictValue());
+                criteria.andLike("dict_value", "%"+dict.getDictValue()+"%");
             }
             if (StringUtils.isNotBlank(dict.getTableName())) {
                 criteria.andCondition("table_name=", dict.getTableName());

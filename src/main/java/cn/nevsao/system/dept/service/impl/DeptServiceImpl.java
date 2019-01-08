@@ -47,21 +47,10 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 
 	@Override
 	public List<Dept> findAllDepts(Dept dept) {
-//		try {
-//			Example example = new Example(Dept.class);
-//			if (StringUtils.isNotBlank(dept.getName())) {
-//				example.createCriteria().andCondition("name=", dept.getName());
-//			}
-//			example.setOrderByClause("id");
-//			return this.findByExample(example);
-//		} catch (Exception e) {
-//			log.error("获取部门列表失败", e);
-//			return new ArrayList<>();
-//		}
 
 		Example example = new Example(Dept.class);
 		if (StringUtils.isNotBlank(dept.getName())) {
-			example.createCriteria().andCondition("name=", dept.getName());
+			example.createCriteria().andLike("name", "%"+dept.getName()+"%");
 		}
 		example.setOrderByClause("id");
 		return this.findByExample(example);

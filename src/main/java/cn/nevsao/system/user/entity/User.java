@@ -53,7 +53,7 @@ public class User extends BaseEntityExtra {
 
     @Column(name = "is_active")
     @ExportConfig(value = "状态", convert = "s:0=锁定,1=有效")
-    private int isActive = AccountActiveEnum.ACTIVE.getCode();
+    private Integer isActive = AccountActiveEnum.ACTIVE.getCode();
 
     @Column(name = "last_login_time")
     private Date lastLoginTime;

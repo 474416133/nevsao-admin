@@ -55,7 +55,7 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
         try {
             Example example = new Example(Role.class);
             if (StringUtils.isNotBlank(role.getName())) {
-                example.createCriteria().andCondition("name=", role.getName());
+                example.createCriteria().andLike("name", "%"+role.getName()+"%");
             }
             example.setOrderByClause("create_time");
             return this.findByExample(example);
