@@ -5,26 +5,21 @@
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-user-edit" th:object="${user}">
-			<input name="userId"  type="hidden"  th:field="*{userId}" />
+			<input name="id"  type="hidden"  th:field="*{id}" />
 			<input name="deptId"  type="hidden"  th:field="*{deptId}" id="treeId"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">登录名称：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" readonly="true" th:field="*{loginName}"/>
+					<input class="form-control" type="text" readonly="true" th:field="*{username}"/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">部门名称：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="deptName" onclick="selectDeptTree()" readonly="true" id="treeName" th:field="*{dept.deptName}">
+					<input class="form-control" type="text" name="deptName" onclick="selectDeptTree()" readonly="true" id="treeName" th:field="*{deptName}">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">用户名称：</label>
-				<div class="col-sm-8">
-					<input class="form-control" type="text" name="userName" id="userName" th:field="*{userName}">
-				</div>
-			</div>
+
 			<div class="form-group">
 				<label class="col-sm-3 control-label">邮箱：</label>
 				<div class="col-sm-8">
@@ -34,23 +29,25 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">手机：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="phonenumber" id="phonenumber" th:field="*{phonenumber}">
+					<input class="form-control" type="text" name="mobile" id="mobile" th:field="*{mobile}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">性别：</label>
 				<div class="col-sm-8">
-					<select id="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
-	                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{sex}"></option>
-	                </select>
+					<select id="sex" class="form-control m-b" >
+						<option value="0" selected="selected">保密</option>
+						<option value="1">男</option>
+						<option value="2">女</option>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">状态：</label>
 				<div class="col-sm-8">
 					<div class="onoffswitch">
-                         <input type="checkbox" th:checked="${user.status == '0' ? true : false}" class="onoffswitch-checkbox" id="status" name="status">
-                         <label class="onoffswitch-label" for="status">
+                         <input type="checkbox" th:checked="${user.isActive == '0' ? true : false}" class="onoffswitch-checkbox" id="isActive" name="isActive">
+                         <label class="onoffswitch-label" for="isActive">
                              <span class="onoffswitch-inner"></span>
                              <span class="onoffswitch-switch"></span>
                          </label>
@@ -58,10 +55,10 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">岗位：</label>
+				<label class="col-sm-3 control-label">职位：</label>
 				<div class="col-sm-8">
-					<select id="post" name="post" class="form-control select2-hidden-accessible" multiple="">
-						<option th:each="post:${posts}" th:value="${post.postId}" th:text="${post.postName}" th:selected="${post.flag}" th:disabled="${post.status == '1'}"></option>
+					<select id="title" name="title" class="form-control select2-hidden-accessible" multiple="">
+						<option th:each="dict:${titles}" th:value="${dict.dictKey}" th:text="${dict.dictValue}" th:selected="${dict.flag}" ></option>
 					</select>
 					
 				</div>
@@ -70,7 +67,7 @@
 				<label class="col-sm-3 control-label">角色：</label>
 				<div class="col-sm-8">
 					<label th:each="role:${roles}" class="check-box">
-						<input name="role" type="checkbox" th:value="${role.roleId}" th:text="${role.roleName}" th:checked="${role.flag}" th:disabled="${role.status == '1'}">
+						<input name="role" type="checkbox" th:value="${role.id}" th:text="${role.name}" th:checked="${role.flag}" >
 					</label>
 				</div>
 			</div>

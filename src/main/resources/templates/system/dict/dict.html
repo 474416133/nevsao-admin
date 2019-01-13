@@ -46,23 +46,26 @@
 		</div>
 	</div>
 	<div th:include="include :: footer"></div>
+	<!--
 	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	-->
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:dict:update')}]];
 		var removeFlag = [[${@permission.hasPermi('system:dict:delete')}]];
-		var prefix = ctx + "system/dict/data";
+		var prefix = ctx + "system/dict";
 
 		$(function() {
 			var options = {
 				url: prefix + "/list",
-				createUrl: prefix + "/add/{id}",
-				updateUrl: prefix + "/edit/{id}",
-				removeUrl: prefix + "/remove",
+				createUrl: prefix + "/add",
+				updateUrl: prefix + "/update/{id}",
+				removeUrl: prefix + "/delete",
 				exportUrl: prefix + "/export",
 				queryParams: queryParams,
 				sortName: "createTime",
 		        sortOrder: "desc",
 				modalName: "数据",
+				uniqueId: "id",
 				search: false,
 		        showExport: false,
 				columns: [{
@@ -78,7 +81,7 @@
 						title: '字典键值'
 					},
 					{
-						field: 'dictKeyRank',
+						field: 'dictKeySeq',
 						title: '字典排序'
 					},
 
@@ -92,8 +95,8 @@
 						align: 'center',
 						formatter: function(value, row, index) {
 							var actions = [];
-							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.dictCode + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.dictCode + '\')"><i class="fa fa-remove"></i>删除</a>');
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
 							return actions.join('');
 						}
 					}]

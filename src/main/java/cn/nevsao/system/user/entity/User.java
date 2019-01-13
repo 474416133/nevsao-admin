@@ -3,6 +3,8 @@ package cn.nevsao.system.user.entity;
 import cn.nevsao.common.annotation.ExportConfig;
 import cn.nevsao.common.enu.AccountActiveEnum;
 import cn.nevsao.common.mvc.entity.BaseEntityExtra;
+import cn.nevsao.system.dict.entity.Dict;
+import cn.nevsao.system.role.entity.Role;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -77,15 +79,6 @@ public class User extends BaseEntityExtra {
     @Column(name = "title")
     private String title;
 
-    @Transient
-    private List<String> titles;
-
-    @Transient
-    private String roleName;
-
-    @Transient
-    private String genderRemark;
-
 
     @Override
     public String toString() {
@@ -105,7 +98,7 @@ public class User extends BaseEntityExtra {
                 ", themeUsing='" + themeUsing + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", remark='" + remark + '\'' +
-                ", roleName='" + roleName + '\'' +
+                ""   +
                 '}';
     }
 

@@ -12,6 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,6 +26,7 @@ public class DeptController {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
+    private final static String PATH_PREFIX = "system/dept/";
     @Autowired
     private DeptService deptService;
 
@@ -30,7 +34,12 @@ public class DeptController {
     @RequestMapping("dept")
     @RequiresPermissions("system:dept:list")
     public String index() {
-        return "system/dept/dept";
+        return PATH_PREFIX + "dept";
+    }
+
+    @GetMapping("dept/tree/view")
+    public String deptTreeView( ModelMap mmap) {
+        return PATH_PREFIX + "tree";
     }
 
     @RequestMapping("dept/tree")
@@ -84,7 +93,14 @@ public class DeptController {
         return result == null;
     }
 
-    @Log("新增部门 ")
+
+    @RequiresPermissions("system:dept:add")
+    @GetMapping("dept/add")
+    public String addDeptView( ModelMap mmap) {
+        return PATH_PREFIX + "add";
+    }
+
+    @Log("新增部门")
     @RequiresPermissions("system:dept:add")
     @RequestMapping("dept/add")
     @ResponseBody
@@ -99,10 +115,16 @@ public class DeptController {
     @RequestMapping("dept/delete")
     @ResponseBody
     public ResponseBo deleteDepts(String ids) {
-
-
         this.deptService.delete(ids);
         return ResponseBo.ok("删除部门成功！");
+    }
+
+    @RequiresPermissions("system:dept:update")
+    @GetMapping("dept/update/{id}")
+    public String updateDeptView(@PathVariable("id") String id, ModelMap mmap) {
+        Dept dept = deptService.getWithParent(id);
+        mmap.put("dept", dept);
+        return PATH_PREFIX + "update";
     }
 
     @Log("修改部门 ")
@@ -115,4 +137,7 @@ public class DeptController {
         this.deptService.update(dept);
         return ResponseBo.ok("修改部门成功！");
     }
+
+
+
 }

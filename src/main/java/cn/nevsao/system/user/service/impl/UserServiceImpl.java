@@ -5,6 +5,8 @@ import cn.nevsao.common.enu.GenderEnum;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.util.MD5Utils;
+import cn.nevsao.system.dept.entity.Dept;
+import cn.nevsao.system.dept.service.DeptService;
 import cn.nevsao.system.user.entity.User;
 import cn.nevsao.system.user.entity.UserRole;
 import cn.nevsao.system.user.entity.UserWithRole;
@@ -13,6 +15,7 @@ import cn.nevsao.system.user.mapper.UserRoleMapper;
 import cn.nevsao.system.user.service.UserRoleService;
 import cn.nevsao.system.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,9 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private DeptService deptService;
 
     @Override
     public MyMapper getMapper() {
@@ -155,7 +161,7 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
     }
 
     @Override
-    public UserWithRole getWithRole(Long userId) {
+    public UserWithRole getWithRole(String userId) {
         List<UserWithRole> list = this.userMapper.findUserWithRole(userId);
         List<Long> roleList = list.stream().map(UserWithRole::getRoleId).collect(Collectors.toList());
         if (list.isEmpty()) {
@@ -177,6 +183,16 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
         user.setUsername(null);
         user.setPassword(null);
         this.updateExcludeNull(user);
+    }
+
+    @Override
+    public User getWithDept(String id) {
+        User user = get(id);
+        if (StringUtils.isNotBlank(user.getDeptId())){
+            Dept dept = deptService.get(user.getDeptId());
+            user.setDeptName(dept.getName());
+        }
+        return user;
     }
 
 }

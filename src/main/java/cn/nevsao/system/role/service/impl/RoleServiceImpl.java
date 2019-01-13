@@ -2,6 +2,9 @@ package cn.nevsao.system.role.service.impl;
 
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
+import cn.nevsao.common.mvc.vo.Tree;
+import cn.nevsao.system.menu.entity.Menu;
+import cn.nevsao.system.menu.service.MenuService;
 import cn.nevsao.system.role.entity.Role;
 import cn.nevsao.system.role.entity.RoleMenu;
 import cn.nevsao.system.role.entity.RoleWithMenu;
@@ -18,9 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("roleService")
@@ -39,6 +40,9 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
 
     @Autowired
     private RoleMenuService roleMenuService;
+
+    @Autowired
+    private MenuService menuService;
 
     @Override
     public MyMapper getMapper() {
@@ -102,7 +106,7 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
     @Override
     public RoleWithMenu getRoleWithMenus(String roleId) {
         List<RoleWithMenu> list = this.roleMapper.findById(roleId);
-        List<Long> menuList = list.stream().map(RoleWithMenu::getMenuId).collect(Collectors.toList());
+        List<String> menuList = list.stream().map(RoleWithMenu::getMenuId).collect(Collectors.toList());
         if (list.isEmpty()) {
             return null;
         }
@@ -121,4 +125,19 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
         setRoleMenus(role, menuIds);
     }
 
+    @Override
+    public List<Menu> menuList(String roleId) {
+        List<Menu> menus = menuService.all();
+        final Set<String> roleMenuSet = new HashSet<>();
+        if (roleId != null) {
+            List<RoleWithMenu> roleMenus = this.roleMapper.findById(roleId);
+            roleMenuSet.addAll(roleMenus.stream().map(RoleWithMenu::getMenuId).collect(Collectors.toSet()));
+        }
+        menus.forEach(menu -> {
+            if (roleMenuSet.contains(menu.getId())){
+                menu.setChecked(true);
+            }
+        });
+         return menus;
+    }
 }

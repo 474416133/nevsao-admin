@@ -9,23 +9,23 @@ public class RoleWithMenu extends Role {
 
     private static final long serialVersionUID = 2013847071068967187L;
 
-    private Long menuId;
+    private String menuId;
 
-    private List<Long> menuIds;
+    private List<String> menuIds;
 
-    public Long getMenuId() {
+    public String getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Long menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
 
-    public List<Long> getMenuIds() {
+    public List<String> getMenuIds() {
         return menuIds;
     }
 
-    public void setMenuIds(List<Long> menuIds) {
+    public void setMenuIds(List<String> menuIds) {
         this.menuIds = menuIds;
     }
 

@@ -66,6 +66,16 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 	}
 
 	@Override
+	public Dept getWithParent(String id) {
+		Dept dept = get(id);
+		if (dept != null && StringUtils.isNotBlank(dept.getParentId())){
+			Dept parent = get(dept.getParentId());
+			dept.setParent(parent);
+		}
+		return dept;
+	}
+
+	@Override
 	@Transactional
 	public int delete(String deptIds) {
 		List<String> list = Arrays.asList(deptIds.split(","));

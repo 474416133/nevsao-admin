@@ -13,7 +13,7 @@ import java.util.List;
 @CacheConfig(cacheNames = "UserService")
 public interface UserService extends IService<User> {
 
-    UserWithRole getWithRole(Long userId);
+    UserWithRole getWithRole(String userId);
 
     User getByName(String userName);
 
@@ -41,4 +41,6 @@ public interface UserService extends IService<User> {
     User getUserProfile(User user);
 
     void updateUserProfile(User user);
+
+    User getWithDept(String id);
 }

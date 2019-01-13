@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "sys_dict")
 @Data
@@ -29,8 +30,14 @@ public class Dict extends BaseEntityExtra {
     @ExportConfig(value = "列名")
     private String columnName;
 
-    @Column(name = "dict_key_rank")
-    private Integer dictKeyRank;
+    @Column(name = "dict_key_seq")
+    private Integer dictKeySeq;
+
+    @Column(name = "remark")
+    private String remark;
+
+    @Transient
+    private String flag;
 
 
 }

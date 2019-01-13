@@ -611,7 +611,12 @@
         	    var setting = {
         	    	check: options.check,
         	        view: { selectedMulti: false, nameIsHTML: true },
-        	        data: { key: { title: "title" }, simpleData: { enable: true } },
+        	        data: { key: { title: "title" },
+        	                simpleData: { enable: true,
+        	                              idKey: $.common.isEmpty(options.idKey) ? "id" : options.idKey,
+        	                              pIdKey: $.common.isEmpty(options.pIdKey) ? "pId" : options.pIdKey
+        	                              }
+        	                            },
         	        callback: { onClick: options.onClick }
         	    };
         	    $.get(options.url, function(data) {

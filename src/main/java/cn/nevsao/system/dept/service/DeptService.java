@@ -14,4 +14,6 @@ public interface DeptService extends IService<Dept> {
 
     Dept getByName(String deptName);
 
+    Dept getWithParent(String id);
+
 }

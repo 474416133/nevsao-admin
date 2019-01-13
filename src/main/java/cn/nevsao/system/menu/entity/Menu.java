@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "sys_menu")
 @Data
@@ -39,6 +40,9 @@ public class Menu extends BaseEntityExtra {
 
     @Column(name = "order_seq")
     private Long orderSeq;
+
+    @Transient
+    private boolean checked = false;
 
 
 }

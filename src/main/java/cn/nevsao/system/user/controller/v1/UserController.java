@@ -10,6 +10,10 @@ import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.util.FileUtil;
 import cn.nevsao.common.util.MD5Utils;
+import cn.nevsao.system.dict.entity.Dict;
+import cn.nevsao.system.dict.service.DictService;
+import cn.nevsao.system.role.entity.Role;
+import cn.nevsao.system.role.service.RoleService;
 import cn.nevsao.system.user.entity.User;
 import cn.nevsao.system.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +23,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,16 +37,24 @@ import java.util.Map;
 public class UserController extends BaseController {
 
     private static final String ON = "on";
+    private static final String PATH_PREFIX = "system/user/";
+
     private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private DictService dictService;
+
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping("user")
     @RequiresPermissions("system:user:list")
     public String index(Model model) {
         User user = super.getCurrentUser();
         model.addAttribute("user", user);
-        return "system/user/user";
+        return PATH_PREFIX + "user";
     }
 
     @RequestMapping("user/checkUserName")
@@ -105,9 +120,21 @@ public class UserController extends BaseController {
     @RequestMapping("user/theme")
     @ResponseBody
     public ResponseBo updateTheme(User user) {
-
         this.userService.updateTheme(user.getThemeUsing(), user.getUsername());
         return ResponseBo.ok();
+    }
+
+    @RequiresPermissions("system:user:add")
+    @GetMapping("user/add")
+    public String addUserView(ModelMap mmap) {
+        Dict paramObj = new Dict();
+        paramObj.setColumnName("title");
+        paramObj.setTableName("sys_user");
+        List<Dict> titles = dictService.all(paramObj, null);
+        mmap.put("titles", titles);
+        List<Role> roles = roleService.all();
+        mmap.put("roles", roles);
+        return PATH_PREFIX + "add";
     }
 
     @Log("新增用户")
@@ -122,6 +149,25 @@ public class UserController extends BaseController {
         }
         this.userService.insert(user, roles);
         return ResponseBo.ok("新增用户成功！");
+    }
+
+    @RequiresPermissions("system:user:update")
+    @RequestMapping("user/update/{id}")
+    public String updateUserView(@PathVariable("id") String id, ModelMap mmap) {
+
+        User user = userService.getWithDept(id);
+        mmap.put("user", user);
+
+        Dict paramObj = new Dict();
+        paramObj.setColumnName("title");
+        paramObj.setTableName("sys_user");
+        List<Dict> titles = dictService.all(paramObj, null);
+        mmap.put("titles", titles);
+
+        List<Role> roles = roleService.all();
+        mmap.put("roles", roles);
+
+        return  PATH_PREFIX + "update";
     }
 
     @Log("修改用户")
@@ -168,7 +214,7 @@ public class UserController extends BaseController {
     public String profileIndex(Model model) {
         User user = super.getCurrentUser();
         user = this.userService.getUserProfile(user);
-        user.setGenderRemark(GenderEnum.getByCode(user.getGender()).getRemark());
+        //user.setGenderRemark(GenderEnum.getByCode(user.getGender()).getRemark());
         model.addAttribute("user", user);
         return "system/user/profile";
     }

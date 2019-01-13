@@ -31,5 +31,10 @@ public class Dept extends BaseEntityExtra {
     @Transient
     private User manager;
 
+    @Transient
+    private Dept parent;
+
+
+
 
 }

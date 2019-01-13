@@ -8,8 +8,8 @@ body{height:auto;font-family: "Microsoft YaHei";}
 button{font-family: "SimSun","Helvetica Neue",Helvetica,Arial;}
 </style>
 <body class="hold-transition box box-main">
-	<input id="treeId"   name="treeId"    type="hidden" th:value="${dept.deptId}"/>
-	<input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>
+	<input id="treeId"   name="treeId"    type="hidden" />
+	<input id="treeName" name="treeName"  type="hidden" />
 	<div class="wrapper"><div class="treeShowHideButton" onclick="$.tree.toggleSearch();">
 		<label id="btnShow" title="显示搜索" style="display:none;">︾</label>
 		<label id="btnHide" title="隐藏搜索">︽</label>
@@ -28,11 +28,13 @@ button{font-family: "SimSun","Helvetica Neue",Helvetica,Arial;}
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 	<script th:inline="javascript">
 		$(function() {
-			var url = ctx + "system/dept/treeData";
+			var url = ctx + "system/dept/list";
 			var options = {
 		        url: url,
 		        expandLevel: 2,
-		        onClick : zOnClick
+		        onClick : zOnClick,
+		        idKey: "id",
+		        pIdKey: "parentId"
 		    };
 			$.tree.init(options);
 		});

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "sys_role")
 @Data
@@ -20,6 +21,9 @@ public class Role extends BaseEntityExtra {
     @Column(name = "remark")
     @ExportConfig(value = "描述")
     private String remark;
+
+    @Transient
+    private String flag;
 
 
 }

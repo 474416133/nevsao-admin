@@ -5,23 +5,23 @@
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-dept-add">
-			<input id="treeId" name="parentId" type="hidden" th:value="${dept.deptId}"   />
+			<input id="treeId" name="parentId" type="hidden"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">上级部门：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" onclick="selectDeptTree()" id="treeName" readonly="true" th:value="${dept.deptName}"/>
+					<input class="form-control" type="text" onclick="selectDeptTree()" id="treeName" readonly="true" />
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">部门名称：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="deptName" id="deptName">
+					<input class="form-control" type="text" name="name" id="name">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">显示排序：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="orderNum">
+					<input class="form-control" type="text" name="orderSeq">
 				</div>
 			</div>
 			<div class="form-group">
@@ -42,15 +42,7 @@
 					<input class="form-control" type="text" name="email">
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">部门状态：</label>
-				<div class="col-sm-8">
-				    <div class="radio-box" th:each="dict : ${@dict.getType('sys_normal_disable')}">
-						<input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:checked="${dict.isDefault == 'Y' ? true : false}">
-						<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
-					</div>
-				</div>
-			</div>
+
 		</form>
 	</div>
 	<div th:include="include::footer"></div>
@@ -59,18 +51,18 @@
 		
 		$("#form-dept-add").validate({
 			rules:{
-				deptName:{
+				name:{
 					required:true,
 					remote: {
-		                url: prefix + "/checkDeptNameUnique",
+		                url: prefix + "/checkDeptName",
 		                type: "post",
 		                dataType: "json",
 		                data: {
 		                	"parentId": function() {
 		                		return $("input[name='parentId']").val();
 		                    },
-		                	"deptName" : function() {
-		                        return $.common.trim($("#deptName").val());
+		                	"name" : function() {
+		                        return $.common.trim($("#name").val());
 		                    }
 		                },
 		                dataFilter: function(data, type) {
@@ -78,19 +70,13 @@
 		                }
 		            }
 				},
-				orderNum:{
+				orderSeq:{
 					required:true,
 					digits:true
 				},
-				email:{
-                    email:true,
-        		},
-        		phone:{
-        			isPhone:true,
-        		},
 			},
 			messages: {
-		        "deptName": {
+		        "name": {
 		            remote: "部门已经存在"
 		        }
 		    }
@@ -107,7 +93,7 @@
 			var options = {
 				title: '部门选择',
 				width: "380",
-				url: prefix + "/selectDeptTree/" + $("#treeId").val(),
+				url: prefix + "/tree/view" + $("#treeId").val(),
 				callBack: doSubmit
 			};
 			$.modal.openOptions(options);
