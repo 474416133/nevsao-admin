@@ -1,5 +1,6 @@
 package cn.nevsao.common.shiro;
 
+import cn.nevsao.common.enu.BitEnum;
 import cn.nevsao.system.menu.entity.Menu;
 import cn.nevsao.system.role.entity.Role;
 import cn.nevsao.system.user.entity.User;
@@ -76,12 +77,12 @@ public class ShiroRealm extends AuthorizingRealm {
         // 通过用户名到数据库查询用户信息
         User user = this.userService.getByName(userName);
 
-        if (user == null)
-            throw new UnknownAccountException("用户名或密码错误！");
-        if (!password.equals(user.getPassword()))
-            throw new IncorrectCredentialsException("用户名或密码错误！");
-        if (User.STATUS_LOCK.equals(user.getIsActive()))
-            throw new LockedAccountException("账号已被锁定,请联系管理员！");
+        if (user == null){
+            throw new UnknownAccountException("用户名或密码错误！");}
+        if (!password.equals(user.getPassword())){
+            throw new IncorrectCredentialsException("用户名或密码错误！");}
+        if (BitEnum.ACTIVE.getCode() != user.getIsActive()){
+            throw new LockedAccountException("账号已被锁定,请联系管理员！");}
         return new SimpleAuthenticationInfo(user, password, getName());
     }
 

@@ -11,10 +11,8 @@ import javax.persistence.Transient;
 @Table(name = "sys_menu")
 @Data
 public class Menu extends BaseEntityExtra {
-
-    public static final String TYPE_MENU = "0";
-    public static final String TYPE_BUTTON = "1";
     private static final long serialVersionUID = 7187628714679791771L;
+
     @Column(name = "parent_id")
     private String parentId;
 
@@ -43,6 +41,9 @@ public class Menu extends BaseEntityExtra {
 
     @Transient
     private boolean checked = false;
+
+    @Transient
+    private Menu parent;
 
 
 }

@@ -3,6 +3,7 @@ package cn.nevsao.system.user.service.impl;
 import cn.nevsao.common.annotation.Log;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.BaseService;
+import cn.nevsao.common.util.AddressUtils;
 import cn.nevsao.system.user.entity.UserLog;
 import cn.nevsao.system.user.mapper.UserLogMapper;
 import cn.nevsao.system.user.service.UserLogService;
@@ -68,20 +69,20 @@ public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogS
 
 
     @Override
-    public void saveLog(ProceedingJoinPoint joinPoint, UserLog log) throws JsonProcessingException {
+    public void saveLog(ProceedingJoinPoint joinPoint, UserLog userLog) throws JsonProcessingException {
 
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Log logAnnotation = method.getAnnotation(Log.class);
         if (logAnnotation != null) {
             // 注解上的描述
-            log.setOperation(logAnnotation.value());
+            userLog.setOperation(logAnnotation.value());
         }
         // 请求的类名
         String className = joinPoint.getTarget().getClass().getName();
         // 请求的方法名
         String methodName = signature.getName();
-        log.setMethod(className + "." + methodName + "()");
+        userLog.setMethod(className + "." + methodName + "()");
         // 请求的方法参数值
         Object[] args = joinPoint.getArgs();
         // 请求的方法参数名称
@@ -90,12 +91,12 @@ public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogS
         if (args != null && paramNames != null) {
             StringBuilder params = new StringBuilder();
             params = handleParams(params, args, Arrays.asList(paramNames));
-            log.setParams(params.toString());
+            userLog.setParams(params.toString());
         }
-        log.setCreateTime(new Date());
-        //log.setLocation(AddressUtils.getCityInfo(log.getIp()));
+        userLog.setCreateTime(new Date());
+        //userLog.setLocation(AddressUtils.getCityInfo(userLog.getIp()));
         // 保存系统日志
-        insert(log);
+        insert(userLog);
     }
 
     @SuppressWarnings("unchecked")

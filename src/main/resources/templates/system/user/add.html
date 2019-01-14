@@ -74,10 +74,11 @@
 	</div>
 	<div th:include="include::footer"></div>
 	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
 	<script>
         $("#form-user-add").validate({
         	rules:{
-        		loginName:{
+        		username:{
         			required:true,
         			minlength: 2,
         			maxlength: 20,
@@ -87,7 +88,7 @@
                         dataType: "json",
                         data: {
                         	name : function() {
-                                return $.common.trim($("#loginName").val());
+                                return $.common.trim($("#username").val());
                             }
                         },
                         dataFilter: function(data, type) {
@@ -123,7 +124,7 @@
                         }
                     }
         		},
-        		phonenumber:{
+        		mobile:{
         			required:true,
         			isPhone:true,
                     remote: {
@@ -142,13 +143,13 @@
         		},
         	},
         	messages: {
-                "loginName": {
+                "username": {
                     remote: "用户已经存在"
                 },
         		"email": {
                     remote: "Email已经存在"
                 },
-        		"phonenumber":{
+        		"mobile":{
                 	remote: "手机号码已经存在"
         		}
             }
@@ -163,15 +164,14 @@
         function add() {
         	var userId = $("input[name='userId']").val();
         	var deptId = $("input[name='deptId']").val();
-        	var loginName = $("input[name='loginName']").val();
-        	var userName = $("input[name='userName']").val();
+        	var username = $("input[name='username']").val();
+        	//var userName = $("input[name='userName']").val();
         	var password = $("input[name='password']").val();
         	var email = $("input[name='email']").val();
-        	var phonenumber = $("input[name='phonenumber']").val();
-        	var sex = $("#sex option:selected").val();
-        	var status = $("input[name='status']").is(':checked') == true ? 0 : 1;
+        	var mobile = $("input[name='mobile']").val();
+        	var gender = $("#gender option:selected").val();
+        	var isActive = $("input[name='isActive']").is(':checked') == true ? 0 : 1;
         	var roleIds = $.form.selectCheckeds("role");
-        	var postIds = $.form.selectSelects("post");
         	$.ajax({
         		cache : true,
         		type : "POST",
@@ -179,15 +179,13 @@
         		data : {
         			"userId": userId,
         			"deptId": deptId,
-        			"loginName": loginName,
-        			"userName": userName,
+        			"username": username,
         			"password": password,
         			"email": email,
-        			"phonenumber": phonenumber,
-        			"sex": sex,
-        			"status": status,
-        			"roleIds": roleIds,
-        			"postIds": postIds
+        			"mobile": mobile,
+        			"gender": gender,
+        			"isActive": isActive,
+        			"roleIds": roleIds
         		},
         		async : false,
         		error : function(request) {
@@ -198,30 +196,6 @@
         		}
         	});
         }
-
-        /*用户管理-新增-选择部门树*/
-        function selectDeptTree() {
-        	var treeId = $("#treeId").val();
-        	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        	var url = ctx + "system/dept/selectDeptTree/" + deptId;
-			var options = {
-				title: '选择部门',
-				width: "380",
-				url: ctx + "system/dept/selectDeptTree/" + deptId,
-				callBack: doSubmit
-			};
-			$.modal.openOptions(options);
-		}
-		
-		function doSubmit(index, layero){
-			var tree = layero.find("iframe")[0].contentWindow.$._tree;
-			if ($.tree.notAllowParents(tree)) {
-				var body = layer.getChildFrame('body', index);
-    			$("#treeId").val(body.find('#treeId').val());
-    			$("#treeName").val(body.find('#treeName').val());
-    			layer.close(index);
-			}
-		}
     </script>
 </body>
 </html>

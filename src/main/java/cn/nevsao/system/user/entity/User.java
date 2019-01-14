@@ -1,36 +1,28 @@
 package cn.nevsao.system.user.entity;
 
+import cn.nevsao.common.annotation.Dict;
 import cn.nevsao.common.annotation.ExportConfig;
-import cn.nevsao.common.enu.AccountActiveEnum;
+import cn.nevsao.common.enu.BitEnum;
 import cn.nevsao.common.mvc.entity.BaseEntityExtra;
-import cn.nevsao.system.dict.entity.Dict;
-import cn.nevsao.system.role.entity.Role;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
-import java.util.List;
 
 @Table(name = "sys_user")
 @Data
 public class User extends BaseEntityExtra {
+    private static final long serialVersionUID = -4852732617765810959L;
 
     /**
-     * 账户状态
+     * 后台主题
      */
-    public static final String STATUS_VALID = "1";
-    public static final String STATUS_LOCK = "0";
     public static final String DEFAULT_THEME = "green";
     public static final String DEFAULT_AVATAR = "default.jpg";
-    /**
-     * 性别
-     */
-    public static final String SEX_MALE = "0";
-    public static final String SEX_FEMALE = "1";
-    public static final String SEX_UNKNOW = "2";
-    private static final long serialVersionUID = -4852732617765810959L;
+
+
     @Column(name = "username")
     @ExportConfig(value = "用户名")
     private String username;
@@ -55,7 +47,7 @@ public class User extends BaseEntityExtra {
 
     @Column(name = "is_active")
     @ExportConfig(value = "状态", convert = "s:0=锁定,1=有效")
-    private Integer isActive = AccountActiveEnum.ACTIVE.getCode();
+    private Integer isActive = BitEnum.ACTIVE.getCode();
 
     @Column(name = "last_login_time")
     private Date lastLoginTime;
@@ -76,6 +68,7 @@ public class User extends BaseEntityExtra {
     @Column(name = "last_login_ip")
     private Long lastLoginIp;
 
+    @Dict
     @Column(name = "title")
     private String title;
 

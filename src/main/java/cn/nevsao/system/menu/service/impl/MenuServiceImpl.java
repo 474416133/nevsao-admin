@@ -1,5 +1,6 @@
 package cn.nevsao.system.menu.service.impl;
 
+import cn.nevsao.common.enu.MenuTypeEnum;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.mvc.vo.Tree;
@@ -130,7 +131,7 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
     @Transactional
     public int insert(Menu menu) {
         menu.setCreateTime(new Date());
-        if (Menu.TYPE_BUTTON.equals(menu.getMenuType())) {
+        if (MenuTypeEnum.BUTTON.getCode().equals(menu.getMenuType())) {
             menu.setUrl(null);
             menu.setIcon(null);
         }
@@ -173,11 +174,10 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
 
     }
 
-
     @Override
     @Transactional
     public int update(Menu menu) {
-        if (Menu.TYPE_BUTTON.equals(menu.getMenuType())) {
+        if (MenuTypeEnum.BUTTON.getCode().equals(menu.getMenuType())) {
             menu.setUrl(null);
             menu.setIcon(null);
         }

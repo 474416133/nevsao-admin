@@ -7,6 +7,7 @@
 <link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
 
 <body class="gray-bg">
+	<!--
 	<div class="ui-layout-west">
 		<div class="main-content">
 			<div class="box box-main">
@@ -27,12 +28,12 @@
 			</div>
 		</div>
 	</div>
-	
+	-->
 	<div class="container-div ui-layout-center">
 		<div class="row">
 			<div class="col-sm-12 search-collapse">
 				<form id="user-form">
-					<input type="hidden" id="deptId" name="deptId">
+					<input type="hidden" id="treeId" name="deptId" >
 	                <input type="hidden" id="parentId" name="parentId">
 					<div class="select-list">
 						<ul>
@@ -48,6 +49,9 @@
 								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
 								<span>-</span>
 								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								部门： <input class="form-control" type="text" name="deptName" onclick="selectDeptTree()" readonly="true" id="treeName">
 							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -81,6 +85,7 @@
 	<div th:include="include :: footer"></div>
 	<script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:user:update')}]];
 		var removeFlag = [[${@permission.hasPermi('system:user:delete')}]];
@@ -90,7 +95,7 @@
 		$(function() {
 			$('body').layout({ west__size: 185 });
 			queryUserList();
-			queryDeptTree();
+			//queryDeptTree();
 		});
 
 		function queryUserList() {
@@ -171,47 +176,6 @@
 		        }]
 		    };
 		    $.table.init(options);
-		}
-		
-		function queryDeptTree()
-		{
-			var url = ctx + "system/dept/list";
-			var options = {
-		        url: url,
-		        expandLevel: 2,
-		        onClick : zOnClick,
-		        idKey: "id",
-		        pIdKey: "parentId"
-		    };
-			$.tree.init(options);
-			
-			function zOnClick(event, treeId, treeNode) {
-				$("#id").val(treeNode.id);
-				$("#parentId").val(treeNode.parentId);
-				$.table.search();
-			}
-		}
-		
-		$('#btnExpand').click(function() {
-			$._tree.expandAll(true);
-		    $(this).hide();
-		    $('#btnCollapse').show();
-		});
-		
-		$('#btnCollapse').click(function() {
-			$._tree.expandAll(false);
-		    $(this).hide();
-		    $('#btnExpand').show();
-		});
-		
-		$('#btnRefresh').click(function() {
-			queryDeptTree();
-		});
-
-		/*用户管理-部门*/
-		function dept() {
-			var url = ctx + "system/dept";
-			createMenuItem(url, "部门管理");
 		}
 
 		/*用户管理-重置密码*/

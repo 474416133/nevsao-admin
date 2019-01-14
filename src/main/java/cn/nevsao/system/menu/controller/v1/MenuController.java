@@ -1,6 +1,7 @@
 package cn.nevsao.system.menu.controller.v1;
 
 import cn.nevsao.common.annotation.Log;
+import cn.nevsao.common.enu.MenuTypeEnum;
 import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.mvc.controller.BaseController;
@@ -13,9 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "system/")
 public class MenuController extends BaseController {
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final String PATH_PREFIX = "system/menu/";
 
     @Autowired
     private MenuService menuService;
@@ -34,7 +34,7 @@ public class MenuController extends BaseController {
     @RequestMapping("menu")
     @RequiresPermissions("system:menu:list")
     public String index() {
-        return "system/menu/menu";
+        return PATH_PREFIX + "menu";
     }
 
     @RequestMapping("menu/menu")
@@ -58,6 +58,11 @@ public class MenuController extends BaseController {
 
         Tree<Menu> tree = this.menuService.getMenuButtonTree();
         return ResponseBo.ok(tree);
+    }
+
+    @RequestMapping("menu/tree/view")
+    public String getMenuTreeVew() {
+        return PATH_PREFIX + "tree";
     }
 
     @RequestMapping("menu/tree")
@@ -130,13 +135,20 @@ public class MenuController extends BaseController {
         return result == null;
     }
 
+    @RequiresPermissions("system:menu:add")
+    @GetMapping("menu/add")
+    public String addMenuView(ModelMap mmap) {
+        return PATH_PREFIX + "add";
+    }
+
+
     @Log("新增菜单/按钮")
     @RequiresPermissions("system:menu:add")
     @RequestMapping("menu/add")
     @ResponseBody
     public ResponseBo addMenu(Menu menu) {
         String name;
-        if (Menu.TYPE_MENU.equals(menu.getMenuType())) {
+        if (MenuTypeEnum.MENU.getCode().equals(menu.getMenuType())) {
             name = "菜单";
         } else {
             name = "按钮";
@@ -164,13 +176,21 @@ public class MenuController extends BaseController {
         }
     }
 
+    @RequiresPermissions("system:menu:update")
+    @GetMapping("menu/update/{id}")
+    public String updateMenuView(@PathVariable("id") String id, ModelMap mmap) {
+        Menu menu = menuService.get(id);
+        mmap.put("menu", menu);
+        return PATH_PREFIX + "update";
+    }
+
     @Log("修改菜单/按钮")
     @RequiresPermissions("system:menu:update")
     @RequestMapping("menu/update")
     @ResponseBody
     public ResponseBo updateMenu(Menu menu) {
         String name;
-        if (Menu.TYPE_MENU.equals(menu.getMenuType())) {
+        if (MenuTypeEnum.MENU.getCode().equals(menu.getMenuType())) {
             name = "菜单";
         } else {
             name = "按钮";

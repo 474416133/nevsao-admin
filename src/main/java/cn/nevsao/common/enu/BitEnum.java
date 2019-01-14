@@ -3,12 +3,11 @@ package cn.nevsao.common.enu;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum AccountActiveEnum {
+public enum BitEnum {
     ACTIVE(1, "启用"),
     DISACTIVE(0, "禁用");
 
-    private static Map<Integer, AccountActiveEnum> codeMap = new HashMap<>();
-
+    private static Map<Integer, BitEnum> codeMap = new HashMap<>();
     static {
         codeMap.put(ACTIVE.getCode(), ACTIVE);
         codeMap.put(DISACTIVE.getCode(), DISACTIVE);
@@ -17,7 +16,7 @@ public enum AccountActiveEnum {
     private int code;
     private String remark;
 
-    AccountActiveEnum(int code, String remark) {
+    BitEnum(int code, String remark) {
         this.code = code;
         this.remark = remark;
     }
@@ -30,7 +29,7 @@ public enum AccountActiveEnum {
         return remark;
     }
 
-    public static AccountActiveEnum getByCode(int code) {
+    public static BitEnum getByCode(int code) {
         return codeMap.get(code);
     }
 }

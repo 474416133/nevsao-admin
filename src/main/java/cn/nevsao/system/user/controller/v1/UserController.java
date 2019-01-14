@@ -1,8 +1,7 @@
 package cn.nevsao.system.user.controller.v1;
 
 import cn.nevsao.common.annotation.Log;
-import cn.nevsao.common.enu.AccountActiveEnum;
-import cn.nevsao.common.enu.GenderEnum;
+import cn.nevsao.common.enu.BitEnum;
 import cn.nevsao.common.exception.BaseException;
 import cn.nevsao.common.exception.ResponseCodeEnum;
 import cn.nevsao.common.mvc.controller.BaseController;
@@ -16,6 +15,7 @@ import cn.nevsao.system.role.entity.Role;
 import cn.nevsao.system.role.service.RoleService;
 import cn.nevsao.system.user.entity.User;
 import cn.nevsao.system.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -34,12 +34,12 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "system/")
+@Slf4j
 public class UserController extends BaseController {
 
     private static final String ON = "on";
     private static final String PATH_PREFIX = "system/user/";
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserService userService;
 
@@ -143,7 +143,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResponseBo addUser(User user, String[] roles) {
 
-        AccountActiveEnum activeEnum = AccountActiveEnum.getByCode(user.getIsActive());
+        BitEnum activeEnum = BitEnum.getByCode(user.getIsActive());
         if (activeEnum == null) {
             throw new BaseException(ResponseCodeEnum.CLIENT_PARAMS_ERROR);
         }
@@ -176,7 +176,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResponseBo updateUser(User user, String[] rolesSelect) {
 
-        AccountActiveEnum activeEnum = AccountActiveEnum.getByCode(user.getIsActive());
+        BitEnum activeEnum = BitEnum.getByCode(user.getIsActive());
         if (activeEnum == null) {
             throw new BaseException(ResponseCodeEnum.CLIENT_PARAMS_ERROR);
         }

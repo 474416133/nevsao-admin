@@ -46,6 +46,7 @@
 		</form>
 	</div>
 	<div th:include="include::footer"></div>
+	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
 	<script type="text/javascript">
 		var prefix = ctx + "system/dept";
 		
@@ -87,24 +88,6 @@
 	        	$.operate.save(prefix + "/add", $('#form-dept-add').serialize());
 	        }
 	    }
-	
-		/*部门管理-新增-选择父部门树*/
-		function selectDeptTree() {
-			var options = {
-				title: '部门选择',
-				width: "380",
-				url: prefix + "/tree/view" + $("#treeId").val(),
-				callBack: doSubmit
-			};
-			$.modal.openOptions(options);
-		}
-		
-		function doSubmit(index, layero){
-			var body = layer.getChildFrame('body', index);
-   			$("#treeId").val(body.find('#treeId').val());
-   			$("#treeName").val(body.find('#treeName').val());
-   			layer.close(index);
-		}
 	</script>
 </body>
 </html>
