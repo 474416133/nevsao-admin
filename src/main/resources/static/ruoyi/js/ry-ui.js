@@ -585,10 +585,7 @@
         validate: {
         	// 判断返回标识是否唯一 false 不存在 true 存在
         	unique: function (value) {
-            	if (value == "0") {
-                    return true;
-                }
-                return false;
+            	return value;
             },
             // 表单验证
             form: function (formId) {

@@ -38,21 +38,22 @@
 					<div class="select-list">
 						<ul>
 							<li>
+								部门名称：<input type="text" name="deptName" onclick="selectDeptTree()" readonly="true" id="treeName">
+
+							</li>
+							<li>
 								登录名称：<input type="text" name="username"/>
 							</li>
 							<li>
 								手机号码：<input type="text" name="mobile"/>
 							</li>
-
 							<li class="select-time">
 								<label>创建时间： </label>
 								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
 								<span>-</span>
 								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
 							</li>
-							<li>
-								部门： <input class="form-control" type="text" name="deptName" onclick="selectDeptTree()" readonly="true" id="treeName">
-							</li>
+
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>

@@ -42,15 +42,16 @@
 				name:{
 					required:true,
 					remote: {
-		                url: ctx + "system/role/checkRoleNameUnique",
+		                url: ctx + "system/role/checkRoleName",
 		                type: "post",
 		                dataType: "json",
 		                data: {
 		                	"roleName" : function() {
-		                		return $.common.trim($("#roleName").val());
+		                		return $.common.trim($("#name").val());
 		                    }
 		                },
 		                dataFilter: function(data, type) {
+		               	
 		                	return $.validate.unique(data);
 		                }
 		            }

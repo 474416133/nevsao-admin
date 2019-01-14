@@ -91,8 +91,8 @@ public class RoleController extends BaseController {
     @RequiresPermissions("system:role:add")
     @RequestMapping("role/add")
     @ResponseBody
-    public ResponseBo addRole(Role role, String[] menuId) {
-        this.roleService.insert(role, menuId);
+    public ResponseBo addRole(Role role, String[] menuIds) {
+        this.roleService.insert(role, menuIds);
         return ResponseBo.ok("新增角色成功！");
     }
 
@@ -118,9 +118,9 @@ public class RoleController extends BaseController {
     @RequiresPermissions("system:role:update")
     @RequestMapping("role/update")
     @ResponseBody
-    public ResponseBo updateRole(Role role, String[] menuId) {
+    public ResponseBo updateRole(Role role, String[] menuIds) {
 
-        this.roleService.update(role, menuId);
+        this.roleService.update(role, menuIds);
         return ResponseBo.ok("修改角色成功！");
     }
 

@@ -18,10 +18,6 @@ public class Role extends BaseEntityExtra {
     @ExportConfig(value = "角色")
     private String name;
 
-    @Column(name = "remark")
-    @ExportConfig(value = "描述")
-    private String remark;
-
     @Transient
     private String flag;
 

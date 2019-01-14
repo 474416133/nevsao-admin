@@ -89,7 +89,7 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
             RoleMenu rm = new RoleMenu();
             rm.setMenuId(menuId);
             rm.setRoleId(role.getId());
-            this.roleMenuMapper.insert(rm);
+            this.roleMenuService.insert(rm);
         });
     }
 
@@ -120,7 +120,7 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
     public void update(Role role, String[] menuIds) {
         super.updateExcludeNull(role);
         Example example = new Example(RoleMenu.class);
-        example.createCriteria().andCondition("id=", role.getId());
+        example.createCriteria().andCondition("role_id=", role.getId());
         this.roleMenuMapper.deleteByExample(example);
         setRoleMenus(role, menuIds);
     }
