@@ -15,9 +15,8 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">菜单类型：</label>
 				<div class="col-sm-8">
-					<label class="radio-box"> <input type="radio" name="menuType" value="M" /> 目录 </label> 
-					<label class="radio-box"> <input type="radio" name="menuType" value="C" /> 菜单 </label> 
-					<label class="radio-box"> <input type="radio" name="menuType" value="F" /> 按钮 </label>
+					<label class="radio-box"> <input type="radio" name="menuType" value="0" /> 菜单 </label>
+					<label class="radio-box"> <input type="radio" name="menuType" value="1" /> 按钮 </label>
 				</div>
 			</div>
 			<div class="form-group">
@@ -70,12 +69,12 @@
         		name:{
         			required:true,
         			remote: {
-                        url: prefix + "/checkMenuNameUnique",
+                        url: prefix + "/checkMenuName",
                         type: "post",
                         dataType: "json",
                         data: {
-                        	"parentId": function() {
-		                		return $("input[name='parentId']").val();
+                        	"menuType": function() {
+		                		return $("input[name='menuType']").val();
 		                    },
                         	"menuName" : function() {
                                 return $.common.trim($("#name").val());
@@ -86,7 +85,7 @@
                         }
                     }
         		},
-        		orderNum:{
+        		orderSeq:{
         			required:true,
         			digits:true
         		},
@@ -119,15 +118,11 @@
             });
         	$('input').on('ifChecked', function(event){  
         		var menuType = $(event.target).val();
-        		if (menuType == "M") {
-                    $("#url").parents(".form-group").hide();
-                    $("#perms").parents(".form-group").hide();
-                    $("#icon").parents(".form-group").show();
-                } else if (menuType == "C") {
+        		if (menuType == "0") {
                 	$("#url").parents(".form-group").show();
                     $("#perms").parents(".form-group").show();
-                    $("#icon").parents(".form-group").hide();
-                } else if (menuType == "F") {
+                    $("#icon").parents(".form-group").show();
+                } else if (menuType == "1") {
                 	$("#url").parents(".form-group").hide();
                     $("#perms").parents(".form-group").show();
                     $("#icon").parents(".form-group").hide();

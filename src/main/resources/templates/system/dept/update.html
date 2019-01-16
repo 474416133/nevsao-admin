@@ -53,7 +53,7 @@
 		
 		$("#form-dept-edit").validate({
 			rules:{
-				deptName:{
+				name:{
 					required:true,
 					remote: {
 		                url: prefix + "/checkDeptName",
@@ -64,7 +64,7 @@
 		                        return $.common.trim(${dept.name});
 		                    },
 		        			"deptName": function() {
-		                        return $.common.trim($("#deptName").val());
+		                        return $.common.trim($("#name").val());
 		                    }
 		                },
 		                dataFilter: function(data, type) {

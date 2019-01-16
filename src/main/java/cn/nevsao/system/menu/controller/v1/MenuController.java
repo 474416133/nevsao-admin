@@ -127,11 +127,11 @@ public class MenuController extends BaseController {
 
     @RequestMapping("menu/checkMenuName")
     @ResponseBody
-    public boolean checkMenuName(String menuName, String type, String oldMenuName) {
+    public boolean checkMenuName(String menuName, String MenuType, String oldMenuName) {
         if (StringUtils.isNotBlank(oldMenuName) && menuName.equalsIgnoreCase(oldMenuName)) {
             return true;
         }
-        Menu result = this.menuService.getByNameAndType(menuName, type);
+        Menu result = this.menuService.getByNameAndType(menuName, MenuType);
         return result == null;
     }
 
@@ -147,19 +147,13 @@ public class MenuController extends BaseController {
     @RequestMapping("menu/add")
     @ResponseBody
     public ResponseBo addMenu(Menu menu) {
-        String name;
-        if (MenuTypeEnum.MENU.getCode().equals(menu.getMenuType())) {
-            name = "菜单";
-        } else {
-            name = "按钮";
+        MenuTypeEnum menuTypeEnum = MenuTypeEnum.getByCode(menu.getMenuType());
+        if (menuTypeEnum == null){
+            return ResponseBo.error("菜单类型[" + menuTypeEnum.getRemark() + "]有误！");
         }
-        try {
-            this.menuService.insert(menu);
-            return ResponseBo.ok("新增" + name + "成功！");
-        } catch (Exception e) {
-            logger.error("新增{}失败", name, e);
-            return ResponseBo.error("新增" + name + "失败，请联系网站管理员！");
-        }
+        this.menuService.insert(menu);
+        return ResponseBo.ok("新增" + menuTypeEnum.getRemark() + "成功！");
+
     }
 
     @Log("删除菜单")
@@ -189,19 +183,16 @@ public class MenuController extends BaseController {
     @RequestMapping("menu/update")
     @ResponseBody
     public ResponseBo updateMenu(Menu menu) {
-        String name;
-        if (MenuTypeEnum.MENU.getCode().equals(menu.getMenuType())) {
-            name = "菜单";
-        } else {
-            name = "按钮";
+        MenuTypeEnum menuTypeEnum = MenuTypeEnum.getByCode(menu.getMenuType());
+        if (menuTypeEnum == null){
+            return ResponseBo.error("菜单类型[" + menuTypeEnum.getRemark() + "]有误！");
         }
-        try {
-            this.menuService.update(menu);
-            return ResponseBo.ok("修改" + name + "成功！");
-        } catch (Exception e) {
-            logger.error("修改{}失败", name, e);
-            return ResponseBo.error("修改" + name + "失败，请联系网站管理员！");
+        if (StringUtils.isBlank(menu.getParentId())){
+            menu.setParentId(null);
         }
+        this.menuService.updateExcludeNull(menu);
+        return ResponseBo.ok("修改" + menuTypeEnum.getRemark() + "成功！");
+
     }
 
 

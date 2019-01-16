@@ -121,8 +121,8 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
     @Override
     public Menu getByNameAndType(String menuName, String type) {
         Example example = new Example(Menu.class);
-        example.createCriteria().andCondition("lower(menu_name)=", menuName.toLowerCase())
-                .andEqualTo("menu_type", Long.valueOf(type));
+        example.createCriteria().andCondition("lower(name)=", menuName.toLowerCase())
+                .andEqualTo("menuType", type);
         List<Menu> list = this.findByExample(example);
         return list.isEmpty() ? null : list.get(0);
     }

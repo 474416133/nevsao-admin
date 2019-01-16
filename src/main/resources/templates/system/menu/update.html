@@ -5,7 +5,7 @@
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-menu-edit" th:object="${menu}">
-			<input name="menuId"   type="hidden" th:field="*{id}"   />
+			<input name="menuId"   type="hidden" th:field="*{id}"/>
 			<input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">上级菜单：</label>
@@ -16,9 +16,8 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">菜单类型：</label>
 				<div class="col-sm-8">
-					<label class="radio-box"> <input type="radio" th:field="*{menuType}" name="menuType" value="M" /> 目录 </label> 
-					<label class="radio-box"> <input type="radio" th:field="*{menuType}" name="menuType" value="C" /> 菜单 </label> 
-					<label class="radio-box"> <input type="radio" th:field="*{menuType}" name="menuType" value="F" /> 按钮 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{menuType}" name="menuType" value="0" /> 菜单 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{menuType}" name="menuType" value="1" /> 按钮 </label>
 				</div>
 			</div>
 			<div class="form-group">
@@ -77,19 +76,16 @@
         		name:{
         			required:true,
         			remote: {
-                        url: prefix + "/checkMenuNameUnique",
+                        url: prefix + "/checkMenuName",
                         type: "post",
                         dataType: "json",
                         data: {
-                        	"id": function() {
+                        	"menuType": function() {
                                 return $("#id").val();
                             },
-                            "parentId": function() {
-		                		return $("input[name='parentId']").val();
-		                    },
-                			"name": function() {
-                                return $.common.trim($("#name").val());
-                            }
+                            "menuName": function() {
+		                		return $("input[name='name']").val();
+		                    }
                         },
                         dataFilter: function(data, type) {
                         	return $.validate.unique(data);
@@ -136,15 +132,11 @@
         });
 
         function menuVisible(menuType) {
-            if (menuType == "M") {
-                $("#url").parents(".form-group").hide();
-                $("#perms").parents(".form-group").hide();
-                $("#icon").parents(".form-group").show();
-            } else if (menuType == "C") {
+            if (menuType == "0") {
                 $("#url").parents(".form-group").show();
                 $("#perms").parents(".form-group").show();
-                $("#icon").parents(".form-group").hide();
-            } else if (menuType == "F") {
+                $("#icon").parents(".form-group").show();
+            } else if (menuType == "1") {
                 $("#url").parents(".form-group").hide();
                 $("#perms").parents(".form-group").show();
                 $("#icon").parents(".form-group").hide();

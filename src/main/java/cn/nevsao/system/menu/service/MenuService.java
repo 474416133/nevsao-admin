@@ -35,6 +35,6 @@ public interface MenuService extends IService<Menu> {
     int update(Menu menu);
 
 
-    @Cacheable(key = "'url_'+ #p0")
+    //@Cacheable(key = "'url_'+ #p0")
     List<Map<String, String>> getAllUrl(String p1);
 }
