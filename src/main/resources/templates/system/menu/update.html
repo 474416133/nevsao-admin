@@ -62,7 +62,6 @@
 	<script th:src="@{/ruoyi/system/menu/menu.js}"></script>
 	 <script>
         var prefix = ctx + "system/menu";
-
         $(function() {
             var menuType = $('input[name="menuType"]:checked').val();
             menuVisible(menuType);
@@ -83,8 +82,11 @@
                         	"menuType": function() {
                                 return $("#id").val();
                             },
-                            "menuName": function() {
+                            "name": function() {
 		                		return $("input[name='name']").val();
+		                    },
+		                    "oldName": function() {
+		                		return $.common.trim("[[${menu.name}]]");
 		                    }
                         },
                         dataFilter: function(data, type) {

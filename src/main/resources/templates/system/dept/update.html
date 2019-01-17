@@ -50,7 +50,6 @@
 	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
 	<script type="text/javascript">
 		var prefix = ctx + "system/dept";
-		
 		$("#form-dept-edit").validate({
 			rules:{
 				name:{
@@ -60,11 +59,8 @@
 		                type: "post",
 		                dataType: "json",
 		                data: {
-		                    "oldDeptName": function() {
-		                        return $.common.trim(${dept.name});
-		                    },
-		        			"deptName": function() {
-		                        return $.common.trim($("#name").val());
+		                    "oldName": function() {
+		                        return $.common.trim("[[${dept.name}]]");
 		                    }
 		                },
 		                dataFilter: function(data, type) {
@@ -87,7 +83,7 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	        	$.operate.save(prefix + "/edit", $('#form-dept-edit').serialize());
+	        	$.operate.save(prefix + "/update", $('#form-dept-edit').serialize());
 	        }
 	    }
 	</script>

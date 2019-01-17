@@ -127,11 +127,11 @@ public class MenuController extends BaseController {
 
     @RequestMapping("menu/checkMenuName")
     @ResponseBody
-    public boolean checkMenuName(String menuName, String MenuType, String oldMenuName) {
-        if (StringUtils.isNotBlank(oldMenuName) && menuName.equalsIgnoreCase(oldMenuName)) {
+    public boolean checkMenuName(String name, String menuType, String oldName) {
+        if (StringUtils.isNotBlank(oldName) && name.equalsIgnoreCase(oldName)) {
             return true;
         }
-        Menu result = this.menuService.getByNameAndType(menuName, MenuType);
+        Menu result = this.menuService.getByNameAndType(name, menuType);
         return result == null;
     }
 
