@@ -545,8 +545,19 @@
             // 保存结果弹出msg刷新table表格
             ajaxSuccess: function (result) {
             	if (result.code == web_status.SUCCESS) {
-                	$.modal.msgSuccess(result.msg);
-            		$.table.refresh();
+                	//$.modal.msgSuccess(result.msg);
+            		//$.table.refresh();
+            		if ($("#bootstrap-table").length > 0) {
+                                            //$.modal.close();
+                                            $.modal.msgSuccess(result.msg);
+                                            $.table.refresh();
+                                        } else if ($("#bootstrap-tree-table").length > 0) {
+                                            //$.modal.close();
+                                            $.modal.msgSuccess(result.msg);
+                                            $.treeTable.refresh();
+                                        } else {
+                                            $.modal.msgReload("操作成功,正在刷新数据请稍后……", web_status.SUCCESS);
+                                        }
                 } else {
                 	$.modal.alertError(result.msg);
                 }
