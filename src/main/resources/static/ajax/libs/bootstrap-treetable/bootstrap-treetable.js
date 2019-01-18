@@ -160,7 +160,8 @@
                     data: parms ? parms : options.ajaxParams,
                     dataType: "JSON",
                     success: function(data, textStatus, jqXHR) {
-                        renderTable(data);
+                        //renderTable(data);
+                        renderTable(options.responseHandler(data)); //add by 2019-01-18
                     },
                     error: function(xhr, textStatus) {
                         var _errorMsg = '<tr><td colspan="' + options.columns.length + '"><div style="display: block;text-align: center;">' + xhr.responseText + '</div></td></tr>'
@@ -664,7 +665,7 @@
         showColumns: true,         // 是否显示内容列下拉框
         showRefresh: true,         // 是否显示刷新按钮
         expanderExpandedClass: 'glyphicon glyphicon-chevron-down', // 展开的按钮的图标
-        expanderCollapsedClass: 'glyphicon glyphicon-chevron-right' // 缩起的按钮的图标
-
+        expanderCollapsedClass: 'glyphicon glyphicon-chevron-right', // 缩起的按钮的图标
+        responseHandler: function(a) {return a} //2019-01-18--新增
     };
 })(jQuery);

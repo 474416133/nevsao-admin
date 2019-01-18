@@ -81,6 +81,9 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
     @Transactional
     public void insert(Role role, String[] menuIds) {
         super.insert(role);
+        if (menuIds == null || menuIds.length == 0){
+            return;
+        }
         setRoleMenus(role, menuIds);
     }
 
@@ -122,6 +125,9 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
         Example example = new Example(RoleMenu.class);
         example.createCriteria().andCondition("role_id=", role.getId());
         this.roleMenuMapper.deleteByExample(example);
+        if (menuIds == null || menuIds.length == 0){
+            return ;
+        }
         setRoleMenus(role, menuIds);
     }
 

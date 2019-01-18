@@ -63,13 +63,6 @@ public class RoleController extends BaseController {
         return FileUtil.createCsv("角色表", list, Role.class);
     }
 
-    @RequestMapping("role/getRole")
-    @ResponseBody
-    public ResponseBo getRole(String roleId) {
-
-        Role role = this.roleService.getRoleWithMenus(roleId);
-        return ResponseBo.ok(role);
-    }
 
     @RequestMapping("role/checkRoleName")
     @ResponseBody
@@ -91,19 +84,19 @@ public class RoleController extends BaseController {
     @RequiresPermissions("system:role:add")
     @RequestMapping("role/add")
     @ResponseBody
-    public ResponseBo addRole(Role role, String[] menuIds) {
+    public String addRole(Role role, String[] menuIds) {
         this.roleService.insert(role, menuIds);
-        return ResponseBo.ok("新增角色成功！");
+        return "新增角色成功！";
     }
 
     @Log("删除角色")
     @RequiresPermissions("system:role:delete")
     @RequestMapping("role/delete")
     @ResponseBody
-    public ResponseBo deleteRoles(String ids) {
+    public String deleteRoles(String ids) {
 
         this.roleService.delete(ids);
-        return ResponseBo.ok("删除角色成功！");
+        return "删除角色成功！";
     }
 
     @RequiresPermissions("system:role:update")
@@ -118,10 +111,9 @@ public class RoleController extends BaseController {
     @RequiresPermissions("system:role:update")
     @RequestMapping("role/update")
     @ResponseBody
-    public ResponseBo updateRole(Role role, String[] menuIds) {
-
+    public String updateRole(Role role, String[] menuIds) {
         this.roleService.update(role, menuIds);
-        return ResponseBo.ok("修改角色成功！");
+        return "修改角色成功！";
     }
 
     @RequiresPermissions("system:role:list")

@@ -59,13 +59,6 @@ public class DictController extends BaseController {
         return FileUtil.createCsv("字典表", list, Dict.class);
     }
 
-    @RequestMapping("dict/getDict")
-    @ResponseBody
-    public ResponseBo getDict(String dictId) {
-        Dict dict = this.dictService.get(dictId);
-        return ResponseBo.ok(dict);
-    }
-
 
     @RequiresPermissions("system:dict:add")
     @GetMapping("dict/add")
@@ -77,22 +70,19 @@ public class DictController extends BaseController {
     @RequiresPermissions("system:dict:add")
     @RequestMapping("dict/add")
     @ResponseBody
-    public ResponseBo addDict(Dict dict) {
-
+    public String addDict(Dict dict) {
         this.dictService.insert(dict);
-        return ResponseBo.ok("新增字典成功！");
+        return "新增字典成功！";
     }
 
     @Log("删除字典")
     @RequiresPermissions("system:dict:delete")
     @RequestMapping("dict/delete")
     @ResponseBody
-    public ResponseBo deleteDicts(String ids) {
-
+    public String deleteDicts(String ids) {
         this.dictService.delete(ids);
-        return ResponseBo.ok("删除字典成功！");
+        return "删除字典成功！";
     }
-
 
     @RequiresPermissions("system:dict:update")
     @GetMapping("dict/update/{dictKey}")
@@ -106,9 +96,8 @@ public class DictController extends BaseController {
     @RequiresPermissions("system:dict:update")
     @RequestMapping("dict/update")
     @ResponseBody
-    public ResponseBo updateDict(Dict dict) {
-
+    public String updateDict(Dict dict) {
         this.dictService.updateExcludeNull(dict);
-        return ResponseBo.ok("修改字典成功！");
+        return "修改字典成功！";
     }
 }

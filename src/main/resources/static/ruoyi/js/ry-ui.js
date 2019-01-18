@@ -59,14 +59,14 @@
         		}; 
             },
             // 请求获取数据后处理回调函数
-//            responseHandler: function(res) {
-//                if (res.code == 0) {
-//                    return { rows: res.rows, total: res.total };
-//                } else {
-//                	$.modal.alertWarning(res.msg);
-//                	return { rows: [], total: 0 };
-//                }
-//            },
+            responseHandler: function(res) {
+                if (res.code == 0) {
+                    return { rows: res.msg.rows, total: res.msg.total };
+                } else {
+                	$.modal.alertWarning(res.msg);
+                	return { rows: [], total: 0 };
+                }
+            },
             // 搜索-默认第一个form
             search: function(formId) {
             	var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
@@ -158,7 +158,16 @@
         			showColumns: $.common.visible(options.showColumns), // 是否显示隐藏某列下拉框
         			expandAll: $.common.visible(options.expandAll),     // 是否全部展开
         			expandFirst: $.common.visible(options.expandFirst), // 是否默认第一级展开--expandAll为false时生效
-        	        columns: options.columns
+        	        columns: options.columns,
+        	        responseHandler: function(res) {
+                                                      if (res.code == 0) {
+                                                          return res.msg;
+                                                      } else {
+                                                        $.modal.alertWarning(res.msg);
+                                                        return [];
+                                                      }
+                                                   }
+
         	    });
                 $._treeTable = treeTable;
             },
@@ -175,6 +184,7 @@
             refresh: function() {
             	$._treeTable.bootstrapTreeTable('refresh');
             },
+
         },
         // 表单封装处理
     	form: {
@@ -596,7 +606,7 @@
         validate: {
         	// 判断返回标识是否唯一 false 不存在 true 存在
         	unique: function (value) {
-            	return value;
+            	return value.msg;
             },
             // 表单验证
             form: function (formId) {
@@ -630,7 +640,7 @@
         	    $.get(options.url, function(data) {
         	    	var treeName = $("#treeName").val();
         			var treeId = $("#treeId").val();
-        			tree = $.fn.zTree.init($("#" + _id), setting, data);
+        			tree = $.fn.zTree.init($("#" + _id), setting, data.msg);
         			$._tree = tree;
         			// 展开第一级节点
         			var nodes = tree.getNodesByParam("level", 0);

@@ -7,6 +7,7 @@
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-role-edit" th:object="${role}">
 			<input id="id" name="id" type="hidden" th:field="*{id}"/>
+			<input id="menuIds" name="menuIds" type="hidden"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">角色名称：</label>
 				<div class="col-sm-8">
@@ -25,6 +26,7 @@
 	<div th:include="include::footer"></div>
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 	<script type="text/javascript">
+		 var prefix = ctx + "system/role/";
 	     $(function() {
 			var url = ctx + "system/role/menu/list?id=" + $("#id").val();
 			var options = {
@@ -91,7 +93,10 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	        	edit();
+	        	//edit();
+	        	var menuIds = $.tree.getCheckedNodes();
+	        	$("#menuIds").attr("value", menuIds);
+	        	$.operate.save(prefix + "update", $('#form-role-edit').serialize());
 	        }
 	    }
 	</script>

@@ -37,68 +37,19 @@ public class MenuController extends BaseController {
         return PATH_PREFIX + "menu";
     }
 
-    @RequestMapping("menu/menu")
-    @ResponseBody
-    public ResponseBo getMenuByUsername(String userName) {
-        List<Menu> menus = this.menuService.findUserMenus(userName);
-        return ResponseBo.ok(menus);
-    }
-
-    @RequestMapping("menu/getMenu")
-    @ResponseBody
-    public ResponseBo getMenu(String menuId) {
-
-        Menu menu = this.menuService.get(menuId);
-        return ResponseBo.ok(menu);
-    }
-
-    @RequestMapping("menu/menuButtonTree")
-    @ResponseBody
-    public ResponseBo getMenuButtonTree() {
-
-        Tree<Menu> tree = this.menuService.getMenuButtonTree();
-        return ResponseBo.ok(tree);
-    }
 
     @RequestMapping("menu/tree/view")
     public String getMenuTreeVew() {
         return PATH_PREFIX + "tree";
     }
 
-    @RequestMapping("menu/tree")
-    @ResponseBody
-    public ResponseBo getMenuTree() {
-        try {
-            Tree<Menu> tree = this.menuService.getMenuTree();
-            return ResponseBo.ok(tree);
-        } catch (Exception e) {
-            logger.error("获取菜单树失败", e);
-            return ResponseBo.error("获取菜单树失败！");
-        }
-    }
 
-    @RequestMapping("menu/getUserMenu")
-    @ResponseBody
-    public ResponseBo getUserMenu(String userName) {
-        try {
-            Tree<Menu> tree = this.menuService.getUserMenu(userName);
-            return ResponseBo.ok(tree);
-        } catch (Exception e) {
-            logger.error("获取用户菜单失败", e);
-            return ResponseBo.error("获取用户菜单失败！");
-        }
-    }
 
     @RequestMapping("menu/list")
     @RequiresPermissions("system:menu:list")
     @ResponseBody
     public List<Menu> menuList(Menu menu) {
-        try {
-            return this.menuService.all(menu);
-        } catch (Exception e) {
-            logger.error("获取菜单集合失败", e);
-            return new ArrayList<>();
-        }
+        return this.menuService.all(menu);
     }
 
     @RequestMapping("menu/excel")
@@ -146,28 +97,22 @@ public class MenuController extends BaseController {
     @RequiresPermissions("system:menu:add")
     @RequestMapping("menu/add")
     @ResponseBody
-    public ResponseBo addMenu(Menu menu) {
+    public String addMenu(Menu menu) {
         MenuTypeEnum menuTypeEnum = MenuTypeEnum.getByCode(menu.getMenuType());
         if (menuTypeEnum == null){
-            return ResponseBo.error("菜单类型[" + menuTypeEnum.getRemark() + "]有误！");
+            return "菜单类型[" + menuTypeEnum.getRemark() + "]有误！";
         }
         this.menuService.insert(menu);
-        return ResponseBo.ok("新增" + menuTypeEnum.getRemark() + "成功！");
-
+        return "新增" + menuTypeEnum.getRemark() + "成功！";
     }
 
     @Log("删除菜单")
     @RequiresPermissions("system:menu:delete")
     @RequestMapping("menu/delete")
     @ResponseBody
-    public ResponseBo deleteMenus(String ids) {
-        try {
-            this.menuService.delete(ids);
-            return ResponseBo.ok("删除成功！");
-        } catch (Exception e) {
-            logger.error("获取菜单失败", e);
-            return ResponseBo.error("删除失败，请联系网站管理员！");
-        }
+    public String deleteMenus(String ids) {
+        this.menuService.delete(ids);
+        return "删除成功！";
     }
 
     @RequiresPermissions("system:menu:update")
@@ -182,25 +127,17 @@ public class MenuController extends BaseController {
     @RequiresPermissions("system:menu:update")
     @RequestMapping("menu/update")
     @ResponseBody
-    public ResponseBo updateMenu(Menu menu) {
+    public String updateMenu(Menu menu) {
         MenuTypeEnum menuTypeEnum = MenuTypeEnum.getByCode(menu.getMenuType());
         if (menuTypeEnum == null){
-            return ResponseBo.error("菜单类型[" + menuTypeEnum.getRemark() + "]有误！");
+            return "菜单类型[" + menuTypeEnum.getRemark() + "]有误！";
         }
         if (StringUtils.isBlank(menu.getParentId())){
             menu.setParentId(null);
         }
         this.menuService.updateExcludeNull(menu);
-        return ResponseBo.ok("修改" + menuTypeEnum.getRemark() + "成功！");
+        return "修改" + menuTypeEnum.getRemark() + "成功！";
 
-    }
-
-
-    @Log("获取系统所有URL")
-    @GetMapping("menu/urlList")
-    @ResponseBody
-    public List<Map<String, String>> getAllUrl() {
-        return this.menuService.getAllUrl("1");
     }
 
 }

@@ -24,6 +24,7 @@ public interface MenuService extends IService<Menu> {
 
     Tree<Menu> getUserMenu(String userName);
 
+    @Override
     Menu get(String menuId);
 
     Menu getByNameAndType(String menuName, String type);

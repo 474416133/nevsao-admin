@@ -42,35 +42,17 @@ public class DeptController {
         return PATH_PREFIX + "tree";
     }
 
-    @RequestMapping("dept/tree")
-    @ResponseBody
-    public ResponseBo getDeptTree() {
-
-        Tree<Dept> tree = this.deptService.getDeptTree();
-        return ResponseBo.ok(tree);
-    }
-
-    @RequestMapping("dept/getDept")
-    @ResponseBody
-    public ResponseBo getDept(String deptId) {
-
-        Dept dept = this.deptService.get(deptId);
-        return ResponseBo.ok(dept);
-    }
 
     @RequestMapping("dept/list")
     @RequiresPermissions("system:dept:list")
     @ResponseBody
     public List<Dept> deptList(Dept dept) {
-
         return this.deptService.findAllDepts(dept);
     }
 
     @RequestMapping("dept/excel")
     @ResponseBody
     public ResponseBo deptExcel(Dept dept) {
-
-
         List<Dept> list = this.deptService.findAllDepts(dept);
         return FileUtil.createExcelByPOIKit("部门表", list, Dept.class);
     }
@@ -78,7 +60,6 @@ public class DeptController {
     @RequestMapping("dept/csv")
     @ResponseBody
     public ResponseBo deptCsv(Dept dept) {
-
         List<Dept> list = this.deptService.findAllDepts(dept);
         return FileUtil.createCsv("部门表", list, Dept.class);
     }
@@ -93,7 +74,6 @@ public class DeptController {
         return result == null;
     }
 
-
     @RequiresPermissions("system:dept:add")
     @GetMapping("dept/add")
     public String addDeptView( ModelMap mmap) {
@@ -104,19 +84,19 @@ public class DeptController {
     @RequiresPermissions("system:dept:add")
     @RequestMapping("dept/add")
     @ResponseBody
-    public ResponseBo addDept(Dept dept) {
+    public String addDept(Dept dept) {
 
         this.deptService.insert(dept);
-        return ResponseBo.ok("新增部门成功！");
+        return "新增部门成功！";
     }
 
     @Log("删除部门")
     @RequiresPermissions("system:dept:delete")
     @RequestMapping("dept/delete")
     @ResponseBody
-    public ResponseBo deleteDepts(String ids) {
+    public String deleteDepts(String ids) {
         this.deptService.delete(ids);
-        return ResponseBo.ok("删除部门成功！");
+        return "删除部门成功！";
     }
 
     @RequiresPermissions("system:dept:update")
@@ -131,11 +111,10 @@ public class DeptController {
     @RequiresPermissions("system:dept:update")
     @RequestMapping("dept/update")
     @ResponseBody
-    public ResponseBo updateDept(Dept dept) {
-
+    public String updateDept(Dept dept) {
 
         this.deptService.update(dept);
-        return ResponseBo.ok("修改部门成功！");
+        return "修改部门成功！";
     }
 
 

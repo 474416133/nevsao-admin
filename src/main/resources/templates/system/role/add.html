@@ -6,6 +6,7 @@
 <body class="white-bg">
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-role-add">
+			<input id="menuIds" name="menuIds" type="hidden"/>
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">角色名称：</label>
 				<div class="col-sm-8">
@@ -24,6 +25,7 @@
 	<div th:include="include::footer"></div>
 	<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
 	<script type="text/javascript">
+		var prefix = ctx + "system/role/";
 	    $(function() {
 			var url = ctx + "system/role/menu/list";
 			var options = {
@@ -68,31 +70,12 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	        	add();
+	        	var menuIds = $.tree.getCheckedNodes();
+	        	$("#menuIds").attr("value", menuIds);
+	        	$.operate.save(prefix + "add", $('#form-role-add').serialize());
 	        }
 	    }
-	
-		function add() {
-			var name = $("input[name='name']").val();
 
-			var menuIds = $.tree.getCheckedNodes();
-			$.ajax({
-				cache : true,
-				type : "POST",
-				url : ctx + "system/role/add",
-				data : {
-					"name": name,
-					"menuIds": menuIds
-				},
-				async : false,
-				error : function(request) {
-					$.modal.alertError("系统错误");
-				},
-				success : function(data) {
-					$.operate.successCallback(data);
-				}
-			});
-		}
 	</script>
 </body>
 </html>

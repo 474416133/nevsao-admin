@@ -30,7 +30,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @Date 2019年01月03日
  * @Version 1.0
  */
-//@ControllerAdvice
+@ControllerAdvice
 public class ResponseBoAdvice implements ResponseBodyAdvice {
 
     @Override
@@ -44,7 +44,6 @@ public class ResponseBoAdvice implements ResponseBodyAdvice {
     @Nullable
     @Override
     public Object beforeBodyWrite(@Nullable Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-
         if (o instanceof ResponseBo){
             return o;
         }else{
