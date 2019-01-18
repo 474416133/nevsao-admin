@@ -59,9 +59,7 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 
 	@Override
 	public Dept getByName(String deptName) {
-		Example example = new Example(Dept.class);
-		example.createCriteria().andCondition("lower(name) =", deptName.toLowerCase());
-		List<Dept> list = this.findByExample(example);
+		List<Dept> list = this.findByName(Dept.class, deptName);
 		return list.isEmpty() ? null : list.get(0);
 	}
 

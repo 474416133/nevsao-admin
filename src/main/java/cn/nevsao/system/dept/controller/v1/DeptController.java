@@ -66,12 +66,8 @@ public class DeptController {
 
     @RequestMapping("dept/checkDeptName")
     @ResponseBody
-    public boolean checkDeptName(String name, String oldName) {
-        if (StringUtils.isNotBlank(oldName) && name.equalsIgnoreCase(oldName)) {
-            return true;
-        }
-        Dept result = this.deptService.getByName(name);
-        return result == null;
+    public void checkDeptName(String id, String name) {
+        deptService.checkName(Dept.class, name, id);
     }
 
     @RequiresPermissions("system:dept:add")
@@ -85,7 +81,7 @@ public class DeptController {
     @RequestMapping("dept/add")
     @ResponseBody
     public String addDept(Dept dept) {
-
+        deptService.checkName(Dept.class, dept.getName(), null);
         this.deptService.insert(dept);
         return "新增部门成功！";
     }
@@ -112,8 +108,11 @@ public class DeptController {
     @RequestMapping("dept/update")
     @ResponseBody
     public String updateDept(Dept dept) {
-
-        this.deptService.update(dept);
+        deptService.checkName(Dept.class, dept.getName(), dept.getId());
+        if (StringUtils.isBlank(dept.getParentId())){
+            dept.setParentId(null);
+        }
+        this.deptService.updateExcludeNull(dept);
         return "修改部门成功！";
     }
 

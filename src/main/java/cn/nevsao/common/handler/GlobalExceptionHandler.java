@@ -1,5 +1,6 @@
 package cn.nevsao.common.handler;
 
+import cn.nevsao.common.exception.BaseException;
 import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.exception.FileDownloadException;
 import cn.nevsao.common.exception.LimitAccessException;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler {
     public ResponseBo handleNotImplementException(NotImplementedException e) {
         return ResponseBo.error("服务器错误");
     }
+
+    @ExceptionHandler(value = BaseException.class)
+    public ResponseBo handleBaseException(BaseException e) {
+        return ResponseBo.error(e.getMessage());
+    }
+
 
     private static boolean isAjaxRequest(HttpServletRequest request) {
         return (request.getHeader("X-Requested-With") != null

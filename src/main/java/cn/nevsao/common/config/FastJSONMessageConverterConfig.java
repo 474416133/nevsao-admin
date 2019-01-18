@@ -29,7 +29,7 @@ import java.util.List;
  * @Date 2018年5月22日
  * @Version 1.0
  */
-@Configuration
+//@Configuration
 public class FastJSONMessageConverterConfig extends WebMvcConfigurerAdapter {
 
 	@Override

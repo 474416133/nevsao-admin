@@ -58,14 +58,6 @@
 		                url: prefix + "/checkDeptName",
 		                type: "post",
 		                dataType: "json",
-		                data: {
-		                	"parentId": function() {
-		                		return $("input[name='parentId']").val();
-		                    },
-		                	"name" : function() {
-		                        return $.common.trim($("#name").val());
-		                    }
-		                },
 		                dataFilter: function(data, type) {
 		                	return $.validate.unique(data);
 		                }

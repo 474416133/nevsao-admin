@@ -1,9 +1,12 @@
 package cn.nevsao.common.mvc.service.impl;
 
+import cn.nevsao.common.exception.BaseException;
+import cn.nevsao.common.exception.ResponseCodeEnum;
 import cn.nevsao.common.mvc.entity.BaseEntity;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.common.util.PKUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -71,5 +74,22 @@ public  class BaseService<T extends BaseEntity> implements IService<T> {
 	@Override
 	public List<T> findByExample(Example example) {
 		return getMapper().selectByExample(example);
+	}
+
+	@Override
+	public void checkName(Class<? extends BaseEntity> clazz, String name, String id) {
+		List<T> list = findByName(clazz, name);
+		if (list.size() > 1){
+			throw new BaseException(ResponseCodeEnum.SERVER_DATA_HAD_EXIST);
+		}else if (list.size() == 1 && !StringUtils.equals(list.get(0).getId(), id)){
+			throw new BaseException(ResponseCodeEnum.SERVER_DATA_HAD_EXIST);
+		}
+	}
+
+	@Override
+	public List<T> findByName(Class<? extends BaseEntity> clazz, String name) {
+		Example example = new Example(clazz);
+		example.createCriteria().andCondition("lower(name) =", name.toLowerCase());
+		return this.findByExample(example);
 	}
 }

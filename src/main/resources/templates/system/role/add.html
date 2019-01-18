@@ -47,13 +47,7 @@
 		                url: ctx + "system/role/checkRoleName",
 		                type: "post",
 		                dataType: "json",
-		                data: {
-		                	"roleName" : function() {
-		                		return $.common.trim($("#name").val());
-		                    }
-		                },
 		                dataFilter: function(data, type) {
-		               	
 		                	return $.validate.unique(data);
 		                }
 		            }

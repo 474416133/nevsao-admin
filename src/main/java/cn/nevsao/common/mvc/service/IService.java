@@ -26,4 +26,10 @@ public interface IService<T extends BaseEntity> {
 	int updateExcludeNull(T entity);
 
 	List<T> findByExample(Example example);
+
+	//名字校验
+	void checkName(Class<? extends BaseEntity> clazz, String name, String id);
+
+	//根据名字查询
+	List<T> findByName(Class<? extends BaseEntity> clazz, String name);
 }

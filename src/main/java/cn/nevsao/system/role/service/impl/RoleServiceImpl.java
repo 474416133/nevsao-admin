@@ -71,15 +71,14 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
 
     @Override
     public Role getByName(String roleName) {
-        Example example = new Example(Role.class);
-        example.createCriteria().andCondition("lower(name)=", roleName.toLowerCase());
-        List<Role> list = this.findByExample(example);
+        List<Role> list = this.findByName(Role.class, roleName);
         return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
     @Transactional
     public void insert(Role role, String[] menuIds) {
+        checkName(Role.class, role.getName(), null);
         super.insert(role);
         if (menuIds == null || menuIds.length == 0){
             return;
@@ -121,6 +120,7 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
     @Override
     @Transactional
     public void update(Role role, String[] menuIds) {
+        checkName(Role.class, role.getName(), role.getId());
         super.updateExcludeNull(role);
         Example example = new Example(RoleMenu.class);
         example.createCriteria().andCondition("role_id=", role.getId());

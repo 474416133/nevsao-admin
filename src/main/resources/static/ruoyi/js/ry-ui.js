@@ -606,7 +606,8 @@
         validate: {
         	// 判断返回标识是否唯一 false 不存在 true 存在
         	unique: function (value) {
-            	return value.msg;
+        	    var jsonObj = $.parseJSON(value);
+            	return jsonObj.code == 0;
             },
             // 表单验证
             form: function (formId) {

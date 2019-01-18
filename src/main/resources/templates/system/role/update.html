@@ -49,8 +49,8 @@
 		                type: "post",
 		                dataType: "json",
 		                data: {
-							"oldName": function() {
-							    return $.common.trim("[[${role.name}]]");
+							"id": function() {
+							    return $.common.trim($("#name").val());
 							}
 		                },
 		                dataFilter: function(data, type) {
