@@ -32,4 +32,11 @@ public interface IService<T extends BaseEntity> {
 
 	//根据名字查询
 	List<T> findByName(Class<? extends BaseEntity> clazz, String name);
+
+	/**
+	 * 根据id列表，删除
+	 * @param ids
+	 * @return
+	 */
+	int delete(List<String> ids);
 }

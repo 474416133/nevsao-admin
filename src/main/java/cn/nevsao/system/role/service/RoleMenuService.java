@@ -8,9 +8,7 @@ import cn.nevsao.system.role.entity.RoleMenu;
 import java.util.List;
 
 public interface RoleMenuService extends IService<RoleMenu> {
-
-	void deleteByRoleId(String roleIds);
-
-	void deleteByMenuId(String menuIds);
+	void deleteByRoleId(List<String> roleIds);
+	void deleteByMenuId(List<String> menuIds);
 
 }

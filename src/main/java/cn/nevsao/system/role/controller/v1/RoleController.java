@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -89,9 +90,8 @@ public class RoleController extends BaseController {
     @RequiresPermissions("system:role:delete")
     @RequestMapping("role/delete")
     @ResponseBody
-    public String deleteRoles(String ids) {
-
-        this.roleService.delete(ids);
+    public String deleteRoles(String[] ids) {
+        this.roleService.delete(Arrays.asList(ids));
         return "删除角色成功！";
     }
 

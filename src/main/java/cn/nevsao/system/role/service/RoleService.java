@@ -13,16 +13,14 @@ public interface RoleService extends IService<Role> {
 	List<Role> findUserRole(String userName);
 
 	List<Role> all(Role role);
-	
-	RoleWithMenu getRoleWithMenus(String roleId);
-
-	Role getByName(String roleName);
 
 	void insert(Role role, String[] menuIds);
-	
+
 	void update(Role role, String[] menuIds);
 
 	//加载所有菜单并根据roleId标记已选
 	List<Menu> menuList(String roleId);
+
+
 
 }

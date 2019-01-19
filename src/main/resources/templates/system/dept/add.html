@@ -27,7 +27,11 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">负责人：</label>
 				<div class="col-sm-8">
+					<!--
 					<input class="form-control" type="text" name="leader">
+					-->
+					<select class="user-select form-control" name="principalId">
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
@@ -47,39 +51,71 @@
 	</div>
 	<div th:include="include::footer"></div>
 	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
 	<script type="text/javascript">
-		var prefix = ctx + "system/dept";
-		
-		$("#form-dept-add").validate({
-			rules:{
-				name:{
-					required:true,
-					remote: {
-		                url: prefix + "/checkDeptName",
-		                type: "post",
-		                dataType: "json",
-		                dataFilter: function(data, type) {
-		                	return $.validate.unique(data);
-		                }
-		            }
-				},
-				orderSeq:{
-					required:true,
-					digits:true
-				},
+	$(function(){
+		$(".user-select").select2({
+		  ajax: {
+		  	type: "post",
+			url: ctx + "system/user/list",
+			dataType: 'json',
+			data: function (params) {
+			  return {
+				name: params.term, // search term
+				pageNum: params.page,
+				pageSize: 20
+			  };
 			},
-			messages: {
-		        "name": {
-		            remote: "部门已经存在"
-		        }
-		    }
+			processResults: function (data, params) {
+			  params.page = params.page || 1;
+			  var _rows = [];
+			  for (item in data.msg.rows){
+			  	  _rows.push({id : item.id, text: item.username, mobile: item.mobile});
+			  }
+			  return {
+				results: _rows,
+				pagination: {
+				  more: (params.page * 20) < data.msg.total
+				}
+			  };
+			},
+			cache: true
+		  },
+		  placeholder: '请选择',
+		  minimumInputLength: 1,
 		});
-		
-		function submitHandler() {
-	        if ($.validate.form()) {
-	        	$.operate.save(prefix + "/add", $('#form-dept-add').serialize());
-	        }
-	    }
+	});
+	var prefix = ctx + "system/dept";
+	$("#form-dept-add").validate({
+		rules:{
+			name:{
+				required:true,
+				remote: {
+					url: prefix + "/checkDeptName",
+					type: "post",
+					dataType: "json",
+					dataFilter: function(data, type) {
+						return $.validate.unique(data);
+					}
+				}
+			},
+			orderSeq:{
+				required:true,
+				digits:true
+			},
+		},
+		messages: {
+			"name": {
+				remote: "部门已经存在"
+			}
+		}
+	});
+
+	function submitHandler() {
+		if ($.validate.form()) {
+			$.operate.save(prefix + "/add", $('#form-dept-add').serialize());
+		}
+	}
 	</script>
 </body>
 </html>

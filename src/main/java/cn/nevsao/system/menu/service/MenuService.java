@@ -18,16 +18,10 @@ public interface MenuService extends IService<Menu> {
 
     List<Menu> all(Menu menu);
 
-    Tree<Menu> getMenuButtonTree();
-
-    Tree<Menu> getMenuTree();
-
     Tree<Menu> getUserMenu(String userName);
 
     @Override
     Menu get(String menuId);
-
-    Menu getByNameAndType(String menuName, String type);
 
     @Override
     int insert(Menu menu);
@@ -35,7 +29,21 @@ public interface MenuService extends IService<Menu> {
     @Override
     int update(Menu menu);
 
-
     //@Cacheable(key = "'url_'+ #p0")
     List<Map<String, String>> getAllUrl(String p1);
+
+    /**
+     * 根据名字和类型查询
+     * @param name
+     * @param type
+     * @return
+     */
+    List<Menu> findByNameAndType(String name, String type);
+
+    /**
+     * 校验
+     * @param name
+     * @param type
+     */
+    void checkNameAndType(String name, String type, String id);
 }

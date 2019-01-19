@@ -15,6 +15,7 @@ import cn.nevsao.system.role.service.RoleService;
 import cn.nevsao.system.user.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -70,12 +71,6 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
     }
 
     @Override
-    public Role getByName(String roleName) {
-        List<Role> list = this.findByName(Role.class, roleName);
-        return list.isEmpty() ? null : list.get(0);
-    }
-
-    @Override
     @Transactional
     public void insert(Role role, String[] menuIds) {
         checkName(Role.class, role.getName(), null);
@@ -97,24 +92,11 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
 
     @Override
     @Transactional
-    public int delete(String roleIds) {
-        List<String> list = Arrays.asList(roleIds.split(","));
-        int ret = this.delete(list, Role.class);
-        this.roleMenuService.deleteByRoleId(roleIds);
-        this.userRoleService.deleteByRoleId(roleIds);
+    public int delete(List<String> ids) {
+        int ret = this.delete(ids, Role.class);
+        this.roleMenuService.deleteByRoleId(ids);
+        this.userRoleService.deleteByRoleId(ids);
         return ret;
-    }
-
-    @Override
-    public RoleWithMenu getRoleWithMenus(String roleId) {
-        List<RoleWithMenu> list = this.roleMapper.findById(roleId);
-        List<String> menuList = list.stream().map(RoleWithMenu::getMenuId).collect(Collectors.toList());
-        if (list.isEmpty()) {
-            return null;
-        }
-        RoleWithMenu roleWithMenu = list.get(0);
-        roleWithMenu.setMenuIds(menuList);
-        return roleWithMenu;
     }
 
     @Override

@@ -131,9 +131,8 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
 
     @Override
     @Transactional
-    public int delete(String userIds) {
-        List<String> list = Arrays.asList(userIds.split(","));
-        int ret = this.delete(list, "userId", User.class);
+    public int delete(List<String> userIds) {
+        int ret = this.delete(userIds, "userId", User.class);
         this.userRoleService.deleteByUserId(userIds);
         return ret;
     }
@@ -158,18 +157,6 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
         user.setPassword(newPassword);
         this.userMapper.updateByExampleSelective(user, example);
 
-    }
-
-    @Override
-    public UserWithRole getWithRole(String userId) {
-        List<UserWithRole> list = this.userMapper.findUserWithRole(userId);
-        List<Long> roleList = list.stream().map(UserWithRole::getRoleId).collect(Collectors.toList());
-        if (list.isEmpty()) {
-            return null;
-        }
-        UserWithRole userWithRole = list.get(0);
-        userWithRole.setRoleIds(roleList);
-        return userWithRole;
     }
 
     @Override

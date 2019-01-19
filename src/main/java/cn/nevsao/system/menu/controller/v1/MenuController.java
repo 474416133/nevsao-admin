@@ -37,13 +37,10 @@ public class MenuController extends BaseController {
         return PATH_PREFIX + "menu";
     }
 
-
     @RequestMapping("menu/tree/view")
     public String getMenuTreeVew() {
         return PATH_PREFIX + "tree";
     }
-
-
 
     @RequestMapping("menu/list")
     @RequiresPermissions("system:menu:list")
@@ -78,12 +75,8 @@ public class MenuController extends BaseController {
 
     @RequestMapping("menu/checkMenuName")
     @ResponseBody
-    public boolean checkMenuName(String name, String menuType, String oldName) {
-        if (StringUtils.isNotBlank(oldName) && name.equalsIgnoreCase(oldName)) {
-            return true;
-        }
-        Menu result = this.menuService.getByNameAndType(name, menuType);
-        return result == null;
+    public void checkMenuName(String name, String menuType, String id) {
+        menuService.checkNameAndType(name, menuType, id);
     }
 
     @RequiresPermissions("system:menu:add")
@@ -92,18 +85,18 @@ public class MenuController extends BaseController {
         return PATH_PREFIX + "add";
     }
 
-
     @Log("新增菜单/按钮")
     @RequiresPermissions("system:menu:add")
     @RequestMapping("menu/add")
     @ResponseBody
     public String addMenu(Menu menu) {
+        menuService.checkNameAndType(menu.getName(), menu.getMenuType(), null);
         MenuTypeEnum menuTypeEnum = MenuTypeEnum.getByCode(menu.getMenuType());
         if (menuTypeEnum == null){
             return "菜单类型[" + menuTypeEnum.getRemark() + "]有误！";
         }
         this.menuService.insert(menu);
-        return "新增" + menuTypeEnum.getRemark() + "成功！";
+        return "新增[" + menuTypeEnum.getRemark() + "]成功！";
     }
 
     @Log("删除菜单")
@@ -128,6 +121,7 @@ public class MenuController extends BaseController {
     @RequestMapping("menu/update")
     @ResponseBody
     public String updateMenu(Menu menu) {
+        menuService.checkNameAndType(menu.getName(), menu.getMenuType(), menu.getId());
         MenuTypeEnum menuTypeEnum = MenuTypeEnum.getByCode(menu.getMenuType());
         if (menuTypeEnum == null){
             return "菜单类型[" + menuTypeEnum.getRemark() + "]有误！";
@@ -136,8 +130,7 @@ public class MenuController extends BaseController {
             menu.setParentId(null);
         }
         this.menuService.updateExcludeNull(menu);
-        return "修改" + menuTypeEnum.getRemark() + "成功！";
-
+        return "修改[" + menuTypeEnum.getRemark() + "]成功！";
     }
 
 }

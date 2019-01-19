@@ -1,19 +1,21 @@
 package cn.nevsao.system.dept.service;
 
-import cn.nevsao.common.mvc.vo.Tree;
 import cn.nevsao.common.mvc.service.IService;
 import cn.nevsao.system.dept.entity.Dept;
 
 import java.util.List;
 
 public interface DeptService extends IService<Dept> {
-
-    Tree<Dept> getDeptTree();
-
+    /**
+     * @param dept
+     * @return
+     */
     List<Dept> findAllDepts(Dept dept);
 
-    Dept getByName(String deptName);
-
+    /**
+     * @param id
+     * @return
+     */
     Dept getWithParent(String id);
 
 }

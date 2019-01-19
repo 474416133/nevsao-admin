@@ -21,9 +21,7 @@ import java.time.LocalTime;
 @EnableCaching
 @EnableAsync
 public class Application {
-
     private static Logger log = LoggerFactory.getLogger(Application.class);
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         log.info("《《《《《《 FEBS started up successfully at {} {} 》》》》》》", LocalDate.now(), LocalTime.now());

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -79,8 +80,8 @@ public class DictController extends BaseController {
     @RequiresPermissions("system:dict:delete")
     @RequestMapping("dict/delete")
     @ResponseBody
-    public String deleteDicts(String ids) {
-        this.dictService.delete(ids);
+    public String deleteDicts(String[] ids) {
+        this.dictService.delete(Arrays.asList(ids), Dict.class);
         return "删除字典成功！";
     }
 

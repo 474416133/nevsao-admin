@@ -13,8 +13,6 @@ import java.util.List;
 @CacheConfig(cacheNames = "UserService")
 public interface UserService extends IService<User> {
 
-    UserWithRole getWithRole(String userId);
-
     User getByName(String userName);
 
     //@Cacheable(key = "#p0.toString() + (#p1 != null ? #p1.toString() : '')")
@@ -31,8 +29,8 @@ public interface UserService extends IService<User> {
     @CacheEvict(key = "#p0", allEntries = true)
     void update(User user, String[] roles);
 
-    @CacheEvict(key = "#p0", allEntries = true)
-    int delete(String userIds);
+    //@CacheEvict(key = "#p0", allEntries = true)
+    //int delete(String userIds);
 
     void updateLoginTime(String userName);
 

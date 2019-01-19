@@ -92,4 +92,9 @@ public  class BaseService<T extends BaseEntity> implements IService<T> {
 		example.createCriteria().andCondition("lower(name) =", name.toLowerCase());
 		return this.findByExample(example);
 	}
+
+	@Override
+	public int delete(List<String> ids) {
+		throw new NotImplementedException();
+	}
 }

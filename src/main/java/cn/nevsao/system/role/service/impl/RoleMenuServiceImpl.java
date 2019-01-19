@@ -26,8 +26,6 @@ public class RoleMenuServiceImpl extends ExtraService<RoleMenu> implements RoleM
     @Autowired
     private RoleMenuMapper roleMenuMapper;
 
-
-
     @Override
     public MyMapper getMapper() {
         return roleMenuMapper;
@@ -35,16 +33,15 @@ public class RoleMenuServiceImpl extends ExtraService<RoleMenu> implements RoleM
 
     @Override
     @Transactional
-    public void deleteByRoleId(String roleIds) {
-        List<String> list = Arrays.asList(roleIds.split(","));
-        this.delete(list, "roleId", RoleMenu.class);
+    public void deleteByRoleId(List<String> roleIds) {
+        this.delete(roleIds, "roleId", RoleMenu.class);
     }
 
     @Override
     @Transactional
-    public void deleteByMenuId(String menuIds) {
-        List<String> list = Arrays.asList(menuIds.split(","));
-        this.delete(list, "menuId", RoleMenu.class);
+    public void deleteByMenuId(List<String> menuIds) {
+        this.delete(menuIds, "menuId", RoleMenu.class);
     }
+
 
 }

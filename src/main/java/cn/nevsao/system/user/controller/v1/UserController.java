@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -188,9 +189,9 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:delete")
     @RequestMapping("user/delete")
     @ResponseBody
-    public ResponseBo deleteUsers(String ids) {
+    public ResponseBo deleteUsers(String[] ids) {
 
-        this.userService.delete(ids);
+        this.userService.delete(Arrays.asList(ids));
         return ResponseBo.ok("删除用户成功！");
     }
 

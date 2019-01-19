@@ -1,6 +1,8 @@
 package cn.nevsao.system.menu.service.impl;
 
 import cn.nevsao.common.enu.MenuTypeEnum;
+import cn.nevsao.common.exception.BaseException;
+import cn.nevsao.common.exception.ResponseCodeEnum;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
 import cn.nevsao.common.mvc.vo.Tree;
@@ -74,35 +76,6 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
     }
 
     @Override
-    public Tree<Menu> getMenuButtonTree() {
-        List<Tree<Menu>> trees = new ArrayList<>();
-        List<Menu> menus = this.all(new Menu());
-        buildTrees(trees, menus);
-        return TreeUtils.build(trees);
-    }
-
-    @Override
-    public Tree<Menu> getMenuTree() {
-        List<Tree<Menu>> trees = new ArrayList<>();
-        Example example = new Example(Menu.class);
-        example.createCriteria().andCondition("menu_type =", 0);
-        example.setOrderByClause("create_time");
-        List<Menu> menus = this.findByExample(example);
-        buildTrees(trees, menus);
-        return TreeUtils.build(trees);
-    }
-
-    private void buildTrees(List<Tree<Menu>> trees, List<Menu> menus) {
-        menus.forEach(menu -> {
-            Tree<Menu> tree = new Tree<>();
-            tree.setId(menu.getId());
-            tree.setParentId(menu.getParentId());
-            tree.setText(menu.getName());
-            trees.add(tree);
-        });
-    }
-
-    @Override
     public Tree<Menu> getUserMenu(String userName) {
         List<Tree<Menu>> trees = new ArrayList<>();
         List<Menu> menus = this.findUserMenus(userName);
@@ -119,15 +92,6 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
     }
 
     @Override
-    public Menu getByNameAndType(String menuName, String type) {
-        Example example = new Example(Menu.class);
-        example.createCriteria().andCondition("lower(name)=", menuName.toLowerCase())
-                .andEqualTo("menuType", type);
-        List<Menu> list = this.findByExample(example);
-        return list.isEmpty() ? null : list.get(0);
-    }
-
-    @Override
     @Transactional
     public int insert(Menu menu) {
         menu.setCreateTime(new Date());
@@ -140,11 +104,10 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
 
     @Override
     @Transactional
-    public int delete(String menuIds) {
-        List<String> list = Arrays.asList(menuIds.split(","));
-        int ret = this.delete(list, Menu.class);
+    public int delete(List<String> menuIds) {
+        int ret = this.delete(menuIds, Menu.class);
         this.roleMenuService.deleteByMenuId(menuIds);
-        this.menuMapper.changeToTop(list);
+        this.menuMapper.changeToTop(menuIds);
         return ret;
     }
 
@@ -172,6 +135,24 @@ public class MenuServiceImpl extends ExtraService<Menu> implements MenuService {
         }
         return urlList;
 
+    }
+
+    @Override
+    public List<Menu> findByNameAndType(String name, String type) {
+        Example example = new Example(Menu.class);
+        example.createCriteria().andCondition("lower(name)=", name.toLowerCase())
+                .andEqualTo("menuType", type);
+        return this.findByExample(example);
+    }
+
+    @Override
+    public void checkNameAndType(String name, String type, String id) {
+        List<Menu> list = findByNameAndType(name, type);
+        if (list.size() > 1){
+            throw new BaseException(ResponseCodeEnum.SERVER_DATA_HAD_EXIST);
+        }else if (list.size() == 1 && !StringUtils.equals(list.get(0).getId(), id)){
+            throw new BaseException(ResponseCodeEnum.SERVER_DATA_HAD_EXIST);
+        }
     }
 
     @Override

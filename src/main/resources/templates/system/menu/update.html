@@ -80,13 +80,10 @@
                         dataType: "json",
                         data: {
                         	"menuType": function() {
-                                return $("#id").val();
+                                return $.common.trim($("#menuType").val());
                             },
-                            "name": function() {
-		                		return $("input[name='name']").val();
-		                    },
-		                    "oldName": function() {
-		                		return $.common.trim("[[${menu.name}]]");
+		                    "id": function() {
+		                		return $.common.trim($("#id").val());
 		                    }
                         },
                         dataFilter: function(data, type) {

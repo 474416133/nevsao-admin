@@ -75,10 +75,8 @@
                         data: {
                         	"menuType": function() {
 		                		return $("input[name='menuType']").val();
-		                    },
-                        	"menuName" : function() {
-                                return $.common.trim($("#name").val());
-                            }
+		                    }
+
                         },
                         dataFilter: function(data, type) {
                         	return $.validate.unique(data);

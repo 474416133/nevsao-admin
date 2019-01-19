@@ -14,7 +14,7 @@
   </resultMap>
 
   <update id="changeToTop" parameterType="java.util.List">
-  	update sys_dept set parent_id = 0 where id in ( select a.id from (
+  	update sys_dept set parent_id = null where id in ( select a.id from (
   	(select id from sys_dept where parent_id in
   	<foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
   		#{id}

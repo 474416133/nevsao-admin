@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -90,8 +91,8 @@ public class DeptController {
     @RequiresPermissions("system:dept:delete")
     @RequestMapping("dept/delete")
     @ResponseBody
-    public String deleteDepts(String ids) {
-        this.deptService.delete(ids);
+    public String deleteDepts(String[] ids) {
+        this.deptService.delete(Arrays.asList(ids));
         return "删除部门成功！";
     }
 

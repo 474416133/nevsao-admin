@@ -27,16 +27,14 @@ public class UserRoleServiceImpl extends ExtraService<UserRole> implements UserR
 
     @Override
     @Transactional
-    public void deleteByRoleId(String roleIds) {
-        List<String> list = Arrays.asList(roleIds.split(","));
-        this.delete(list, "roleId", UserRole.class);
+    public void deleteByRoleId(List<String> roleIds) {
+        this.delete(roleIds, "roleId", UserRole.class);
     }
 
     @Override
     @Transactional
-    public void deleteByUserId(String userIds) {
-        List<String> list = Arrays.asList(userIds.split(","));
-        this.delete(list, "userId", UserRole.class);
+    public void deleteByUserId(List<String> userIds) {
+        this.delete(userIds, "userId", UserRole.class);
     }
 
 }
