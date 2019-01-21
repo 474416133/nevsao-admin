@@ -72,6 +72,9 @@ public class User extends BaseEntityExtra {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "nickname")
+    private String nickname;
+
 
     @Override
     public String toString() {

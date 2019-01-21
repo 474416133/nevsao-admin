@@ -1,5 +1,7 @@
 package cn.nevsao.system.user.service.impl;
 
+import cn.nevsao.common.exception.BaseException;
+import cn.nevsao.common.exception.ResponseCodeEnum;
 import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.enu.GenderEnum;
 import cn.nevsao.common.mvc.mapper.MyMapper;
@@ -46,6 +48,7 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
     @Autowired
     private DeptService deptService;
 
+
     @Override
     public MyMapper getMapper() {
         return userMapper;
@@ -53,9 +56,7 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
 
     @Override
     public User getByName(String userName) {
-        Example example = new Example(User.class);
-        example.createCriteria().andCondition("lower(username)=", userName.toLowerCase());
-        List<User> list = this.findByExample(example);
+        List<User> list = findByProperty("username", userName);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -98,9 +99,9 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
     @Override
     @Transactional
     public void insert(User user, String[] roles) {
-        user.setCreateTime(new Date());
         user.setThemeUsing(User.DEFAULT_THEME);
         user.setAvatar(User.DEFAULT_AVATAR);
+        user.setPassword("88888888");
         user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
         //this.save(user);
         super.insert(user);
@@ -110,9 +111,9 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
     private void setUserRoles(User user, String[] roles) {
         Arrays.stream(roles).forEach(roleId -> {
             UserRole ur = new UserRole();
-            ur.setId(user.getId());
+            ur.setUserId(user.getId());
             ur.setRoleId(roleId);
-            this.userRoleMapper.insert(ur);
+            this.userRoleService.insert(ur);
         });
     }
 
@@ -180,6 +181,38 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
             user.setDeptName(dept.getName());
         }
         return user;
+    }
+
+    @Override
+    public void checkUsername(String username) {
+        checkList(findByProperty("username", username), null);
+    }
+
+    @Override
+    public void checkEmail(String email, String id) {
+        checkList(findByProperty("email", email), id);
+
+    }
+
+    @Override
+    public void checkMobile(String mobile, String id) {
+        checkList(findByProperty("mobile", mobile), id);
+    }
+
+    private List<User> findByProperty(String propertyName, Object value){
+        Example example = new Example(User.class);
+        example.createCriteria().andCondition("lower("+propertyName+")=", value);
+        return this.findByExample(example);
+    }
+
+    private void checkList(List<User> list, String id){
+        if (list.size() > 1){
+            throw  new BaseException(ResponseCodeEnum.SERVER_DATA_HAD_EXIST);
+        }else if (list.size() == 1){
+            if (!StringUtils.equals(id, list.get(0).getId())){
+                throw new BaseException(ResponseCodeEnum.SERVER_DATA_HAD_EXIST);
+            }
+        }
     }
 
 }

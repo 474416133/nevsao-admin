@@ -18,4 +18,20 @@ public interface DeptService extends IService<Dept> {
      */
     Dept getWithParent(String id);
 
+
+    /**
+     * 列表，包括负责人信息
+     * @param dept
+     * @return
+     */
+    List<Dept> findWithPrincipal(Dept dept);
+
+    /**
+     * 单个，包括负责人信息
+     * @param id
+     * @return
+     */
+    Dept getWithPrincipal(String id);
+
+
 }

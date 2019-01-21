@@ -60,12 +60,20 @@ public class UserController extends BaseController {
 
     @RequestMapping("user/checkUserName")
     @ResponseBody
-    public boolean checkUserName(String username, String oldusername) {
-        if (StringUtils.isNotBlank(oldusername) && username.equalsIgnoreCase(oldusername)) {
-            return true;
-        }
-        User result = this.userService.getByName(username);
-        return result == null;
+    public void checkUserName(String username) {
+        userService.checkUsername(username);
+    }
+
+    @RequestMapping("user/checkEmail")
+    @ResponseBody
+    public void checkEmail(String email, String id) {
+        userService.checkEmail(email, id);
+    }
+
+    @RequestMapping("user/checkMobile")
+    @ResponseBody
+    public void checkMobile(String mobile, String id) {
+        userService.checkMobile(mobile, id);
     }
 
     @RequestMapping("user/getUser")
@@ -142,14 +150,13 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:add")
     @RequestMapping("user/add")
     @ResponseBody
-    public ResponseBo addUser(User user, String[] roles) {
-
+    public String addUser(User user, String[] roleIds) {
         BitEnum activeEnum = BitEnum.getByCode(user.getIsActive());
         if (activeEnum == null) {
             throw new BaseException(ResponseCodeEnum.CLIENT_PARAMS_ERROR);
         }
-        this.userService.insert(user, roles);
-        return ResponseBo.ok("新增用户成功！");
+        this.userService.insert(user, roleIds);
+        return "新增用户成功！";
     }
 
     @RequiresPermissions("system:user:update")
@@ -163,6 +170,7 @@ public class UserController extends BaseController {
         paramObj.setColumnName("title");
         paramObj.setTableName("sys_user");
         List<Dict> titles = dictService.all(paramObj, null);
+
         mmap.put("titles", titles);
 
         List<Role> roles = roleService.all();
@@ -175,24 +183,24 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:update")
     @RequestMapping("user/update")
     @ResponseBody
-    public ResponseBo updateUser(User user, String[] rolesSelect) {
+    public String updateUser(User user, String[] rolesSelect) {
 
         BitEnum activeEnum = BitEnum.getByCode(user.getIsActive());
         if (activeEnum == null) {
             throw new BaseException(ResponseCodeEnum.CLIENT_PARAMS_ERROR);
         }
         this.userService.update(user, rolesSelect);
-        return ResponseBo.ok("修改用户成功！");
+        return "修改用户成功！";
     }
 
     @Log("删除用户")
     @RequiresPermissions("system:user:delete")
     @RequestMapping("user/delete")
     @ResponseBody
-    public ResponseBo deleteUsers(String[] ids) {
+    public String deleteUsers(String[] ids) {
 
         this.userService.delete(Arrays.asList(ids));
-        return ResponseBo.ok("删除用户成功！");
+        return "删除用户成功！";
     }
 
     @RequestMapping("user/checkPassword")
@@ -205,17 +213,16 @@ public class UserController extends BaseController {
 
     @RequestMapping("user/updatePassword")
     @ResponseBody
-    public ResponseBo updatePassword(String newPassword) {
+    public String updatePassword(String newPassword) {
 
         this.userService.resetPassword(newPassword);
-        return ResponseBo.ok("更改密码成功！");
+        return "更改密码成功！";
     }
 
     @RequestMapping("user/profile")
     public String profileIndex(Model model) {
         User user = super.getCurrentUser();
         user = this.userService.getUserProfile(user);
-        //user.setGenderRemark(GenderEnum.getByCode(user.getGender()).getRemark());
         model.addAttribute("user", user);
         return "system/user/profile";
     }
@@ -231,20 +238,20 @@ public class UserController extends BaseController {
 
     @RequestMapping("user/updateUserProfile")
     @ResponseBody
-    public ResponseBo updateUserProfile(User user) {
+    public String updateUserProfile(User user) {
 
         this.userService.updateUserProfile(user);
-        return ResponseBo.ok("更新个人信息成功！");
+        return "更新个人信息成功！";
     }
 
     @RequestMapping("user/changeAvatar")
     @ResponseBody
-    public ResponseBo changeAvatar(String imgName) {
+    public String changeAvatar(String imgName) {
         String[] img = imgName.split("/");
         String realImgName = img[img.length - 1];
         User user = getCurrentUser();
         user.setAvatar(realImgName);
         this.userService.updateExcludeNull(user);
-        return ResponseBo.ok("更新头像成功！");
+        return "更新头像成功！";
     }
 }

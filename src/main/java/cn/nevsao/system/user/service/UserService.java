@@ -41,4 +41,8 @@ public interface UserService extends IService<User> {
     void updateUserProfile(User user);
 
     User getWithDept(String id);
+
+    void checkUsername(String username);
+    void checkEmail(String email, String id);
+    void checkMobile(String mobile, String id);
 }

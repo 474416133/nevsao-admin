@@ -11,6 +11,10 @@
     <result column="order_seq" jdbcType="INTEGER" property="orderSeq" />
     <result column="create_time"  property="createTime" />
       <result column="modify_time"  property="modifyTime" />
+      <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
+      <result column="principal_nickname" jdbcType="VARCHAR" property="principalNickname" />
+      <result column="principal_mobile" jdbcType="VARCHAR" property="principalMobile" />
+      <result column="principal_email" jdbcType="VARCHAR" property="principalEmail" />
   </resultMap>
 
   <update id="changeToTop" parameterType="java.util.List">
@@ -21,6 +25,25 @@
   	</foreach>
   	) ) a )
   </update>
+    <select id="findWithPrincipal" parameterType="Dept" resultMap="deptMap" >
+        select d.id, d.parent_id, d.name, d.modify_time, d.principal_id,
+        u.nickname as principal_nickname, u.mobile as principal_mobile, u.email as principal_email
+        from sys_dept d
+        left join sys_user u on d.principal_id = u.id
+        <where>
+            <if test="name != null and name != ''">
+                and position(#{name} in name)
+            </if>
+        </where>
+        order by d.order_seq desc, d.modify_time
+    </select>
 
+    <select id="getWithPrincipal" parameterType="java.lang.String" resultMap="deptMap" >
+        select d.id, d.parent_id, d.name, d.modify_time, d.principal_id,
+        u.nickname as principal_nickname, u.mobile as principal_mobile, u.email as principal_email
+        from sys_dept d
+        left join sys_user u on d.principal_id = u.id
+        where d.id = #{id}
+    </select>
 
 </mapper>

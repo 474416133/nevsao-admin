@@ -6,6 +6,7 @@
 	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 		<form class="form-horizontal m" id="form-dept-edit" th:object="${dept}">
 			<input name="deptId" type="hidden" th:field="*{id}" />
+			<input id="oldPrincipalId" type="hidden" th:value="*{principalId}" />
 			<input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">上级部门：</label>
@@ -28,19 +29,26 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">负责人：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="leader" >
+					<select class="form-control select2-hidden-accessible" name="principalId" id="principalId">
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">联系电话：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="phone" >
+					<input class="form-control" type="text" name="mobile" readonly="true" th:field="*{principalMobile}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">邮箱：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="email" >
+					<input class="form-control" type="text" name="email" readonly="true" th:field="*{principalEmail}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">最近一次修改时间：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="lastModifyTime" readonly="true" th:field="*{modifyTime}">
 				</div>
 			</div>
 
@@ -48,44 +56,98 @@
 	</div>
 	<div th:include="include::footer"></div>
 	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
 	<script type="text/javascript">
-		var prefix = ctx + "system/dept";
-		$("#form-dept-edit").validate({
-			rules:{
-				name:{
-					required:true,
-					remote: {
-		                url: prefix + "/checkDeptName",
-		                type: "post",
-		                dataType: "json",
-		                data: {
-							"id": function() {
-									return $.common.trim($("#id").val());
-								}
-		                },
-		                dataFilter: function(data, type) {
-		                	return $.validate.unique(data);
-		                }
-		            }
-				},
-				orderSeq:{
-					required:true,
-					digits:true
-				},
-
+	$(function(){
+		$("#principalId").select2({
+		  ajax: {
+		  	type: "post",
+		  	delay:250,
+			url: ctx + "system/user/list",
+			dataType: 'json',
+			data: function (params) {
+			  return {
+				username: params.term, // search term
+				pageNum: params.page,
+				pageSize: 20
+			  };
 			},
-			messages: {
-		        "name": {
-		            remote: "部门已经存在"
-		        }
-		    }
+			processResults: function (data, params) {
+			  params.page = params.page || 1;
+			  //var _rows = [];
+			  //for (item in data.msg.rows){
+			  //	  _rows.push({id : item.id, text: item.username, mobile: item.mobile});
+			  //}
+			  return {
+				results: data.msg.rows,
+				pagination: {
+				  more: (params.page * 20) < data.msg.total
+				}
+			  };
+			},
+			cache: true
+		  },
+		  placeholder: '请选择',
+		  minimumInputLength: 0,
+		  escapeMarkup: function (markup) { return markup; },
+		  templateResult: formatRepo,
+  		  templateSelection: formatRepoSelection
+
 		});
-		
-		function submitHandler() {
-	        if ($.validate.form()) {
-	        	$.operate.save(prefix + "/update", $('#form-dept-edit').serialize());
-	        }
-	    }
+
+		function formatRepo(repo){
+			return repo.username;
+			};
+
+		function formatRepoSelection(repo){
+			$('input[name="mobile"]').attr("value", repo.mobile);
+			$('input[name="email"]').attr("value", repo.email);
+			return repo.username;
+		};
+
+		var defaultVal = $("#oldPrincipalId").val();
+		var data = [];
+		data.push(defaultVal)
+    	$("#principalId").val(data).trigger('change');
+	});
+
+	var prefix = ctx + "system/dept";
+	$("#form-dept-edit").validate({
+		rules:{
+			name:{
+				required:true,
+				remote: {
+					url: prefix + "/checkDeptName",
+					type: "post",
+					dataType: "json",
+					data: {
+						"id": function() {
+								return $.common.trim($("#id").val());
+							}
+					},
+					dataFilter: function(data, type) {
+						return $.validate.unique(data);
+					}
+				}
+			},
+			orderSeq:{
+				required:true,
+				digits:true
+			},
+
+		},
+		messages: {
+			"name": {
+				remote: "部门已经存在"
+			}
+		}
+	});
+
+	function submitHandler() {
+		if ($.validate.form()) {
+			$.operate.save(prefix + "/update", $('#form-dept-edit').serialize());
+		}
+	}
 	</script>
 </body>
 </html>

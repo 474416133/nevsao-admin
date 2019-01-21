@@ -46,7 +46,7 @@
 				<label class="col-sm-3 control-label">状态：</label>
 				<div class="col-sm-8">
 					<div class="onoffswitch">
-                         <input type="checkbox" th:checked="${user.isActive == '0' ? true : false}" class="onoffswitch-checkbox" id="isActive" name="isActive">
+                         <input type="checkbox" th:checked="${user.isActive == 1 ? true : false}" class="onoffswitch-checkbox" id="isActive" name="isActive">
                          <label class="onoffswitch-label" for="isActive">
                              <span class="onoffswitch-inner"></span>
                              <span class="onoffswitch-switch"></span>
@@ -67,7 +67,7 @@
 				<label class="col-sm-3 control-label">角色：</label>
 				<div class="col-sm-8">
 					<label th:each="role:${roles}" class="check-box">
-						<input name="role" type="checkbox" th:value="${role.id}" th:text="${role.name}" th:checked="${role.flag}" >
+						<input name="roleIds" type="checkbox" th:value="${role.id}" th:text="${role.name}" th:checked="${role.flag}" >
 					</label>
 				</div>
 			</div>
@@ -89,16 +89,14 @@
         			required:true,
                     email:true,
                     remote: {
-                        url: ctx + "system/user/checkEmailUnique",
+                        url: ctx + "system/user/checkEmail",
                         type: "post",
                         dataType: "json",
                         data: {
                         	"id": function() {
                                 return $("#id").val();
-                            },
-                			"email": function() {
-                                return $.common.trim($("#email").val());
                             }
+
                         },
                         dataFilter: function (data, type) {
                         	return $.validate.unique(data);
@@ -109,16 +107,14 @@
         			required:true,
         			isPhone:true,
                     remote: {
-                        url: ctx + "system/user/checkPhoneUnique",
+                        url: ctx + "system/user/checkMobile",
                         type: "post",
                         dataType: "json",
                         data: {
                         	"id": function() {
                         		return $("#id").val();
-                            },
-                			"mobile": function() {
-                                return $.common.trim($("#mobile").val());
                             }
+
                         },
                         dataFilter: function (data, type) {
                         	return $.validate.unique(data);

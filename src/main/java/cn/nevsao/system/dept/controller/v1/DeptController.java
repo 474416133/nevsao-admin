@@ -44,12 +44,19 @@ public class DeptController {
     }
 
 
-    @RequestMapping("dept/list")
+    @RequestMapping("dept/list/verbose")
     @RequiresPermissions("system:dept:list")
     @ResponseBody
     public List<Dept> deptList(Dept dept) {
-        return this.deptService.findAllDepts(dept);
+        return this.deptService.findWithPrincipal(dept);
     }
+
+    @RequestMapping("dept/list")
+    @RequiresPermissions("system:dept:list")
+    @ResponseBody
+    public List<Dept> all(Dept dept) {
+        return this.deptService.findAllDepts(dept);
+        }
 
     @RequestMapping("dept/excel")
     @ResponseBody

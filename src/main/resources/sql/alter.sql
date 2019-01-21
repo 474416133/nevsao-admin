@@ -13,3 +13,6 @@ alter table sys_dict modify column remark varchar(200) comment "备注" after  d
 
 /* 2019-01-14
 alter table sys_role drop column remark;
+
+/* 2019-01-20
+alter table sys_user add column nickname varchar(64) comment "昵称" after  username;

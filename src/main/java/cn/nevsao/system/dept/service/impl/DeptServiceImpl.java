@@ -47,12 +47,22 @@ public class DeptServiceImpl extends ExtraService<Dept> implements DeptService {
 
 	@Override
 	public Dept getWithParent(String id) {
-		Dept dept = get(id);
+		Dept dept = getWithPrincipal(id);
 		if (dept != null && StringUtils.isNotBlank(dept.getParentId())){
 			Dept parent = get(dept.getParentId());
 			dept.setParent(parent);
 		}
 		return dept;
+	}
+
+	@Override
+	public List<Dept> findWithPrincipal(Dept dept) {
+		return deptMapper.findWithPrincipal(dept);
+	}
+
+	@Override
+	public Dept getWithPrincipal(String id) {
+		return deptMapper.getWithPrincipal(id);
 	}
 
 	@Override

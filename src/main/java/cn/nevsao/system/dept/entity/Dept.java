@@ -29,7 +29,13 @@ public class Dept extends BaseEntityExtra {
     private String principalId;
 
     @Transient
-    private User manager;
+    private String principalNickname;
+
+    @Transient
+    private String principalMobile;
+
+    @Transient
+    private String principalEmail;
 
     @Transient
     private Dept parent;

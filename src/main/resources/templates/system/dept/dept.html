@@ -52,7 +52,7 @@
 		        code: "id",
 		        parentCode: "parentId",
 		        uniqueId: "id",
-		        url: prefix + "/list",
+		        url: prefix + "/list/verbose",
 		        createUrl: prefix + "/add",
 		        updateUrl: prefix + "/update/{id}",
 		        removeUrl: prefix + "/delete",
@@ -67,13 +67,18 @@
 		            align: "left"
 		        },
 		        {
-		            field: 'orderSeq',
-		            title: '排序',
+		            field: 'principalNickname',
+		            title: '负责人名称',
 		            align: "left"
 		        },
 		        {
-		            field: 'createTime',
-		            title: '创建时间',
+		            field: 'principalMobile',
+		            title: '负责人电话',
+		            align: "left"
+		        },
+		        {
+		            field: 'modifyTime',
+		            title: '修改时间',
 		            align: "left"
 		        },
 		        {

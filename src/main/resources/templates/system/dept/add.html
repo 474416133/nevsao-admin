@@ -30,20 +30,20 @@
 					<!--
 					<input class="form-control" type="text" name="leader">
 					-->
-					<select class="user-select form-control" name="principalId">
+					<select class="form-control select2-hidden-accessible" name="principalId" id="principalId">
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">联系电话：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="phone">
+					<input class="form-control" type="text" name="mobile" readonly="true">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">邮箱：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" name="email">
+					<input class="form-control" type="text" name="email" readonly="true">
 				</div>
 			</div>
 
@@ -54,26 +54,27 @@
 	<script th:src="@{/ajax/libs/select/select2.js}"></script>
 	<script type="text/javascript">
 	$(function(){
-		$(".user-select").select2({
+		$("#principalId").select2({
 		  ajax: {
 		  	type: "post",
+		  	delay:250,
 			url: ctx + "system/user/list",
 			dataType: 'json',
 			data: function (params) {
 			  return {
-				name: params.term, // search term
+				username: params.term, // search term
 				pageNum: params.page,
 				pageSize: 20
 			  };
 			},
 			processResults: function (data, params) {
 			  params.page = params.page || 1;
-			  var _rows = [];
-			  for (item in data.msg.rows){
-			  	  _rows.push({id : item.id, text: item.username, mobile: item.mobile});
-			  }
+			  //var _rows = [];
+			  //for (item in data.msg.rows){
+			  //	  _rows.push({id : item.id, text: item.username, mobile: item.mobile});
+			  //}
 			  return {
-				results: _rows,
+				results: data.msg.rows,
 				pagination: {
 				  more: (params.page * 20) < data.msg.total
 				}
@@ -82,8 +83,21 @@
 			cache: true
 		  },
 		  placeholder: '请选择',
-		  minimumInputLength: 1,
+		  minimumInputLength: 0,
+		  escapeMarkup: function (markup) { return markup; },
+		  templateResult: formatRepo,
+  		  templateSelection: formatRepoSelection
 		});
+
+		function formatRepo(repo){
+			return repo.username;
+			};
+
+		function formatRepoSelection(repo){
+			$('input[name="mobile"]').attr("value", repo.mobile);
+			$('input[name="email"]').attr("value", repo.email);
+			return repo.username;
+		}
 	});
 	var prefix = ctx + "system/dept";
 	$("#form-dept-add").validate({
