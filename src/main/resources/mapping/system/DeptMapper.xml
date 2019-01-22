@@ -39,7 +39,7 @@
     </select>
 
     <select id="getWithPrincipal" parameterType="java.lang.String" resultMap="deptMap" >
-        select d.id, d.parent_id, d.name, d.modify_time, d.principal_id,
+        select d.id, d.parent_id, d.name, d.modify_time, d.principal_id, d.order_seq,
         u.nickname as principal_nickname, u.mobile as principal_mobile, u.email as principal_email
         from sys_dept d
         left join sys_user u on d.principal_id = u.id

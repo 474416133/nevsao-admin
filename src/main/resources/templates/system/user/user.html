@@ -97,6 +97,10 @@
 		            title: '用户名称'
 		        },
 		        {
+		            field: 'nickname',
+		            title: '昵称'
+		        },
+		        {
 		            field: 'deptName',
 		            title: '部门'
 		        },
@@ -133,12 +137,16 @@
 		            	}else {
 		            		return "冻结";
 		            	}
-		            	//return $.table.selectDictLabel(datas, value);
 		            }
 		        },
 		        {
-		            field: 'createTime',
-		            title: '创建时间',
+		            field: 'modifyTime',
+		            title: '修改时间',
+		            sortable: true
+		        },
+		        {
+		            field: 'lastLoginTime',
+		            title: '最近一次登录时间',
 		            sortable: true
 		        },
 		        {

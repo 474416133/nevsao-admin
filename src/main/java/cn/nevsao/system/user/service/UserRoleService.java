@@ -10,4 +10,6 @@ public interface UserRoleService extends IService<UserRole> {
 	void deleteByRoleId(List<String> roleIds);
 
 	void deleteByUserId(List<String> userIds);
+
+	List<UserRole> findByUserId(String userId);
 }

@@ -10,7 +10,13 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">登录名称：</label>
 				<div class="col-sm-8">
-					<input class="form-control" type="text" readonly="true" th:field="*{username}"/>
+					<input class="form-control" type="text" readonly="true"  th:field="*{username}"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">昵称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text"   th:field="*{nickname}"/>
 				</div>
 			</div>
 			<div class="form-group">
@@ -35,10 +41,10 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">性别：</label>
 				<div class="col-sm-8">
-					<select id="gender" class="form-control m-b" >
-						<option value="0" selected="selected">保密</option>
-						<option value="1">男</option>
-						<option value="2">女</option>
+					<select id="gender" class="form-control m-b" name="gender" th:field="*{gender}">
+							<option value="0" selected="selected">保密</option>
+							<option value="1">男</option>
+							<option value="2">女</option>
 					</select>
 				</div>
 			</div>
@@ -77,101 +83,77 @@
 	<script th:src="@{/ajax/libs/select/select2.js}"></script>
 	<script th:src="@{/ruoyi/system/dept/dept.js}"></script>
 	<script>
-        $("#form-user-edit").validate({
-        	rules:{
-        		id:{
-        			required:true,
-        		},
-        		deptName:{
-        			required:true,
-        		},
-        		email:{
-        			required:true,
-                    email:true,
-                    remote: {
-                        url: ctx + "system/user/checkEmail",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                        	"id": function() {
-                                return $("#id").val();
-                            }
+	var prefix = ctx + "system/user";
+	$("#form-user-edit").validate({
+		rules:{
+			id:{
+				required:true,
+			},
+			deptName:{
+				required:true,
+			},
+			email:{
+				required:true,
+				email:true,
+				remote: {
+					url: prefix + "/checkEmail",
+					type: "post",
+					dataType: "json",
+					data: {
+						"id": function() {
+							return $("#id").val();
+						}
 
-                        },
-                        dataFilter: function (data, type) {
-                        	return $.validate.unique(data);
-                        }
-                    }
-        		},
-        		mobile:{
-        			required:true,
-        			isPhone:true,
-                    remote: {
-                        url: ctx + "system/user/checkMobile",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                        	"id": function() {
-                        		return $("#id").val();
-                            }
+					},
+					dataFilter: function (data, type) {
+						return $.validate.unique(data);
+					}
+				}
+			},
+			mobile:{
+				required:true,
+				isPhone:true,
+				remote: {
+					url: prefix + "/checkMobile",
+					type: "post",
+					dataType: "json",
+					data: {
+						"id": function() {
+							return $("#id").val();
+						}
 
-                        },
-                        dataFilter: function (data, type) {
-                        	return $.validate.unique(data);
-                        }
-                    }
-        		},
-        	},
-        	messages: {
-        		"email": {
-                    remote: "Email已经存在"
-                },
-        		"mobile":{
-                	remote: "手机号码已经存在"
-        		}
-            },
-        	submitHandler:function(form){
-        		edit();
-        	}
-        });
-        
-        function submitHandler() {
-	        if ($.validate.form()) {
-	        	edit();
-	        }
-	    }
+					},
+					dataFilter: function (data, type) {
+						return $.validate.unique(data);
+					}
+				}
+			},
+		},
+		messages: {
+			"email": {
+				remote: "Email已经存在"
+			},
+			"mobile":{
+				remote: "手机号码已经存在"
+			}
+		}
+	});
 
-        function edit() {
-        	var id = $("input[name='id']").val();
-        	var deptId = $("input[name='deptId']").val();
-        	var email = $("input[name='email']").val();
-        	var mobile = $("input[name='mobile']").val();
-        	var gender = $("#gender option:selected").val();
-        	var isActive = $("input[name='isActive']").is(':checked') == true ? 0 : 1;
-        	var roleIds = $.form.selectCheckeds("role");
-        	$.ajax({
-        		cache : true,
-        		type : "POST",
-        		url : ctx + "system/user/edit",
-        		data : {
-        			"id": id,
-        			"deptId": deptId,
-        			"email": email,
-        			"mobile": mobile,
-        			"gender": gender,
-        			"isActive": isActive,
-        			"roleIds": roleIds,
-        			"title": ""
-        		},
-        		async : false,
-        		error : function(request) {
-        			$.modal.alertError("系统错误");
-        		},
-        		success : function(data) {
-        			$.operate.successCallback(data);
-        		}
-        	});
-        }
+	function submitHandler() {
+		if ($.validate.form()) {
+				if ($.validate.form()) {
+					var isActive = $("input[name='isActive']").is(':checked');
+					if (isActive){
+						$("#isActive").attr("value", 1);
+					}else{
+						$("#isActive").attr("value", 0);
+					}
+					//var gender = $("#gender option:selected").val();
+					//$("#gender").attr("value", gender);
+					$.operate.save(prefix + "/update", $('#form-user-edit').serialize());
+				}
+			}
+		}
     </script>
 </body>
 </html>

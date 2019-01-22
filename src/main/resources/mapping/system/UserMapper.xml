@@ -7,6 +7,7 @@
     -->
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
+	  <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
 	  <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
@@ -15,6 +16,7 @@
     <result column="is_active" jdbcType="INTEGER" property="isActive" />
     
     <result column="last_login_time"  property="lastLoginTime" />
+	  <result column="modify_time"  property="modifyTime" />
     <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="theme_using" jdbcType="VARCHAR" property="themeUsing" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
@@ -24,7 +26,7 @@
 
 
   <select id="findUserWithDept" resultMap="BaseResultMap" parameterType="User">
-  		select u.id, u.username, u.email, u.mobile, u.is_active, u.create_time,
+  		select u.id, u.username, u.nickname, u.email, u.mobile, u.is_active, u.create_time , u.modify_time,
   		u.gender, d.name as dept_name from sys_user u
   		left join sys_dept d on u.dept_id = d.id
   		where 1=1

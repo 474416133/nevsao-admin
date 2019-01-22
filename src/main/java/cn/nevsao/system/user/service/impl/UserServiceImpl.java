@@ -125,7 +125,7 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
         user.setModifyTime(new Date());
         this.updateExcludeNull(user);
         Example example = new Example(UserRole.class);
-        example.createCriteria().andCondition("id=", user.getId());
+        example.createCriteria().andCondition("user_id=", user.getId());
         this.userRoleMapper.deleteByExample(example);
         setUserRoles(user, roles);
     }

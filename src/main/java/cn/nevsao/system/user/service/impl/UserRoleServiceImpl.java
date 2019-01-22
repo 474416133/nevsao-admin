@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +36,13 @@ public class UserRoleServiceImpl extends ExtraService<UserRole> implements UserR
     @Transactional
     public void deleteByUserId(List<String> userIds) {
         this.delete(userIds, "userId", UserRole.class);
+    }
+
+    @Override
+    public List<UserRole> findByUserId(String userId) {
+        Example example = new Example(UserRole.class);
+        example.createCriteria().andCondition("user_id=", userId);
+        return this.findByExample(example);
     }
 
 }

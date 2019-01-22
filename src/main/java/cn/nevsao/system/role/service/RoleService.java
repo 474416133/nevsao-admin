@@ -21,6 +21,13 @@ public interface RoleService extends IService<Role> {
 	//加载所有菜单并根据roleId标记已选
 	List<Menu> menuList(String roleId);
 
+	/**
+	 * 根据userId设置flag属性并返回全部
+	 * @param userId
+	 * @return
+	 */
+	List<Role> allWithFlagByUser(String userId);
+
 
 
 }

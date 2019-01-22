@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -170,10 +171,23 @@ public class UserController extends BaseController {
         paramObj.setColumnName("title");
         paramObj.setTableName("sys_user");
         List<Dict> titles = dictService.all(paramObj, null);
-
         mmap.put("titles", titles);
+        if (StringUtils.isNotBlank(user.getTitle())){
+            Map<String, Dict> dictMap = new HashMap<>();
+            List<String> userTiles = Arrays.asList(user.getTitle().split(","));
+            for (Dict dict: titles){
+                dictMap.put(dict.getDictKey(), dict);
+            }
 
-        List<Role> roles = roleService.all();
+            for (String title: userTiles){
+                Dict dict = dictMap.get(title);
+                if (dict != null){
+                    dict.setFlag("selected");
+                }
+            }
+        }
+
+        List<Role> roles = roleService.allWithFlagByUser(user.getId());
         mmap.put("roles", roles);
 
         return  PATH_PREFIX + "update";
@@ -183,13 +197,13 @@ public class UserController extends BaseController {
     @RequiresPermissions("system:user:update")
     @RequestMapping("user/update")
     @ResponseBody
-    public String updateUser(User user, String[] rolesSelect) {
+    public String updateUser(User user, String[] roleIds) {
 
         BitEnum activeEnum = BitEnum.getByCode(user.getIsActive());
         if (activeEnum == null) {
             throw new BaseException(ResponseCodeEnum.CLIENT_PARAMS_ERROR);
         }
-        this.userService.update(user, rolesSelect);
+        this.userService.update(user, roleIds);
         return "修改用户成功！";
     }
 

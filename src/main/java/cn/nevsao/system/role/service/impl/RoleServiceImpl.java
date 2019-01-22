@@ -12,6 +12,7 @@ import cn.nevsao.system.role.mapper.RoleMapper;
 import cn.nevsao.system.role.mapper.RoleMenuMapper;
 import cn.nevsao.system.role.service.RoleMenuService;
 import cn.nevsao.system.role.service.RoleService;
+import cn.nevsao.system.user.entity.UserRole;
 import cn.nevsao.system.user.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -127,5 +128,22 @@ public class RoleServiceImpl extends ExtraService<Role> implements RoleService {
             }
         });
          return menus;
+    }
+
+    @Override
+    public List<Role> allWithFlagByUser(String userId) {
+        List<Role> all = this.all();
+        Map<String, Role> roleMap = new HashMap<>();
+        all.forEach(role->{
+            roleMap.put(role.getId(), role);
+        });
+        List<UserRole> list = userRoleService.findByUserId(userId);
+        list.forEach(userRole->{
+            Role role = roleMap.get(userRole.getRoleId());
+            if (role != null){
+                role.setFlag("checked");
+            }
+        });
+        return all;
     }
 }
