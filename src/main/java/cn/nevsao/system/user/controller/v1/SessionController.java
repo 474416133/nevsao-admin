@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class SessionController {
     @RequestMapping("session")
     @RequiresPermissions("system:session:list")
     public String online() {
-        return "system/monitor/online";
+        return "monitor/online/online";
     }
 
     @ResponseBody
@@ -46,14 +47,10 @@ public class SessionController {
     @ResponseBody
     @RequiresPermissions("system:user:kickout")
     @RequestMapping("session/forceLogout")
-    public ResponseBo forceLogout(String id) {
-        try {
+    public String forceLogout(String[] ids) {
+        Arrays.asList(ids).forEach(id ->{
             sessionService.forceLogout(id);
-            return ResponseBo.ok();
-        } catch (Exception e) {
-            log.error("踢出用户失败", e);
-            return ResponseBo.error("踢出用户失败");
-        }
-
+        });
+        return "操作成功！";
     }
 }

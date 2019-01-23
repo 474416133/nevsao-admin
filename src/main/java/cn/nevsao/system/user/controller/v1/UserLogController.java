@@ -29,7 +29,7 @@ public class UserLogController extends BaseController {
     @RequestMapping("log")
     @RequiresPermissions("system:log:list")
     public String index() {
-        return "system/log/log";
+        return "monitor/userlog/userlog";
     }
 
     @RequestMapping("log/list")

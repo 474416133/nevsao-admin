@@ -552,6 +552,27 @@
         	    };
         	    $.ajax(config)
             },
+            // 删除信息
+            kick: function(id) {
+                $.modal.confirm("确定踢出该条" + $.table._option.modalName + "回话信息吗？", function() {
+                    var url = $.common.isEmpty(id) ? $.table._option.removeUrl : $.table._option.removeUrl.replace("{id}", id);
+                    var data = { "ids": id };
+                    $.operate.save(url, data);
+                });
+            },
+            // 批量删除信息
+            kickAll: function() {
+                var rows = $.common.isEmpty($.table._option.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns($.table._option.uniqueId);
+                if (rows.length == 0) {
+                    $.modal.alertWarning("请至少选择一条记录");
+                    return;
+                }
+                $.modal.confirm("确认要踢出选中的" + rows.length + "条回话吗?", function() {
+                    var url = $.table._option.removeUrl;
+                    var data = { "ids": rows.join() };
+                    $.operate.save(url, data);
+                });
+            },
             // 保存结果弹出msg刷新table表格
             ajaxSuccess: function (result) {
             	if (result.code == web_status.SUCCESS) {
@@ -567,6 +588,7 @@
                                             $.treeTable.refresh();
                                         } else {
                                             $.modal.msgReload("操作成功,正在刷新数据请稍后……", web_status.SUCCESS);
+
                                         }
                 } else {
                 	$.modal.alertError(result.msg);

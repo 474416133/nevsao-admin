@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<li>
+								<label>系统模块： </label><input type="text" name="title"/>
+							</li>
+							<li>
+								<label>操作人员： </label><input type="text" name="username"/>
+							</li>
+
+							<li class="select-time">
+								<label>操作时间： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+			<div class="btn-group-sm hidden-xs" id="toolbar" role="group">
+				<a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:log:delete">
+		            <i class="fa fa-remove"></i> 删除
+		        </a>
+		        <a class="btn btn-danger" onclick="$.operate.clean()" shiro:hasPermission="system:log:delete">
+	                <i class="fa fa-trash"></i> 清空
+	            </a>
+	            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:log:list">
+		            <i class="fa fa-download"></i> 导出
+		        </a>
+	        </div>
+	        
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		var detailFlag = [[${@permission.hasPermi('system:log:list')}]];
+		var prefix = ctx + "system/log";
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+		        cleanUrl: prefix + "/clean",
+		        detailUrl: prefix + "/detail/{id}",
+		        removeUrl: prefix + "/remove",
+		        exportUrl: prefix + "/export",
+		        sortName: "operTime",
+		        sortOrder: "desc",
+		        modalName: "操作日志",
+		        search: false,
+		        showExport: false,
+		        escape: true,
+		        columns: [{
+		            checkbox: true
+		        },
+		        {
+		            field: 'id',
+		            title: '日志编号'
+		        },
+		        {
+		            field: 'operation',
+		            title: '描述'
+		        },
+
+		        {
+		            field: 'method',
+		            title: '方法',
+		            sortable: true
+		        },
+		        {
+		            field: 'username',
+		            title: '操作人'
+		        },
+		        {
+		            field: 'ip',
+		            title: '主机'
+		        },
+		        {
+		            field: 'location',
+		            title: '操作地点'
+		        },
+
+		        {
+		            field: 'time',
+		            title: '操作时间',
+		            sortable: true
+		        },
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                var actions = [];
+		                actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="#" onclick="$.operate.detail(\'' + row.operId + '\')"><i class="fa fa-search"></i>详细</a>');
+		                return actions.join('');
+		            }
+		        }]
+		    };
+		    $.table.init(options);
+		});
+	</script>
+</body>
+</html>

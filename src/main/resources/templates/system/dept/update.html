@@ -7,7 +7,6 @@
 		<form class="form-horizontal m" id="form-dept-edit" th:object="${dept}">
 			<input name="deptId" type="hidden" th:field="*{id}" />
 			<input id="oldPrincipalId" type="hidden" th:value="*{principalId}" />
-			<input id="oldPrincipalNickname" type="hidden" th:value="*{principalNickname}" />
 			<input id="treeId" name="parentId" type="hidden" th:field="*{parentId}" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label ">上级部门：</label>
@@ -32,6 +31,7 @@
 				<div class="col-sm-8">
 					<select class="form-control select2-hidden-accessible" name="principalId" id="principalId" >
 					</select>
+					<labal id="oldPrincipalNickname"  th:text="*{principalNickname}" />
 				</div>
 			</div>
 			<div class="form-group">
@@ -75,10 +75,6 @@
 			},
 			processResults: function (data, params) {
 			  params.page = params.page || 1;
-			  //var _rows = [];
-			  //for (item in data.msg.rows){
-			  //	  _rows.push({id : item.id, text: item.username, mobile: item.mobile});
-			  //}
 			  return {
 				results: data.msg.rows,
 				pagination: {
@@ -88,12 +84,11 @@
 			},
 			cache: true
 		  },
-		  placeholder: '请选择',
+		  placeholder: oldPrincipalName,
 		  minimumInputLength: 0,
 		  escapeMarkup: function (markup) { return markup; },
 		  templateResult: formatRepo,
   		  templateSelection: formatRepoSelection
-
 		});
 
 		function formatRepo(repo){
@@ -105,12 +100,11 @@
 			$('input[name="email"]').attr("value", repo.email);
 			return repo.username;
 		};
-
 		var oldPrincipalId = $("#oldPrincipalId").val();
 		var oldPrincipalName = $("#oldPrincipalName").val();
 		var option = new Option(oldPrincipalName, oldPrincipalId, true, true);
     	$("#principalId").append(option);
-    	$("#principalId").trigger('change')
+    	$("#principalId").trigger('change');
 
 	});
 
