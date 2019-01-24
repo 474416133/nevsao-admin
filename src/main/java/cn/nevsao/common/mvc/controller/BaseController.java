@@ -7,7 +7,13 @@ import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,5 +51,12 @@ public class BaseController {
         PageInfo<?> pageInfo = new PageInfo<>((List<?>) s.get());
         PageHelper.clearPage();
         return getDataTable(pageInfo);
+    }
+
+    @InitBinder
+    protected void init(HttpServletRequest request, ServletRequestDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
     }
 }

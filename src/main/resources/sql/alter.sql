@@ -16,3 +16,18 @@ alter table sys_role drop column remark;
 
 /* 2019-01-20
 alter table sys_user add column nickname varchar(64) comment "昵称" after  username;
+
+/*2019-01-24
+alter table sys_user_log drop column op_desc;
+alter table sys_user_log drop column op_time;
+alter table sys_user_log drop column op_method;
+alter table sys_user_log drop column op_params;
+alter table sys_user_log drop column op_ip;
+alter table sys_user_log drop column op_location;
+alter table sys_user_log add column method_remark varchar(200) comment "方法备注" after  username;
+alter table sys_user_log add column period_time int comment "耗时（毫秒）" after  method_remark;
+alter table sys_user_log add column method_name varchar(300) comment "方法名" after  period_time;
+alter table sys_user_log add column method_params varchar(2000) comment "耗时（毫秒）" after  method_name;
+alter table sys_user_log add column user_ip varchar(32) comment "用户ip" after  method_params;
+alter table sys_user_log add column user_location varchar(64) comment "用户位置" after  user_ip;
+

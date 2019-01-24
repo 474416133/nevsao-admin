@@ -1,5 +1,7 @@
 package cn.nevsao.common.util;
 
+import sun.plugin.navig.motif.Plugin;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +13,7 @@ public class DateUtil {
 
     }
 
-    private static String getDateFormat(Date date, String dateFormatType) {
+    public static String getDateFormat(Date date, String dateFormatType) {
         SimpleDateFormat simformat = new SimpleDateFormat(dateFormatType);
         return simformat.format(date);
     }

@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -58,9 +58,17 @@ public class UserLogController extends BaseController {
     @RequiresPermissions("system:log:delete")
     @RequestMapping("log/delete")
     @ResponseBody
-    public ResponseBo deleteLogss(String ids) {
+    public String deleteLogss(String ids) {
 
         this.userLogService.delete(ids);
-        return ResponseBo.ok("删除日志成功！");
+        return "删除日志成功！";
+    }
+
+    @RequiresPermissions("system:log:list")
+    @GetMapping("log/detail/{id}")
+    public String get(@PathVariable("id") String id, ModelMap mmap) {
+        UserLog userLog = this.userLogService.get(id);
+        mmap.put("userLog", userLog);
+        return "monitor/userlog/detail";
     }
 }

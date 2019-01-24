@@ -4,6 +4,7 @@ import cn.nevsao.common.annotation.Log;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.BaseService;
 import cn.nevsao.common.util.AddressUtils;
+import cn.nevsao.common.util.DateUtil;
 import cn.nevsao.system.user.entity.UserLog;
 import cn.nevsao.system.user.mapper.UserLogMapper;
 import cn.nevsao.system.user.service.UserLogService;
@@ -31,7 +32,6 @@ import java.util.*;
 @Slf4j
 public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogService {
 
-
     @Autowired
     ObjectMapper objectMapper;
 
@@ -51,13 +51,15 @@ public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogS
             if (StringUtils.isNotBlank(userLog.getUsername())) {
                 criteria.andCondition("username=", userLog.getUsername().toLowerCase());
             }
-            if (StringUtils.isNotBlank(userLog.getOperation())) {
-                criteria.andCondition("operation like", "%" + userLog.getOperation() + "%");
+            if (StringUtils.isNotBlank(userLog.getMethodRemark())) {
+                criteria.andCondition("method_remark like", "%" + userLog.getMethodRemark() + "%");
             }
-            if (StringUtils.isNotBlank(userLog.getTimeField())) {
-                String[] timeArr = userLog.getTimeField().split("~");
-                criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') >=", timeArr[0]);
-                criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", timeArr[1]);
+            if (userLog.getStartTime() != null && userLog.getEndTime() != null){
+                if (userLog.getEndTime().before(userLog.getStartTime())){
+                    return new ArrayList<>();
+                }
+                criteria.andCondition("create_time >=", DateUtil.getDateFormat(userLog.getStartTime(), "yyyy-MM-dd"));
+                criteria.andCondition("create_time <", DateUtil.getDateFormat(userLog.getEndTime(), "yyyy-MM-dd"));
             }
             example.setOrderByClause("create_time desc");
             return this.findByExample(example);
@@ -76,13 +78,13 @@ public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogS
         Log logAnnotation = method.getAnnotation(Log.class);
         if (logAnnotation != null) {
             // 注解上的描述
-            userLog.setOperation(logAnnotation.value());
+            userLog.setMethodRemark(logAnnotation.value());
         }
         // 请求的类名
         String className = joinPoint.getTarget().getClass().getName();
         // 请求的方法名
         String methodName = signature.getName();
-        userLog.setMethod(className + "." + methodName + "()");
+        userLog.setMethodName(className + "." + methodName + "()");
         // 请求的方法参数值
         Object[] args = joinPoint.getArgs();
         // 请求的方法参数名称
@@ -91,11 +93,13 @@ public class UserLogServiceImpl extends BaseService<UserLog> implements UserLogS
         if (args != null && paramNames != null) {
             StringBuilder params = new StringBuilder();
             params = handleParams(params, args, Arrays.asList(paramNames));
-            userLog.setParams(params.toString());
+            if (StringUtils.isNotBlank(params) && params.length()> 2000){
+                userLog.setMethodParams(params.toString().substring(0, 2000));
+            }else{
+                userLog.setMethodParams(params.toString());
+            }
         }
         userLog.setCreateTime(new Date());
-        //userLog.setLocation(AddressUtils.getCityInfo(userLog.getIp()));
-        // 保存系统日志
         insert(userLog);
     }
 
