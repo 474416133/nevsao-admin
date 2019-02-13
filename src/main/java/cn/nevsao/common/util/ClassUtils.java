@@ -10,15 +10,19 @@
  */
 package cn.nevsao.common.util;
 
+import cn.nevsao.common.annotation.Dict;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -174,5 +178,47 @@ public final class ClassUtils {
         }
     }
 
+    public static List<Map>  parseClases(Set<Class<?>> classSet){
+        List<Map> list = new ArrayList<>();
+        classSet.forEach(clz ->{
+            String tableName = clz.getSimpleName();
+            String tableVerbose = tableName;
+            Table annotation = clz.getAnnotation(Table.class);
+            if (annotation != null){
+                tableName = annotation.name();
+                tableVerbose = tableName;
+            }
+            Dict dictAnnotation = clz.getAnnotation(Dict.class);
+            if (dictAnnotation != null){
+                tableVerbose = dictAnnotation.verbose();
+            }
+
+            final String tableNamef = tableName;
+            final String tableVerbosef = tableVerbose;
+
+            if (annotation !=null || dictAnnotation != null){
+                Arrays.asList(clz.getDeclaredFields()).forEach( field -> {
+                            Dict fieldDictAnnotation = field.getAnnotation(Dict.class);
+                            Column fieldColumnAnnotation = field.getAnnotation(Column.class);
+                            if (fieldDictAnnotation != null && fieldColumnAnnotation != null){
+
+                                Map<String, String> dictMap = new HashMap<>();
+                                dictMap.put("tableName", tableNamef);
+                                dictMap.put("tableVerbose", tableVerbosef);
+                                dictMap.put("columnName", fieldColumnAnnotation.name());
+                                dictMap.put("columnVerbose", fieldDictAnnotation.verbose());
+                                list.add(dictMap);
+                            }
+                        });
+            }
+        });
+
+        return list;
+    }
+    public static void main(String[] args){
+        Set<Class<?> > classSet = getClasses("cn.nevsao");
+        List<Map> list = parseClases(classSet);
+        System.out.println("ok");
+    }
 
 }

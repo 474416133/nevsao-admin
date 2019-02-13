@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
 
+@Dict(verbose = "用户")
 @Table(name = "sys_user")
 @Data
 public class User extends BaseEntityExtra {
@@ -68,7 +69,7 @@ public class User extends BaseEntityExtra {
     @Column(name = "last_login_ip")
     private Long lastLoginIp;
 
-    @Dict
+    @Dict(verbose = "职称")
     @Column(name = "title")
     private String title;
 

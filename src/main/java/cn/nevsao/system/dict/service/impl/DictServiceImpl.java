@@ -3,10 +3,12 @@ package cn.nevsao.system.dict.service.impl;
 import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.mvc.mapper.MyMapper;
 import cn.nevsao.common.mvc.service.impl.ExtraService;
+import cn.nevsao.common.util.ClassUtils;
 import cn.nevsao.system.dict.entity.Dict;
 import cn.nevsao.system.dict.mapper.DictMapper;
 import cn.nevsao.system.dict.service.DictService;
 import lombok.extern.slf4j.Slf4j;
+//import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service("dictService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
@@ -25,6 +28,8 @@ public class DictServiceImpl extends ExtraService<Dict> implements DictService {
 
     @Autowired
     private DictMapper dictMapper;
+
+    private static List<Map> dictMap = ClassUtils.parseClases(ClassUtils.getClasses("cn.nevsao"));
 
     @Override
     public MyMapper getMapper(){
