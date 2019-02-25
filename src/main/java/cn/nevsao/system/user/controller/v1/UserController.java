@@ -13,6 +13,7 @@ import cn.nevsao.system.dict.entity.Dict;
 import cn.nevsao.system.dict.service.DictService;
 import cn.nevsao.system.role.entity.Role;
 import cn.nevsao.system.role.service.RoleService;
+import cn.nevsao.system.user.controller.vo.PasswordVO;
 import cn.nevsao.system.user.entity.User;
 import cn.nevsao.system.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,15 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "system/")
@@ -217,48 +212,37 @@ public class UserController extends BaseController {
         return "删除用户成功！";
     }
 
-    @RequestMapping("user/checkPassword")
-    @ResponseBody
-    public boolean checkPassword(String password) {
-        User user = getCurrentUser();
-        String encrypt = MD5Utils.encrypt(user.getUsername().toLowerCase(), password);
-        return user.getPassword().equals(encrypt);
-    }
-
-    @RequestMapping("user/updatePassword")
-    @ResponseBody
-    public String updatePassword(String newPassword) {
-
-        this.userService.resetPassword(newPassword);
-        return "更改密码成功！";
-    }
-
     @RequestMapping("user/profile")
     public String profileIndex(Model model) {
         User user = super.getCurrentUser();
         user = this.userService.getUserProfile(user);
         model.addAttribute("user", user);
-        return "system/user/profile";
+        return "system/user/profile/profile";
     }
 
-    @RequestMapping("user/getUserProfile")
-    @ResponseBody
-    public ResponseBo getUserProfile(String userId) {
-
-        User user = new User();
-        user.setId(userId);
-        return ResponseBo.ok(this.userService.getUserProfile(user));
+    @GetMapping("user/profile/modify")
+    public String updateUserProfileView(Model model) {
+        User user = super.getCurrentUser();
+        user = this.userService.getUserProfile(user);
+        model.addAttribute("user", user);
+        return "system/user/profile/modify";
     }
 
-    @RequestMapping("user/updateUserProfile")
+    @PostMapping("user/profile/modify")
     @ResponseBody
     public String updateUserProfile(User user) {
-
         this.userService.updateUserProfile(user);
         return "更新个人信息成功！";
     }
 
-    @RequestMapping("user/changeAvatar")
+    @GetMapping("user/profile/avatar/modify")
+    public String profileAvatar(Model model) {
+        User user = super.getCurrentUser();
+        model.addAttribute("user", user);
+        return "system/user/profile/avatar";
+    }
+
+    @PostMapping("user/profile/avatar/modify")
     @ResponseBody
     public String changeAvatar(String imgName) {
         String[] img = imgName.split("/");
@@ -268,4 +252,52 @@ public class UserController extends BaseController {
         this.userService.updateExcludeNull(user);
         return "更新头像成功！";
     }
+
+    @GetMapping("user/profile/password/modify")
+    public String profilePassword(Model model) {
+        User user = super.getCurrentUser();
+        model.addAttribute("user", user);
+        return "system/user/profile/password";
+    }
+
+    @PostMapping("user/profile/password/modify")
+    @ResponseBody
+    public String resetUserProfilePassword(PasswordVO password) {
+        if (StringUtils.isBlank(password.getOldPassword())){
+            throw new BaseException(ResponseCodeEnum.PASSWORD_CONFIRM_ERROR);
+        } else if (!Objects.equals(password.getConfirm(), password.getPassword())){
+            throw new BaseException(ResponseCodeEnum.OLDPASSWORD_IS_BLANK);
+        }
+        User user = getCurrentUser();
+        String encrypt = MD5Utils.encrypt(user.getUsername().toLowerCase(), password.getOldPassword());
+        if (!Objects.equals(user.getPassword(), encrypt)){
+            throw new BaseException(ResponseCodeEnum.PASSWORD_VILAD_ERROR);
+        }
+        user.setPassword(MD5Utils.encrypt(user.getUsername().toLowerCase(), password.getPassword()));
+        this.userService.resetPassword(user);
+        return "更改密码成功！";
+    }
+
+    @Log("修改密码界面")
+    @RequiresPermissions("system:user:password")
+    @GetMapping("user/password/modify/{id}")
+    public String userPassword(@PathVariable("id") String id, Model model) {
+        User user = userService.get(id);
+        model.addAttribute("user", user);
+        return "system/user/password";
+    }
+
+    @Log("修改密码")
+    @RequiresPermissions("system:user:password")
+    @PostMapping("user/password/modify")
+    @ResponseBody
+    public String resetUserPassword(PasswordVO password) {
+        User user = userService.get(password.getId());
+        String encrypt = MD5Utils.encrypt(user.getUsername().toLowerCase(), password.getPassword());
+        user.setPassword(encrypt);
+        this.userService.resetPassword(user);
+        return "更改密码成功！";
+    }
+
+
 }

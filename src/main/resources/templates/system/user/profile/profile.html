@@ -36,15 +36,15 @@
 	                        <div class="col-sm-4">
 	                            <div class="text-center">
 	                                <img alt="image" class="img-circle m-t-xs img-responsive" th:src="(${user.avatar} == '') ? @{/img/profile.jpg} : @{/profile/avatar/} + ${user.avatar}">
-	                                <div class="m-t-xs font-bold">[[${user.loginIp}]]</div>
+	                                <div class="m-t-xs font-bold">[[${user.lastLoginIp}]]</div>
 	                            </div>
 	                        </div>
 	                        <div class="col-sm-8">
-	                            <h3><strong>[[${user.loginName}]]</strong></h3>
-	                            <p><i class="fa fa-user"></i> [[${user.userName}]] / [[${#strings.defaultString(roleGroup,'无角色')}]]
-	                            <p><i class="fa fa-phone"></i> [[${user.phonenumber}]]</p>
-	                            <p><i class="fa fa-group"></i> [[${user.dept?.deptName}]] / [[${#strings.defaultString(postGroup,'无岗位')}]]</p>
-	                            <p><i class="fa fa-transgender"></i> 性别：[[${user.sex}]]</p>
+	                            <h3><strong>[[${user.username}]]</strong></h3>
+	                            <p><i class="fa fa-user"></i> [[${user.nickname}]] / [[${#strings.defaultString(roleGroup,'无角色')}]]
+	                            <p><i class="fa fa-phone"></i> [[${user.mobile}]]</p>
+	                            <p><i class="fa fa-group"></i> [[${user.deptName}]] / [[${#strings.defaultString(titleGroup,'无岗位')}]]</p>
+	                            <p><i class="fa fa-transgender"></i> 性别：[[${user.gender}]]</p>
 	                            <p><i class="fa fa-envelope-o"></i> [[${user.email}]]</p>
 	                            <p><i class="fa fa-calendar"></i> [[${#dates.format(user.createTime, 'yyyy-MM-dd HH:mm:ss')}]]</p>
 	                        </div>
@@ -58,22 +58,22 @@
     
     <div th:include="include::footer"></div>
     <script>
-        var userId = [[${user.userId}]];
+
 	    /*用户信息-修改*/
 	    function edit() {
-	        var url = ctx + "system/user/profile/edit/" + userId;
+	        var url = ctx + "system/user/profile/modify";
 	        $.modal.open("修改用户", url);
-	    }
+	    };
 	    /*用户管理-重置密码*/
 	    function resetPwd() {
-	        var url = ctx + 'system/user/profile/resetPwd/' + userId;
+	        var url = ctx + 'system/user/profile/password/modify';
 	        $.modal.open("重置密码", url, '800', '500');
-	    }
+	    };
 	    /*用户管理-头像*/
 	    function avatar() {
-	        var url = ctx + 'system/user/profile/avatar/' + userId;
+	        var url = ctx + 'system/user/profile/avatar/modify';
 	        $.modal.open("修改头像", url);
-	    }
+	    };
 	</script>
 </body>
 </html>

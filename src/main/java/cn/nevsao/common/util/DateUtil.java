@@ -23,4 +23,15 @@ public class DateUtil {
         Date d = sdf.parse(date);
         return DateUtil.getDateFormat(d, format);
     }
+
+    public static Date parseDateFormat(String format){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return sdf.parse(format);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -1,32 +1,35 @@
 package cn.nevsao.common.util;
 
+import cn.nevsao.common.annotation.Dict;
 import cn.nevsao.common.annotation.ExportConfig;
 import cn.nevsao.common.handler.ExportHandler;
+import cn.nevsao.common.util.poi.Config;
 import cn.nevsao.common.util.poi.convert.ExportConvert;
 import cn.nevsao.common.util.poi.pojo.ExportItem;
+import cn.nevsao.system.dept.entity.Dept;
+import cn.nevsao.system.user.entity.User;
 import com.csvreader.CsvWriter;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExcelUtils {
 
@@ -350,4 +353,127 @@ public class ExcelUtils {
         }
 
     }
+
+
+    public static  List parseXls(Workbook wb, Class clz){
+        //Workbook wb = POIUtils.readFile(file);
+        Map<String, Field> fieldMap = getClassExportMeta(clz);
+        List list = new ArrayList();
+        if (wb == null){
+            return null;
+        }
+        //获取第一个sheet
+        Sheet sheet = wb.getSheetAt(0);
+        int rowNum = sheet.getPhysicalNumberOfRows();
+        Row row = sheet.getRow(0);
+        for (int i = 1; i < rowNum; i++){
+            Map<String, String> data = new HashMap<>();
+            Row tempRow = sheet.getRow(i);
+            Object entity = buildObject(row, tempRow, fieldMap);
+            if (entity != null){
+                list.add(entity);
+            }
+
+        }
+        return list;
+    }
+
+    private static Object buildObject (Row title, Row data, Map<String, Field> fieldMap)  {
+        Object object = null;
+        for (int i = 0; i < title.getPhysicalNumberOfCells(); i++){
+            String titleName = title.getCell(i).getStringCellValue();
+            data.getCell(i).setCellType(Cell.CELL_TYPE_STRING);
+            String value = data.getCell(i).getStringCellValue();
+            Field field = fieldMap.get(titleName);
+            if (field == null){
+                continue;
+            }
+            if (object == null){
+                Class clz = field.getDeclaringClass();
+                try {
+                    object = clz.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+                if (object == null){
+                    break;
+                }
+            }
+            field.setAccessible(true);
+            setFieldValue(field, value, object);
+        }
+        return object;
+    };
+
+    private static Map<String, Field> getClassExportMeta(Class clz){
+        Map<String, Field> map = new HashMap<>();
+        for (Field field: clz.getDeclaredFields()){
+            ExportConfig exportConfig = field.getAnnotation(ExportConfig.class);
+            if (exportConfig != null){
+                map.put(exportConfig.value(), field);
+            }
+        }
+        return map;
+    }
+
+    private static void setFieldValue(Field field, String value, Object object) {
+        Method method = null;
+        try {
+            method = field.getType().getMethod("valueOf", String.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        try{
+            if (field.getType() == Date.class){
+                field.set(object, DateUtil.parseDateFormat(value));
+            } else if (field.getType() == Boolean.class){
+                field.set(object, Config.bitSet.contains(value));
+            } else if (field.getType() == Character.class){
+                field.set(object, value.charAt(0));
+            }else if (method != null){
+                    method.invoke(object, value);
+            }else{
+                field.set(object, value);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Workbook readExcel(String filePath){
+        Workbook wb = null;
+        if(filePath==null){
+            return null;
+        }
+        String extString = filePath.substring(filePath.lastIndexOf("."));
+        InputStream is = null;
+        try {
+            is = new FileInputStream(filePath);
+            if(".xls".equals(extString)){
+                return wb = new HSSFWorkbook(is);
+            }else if(".xlsx".equals(extString)){
+                return wb = new XSSFWorkbook(is);
+            }else{
+                return wb = null;
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return wb;
+    }
+
+    public  static  void main(String[] args) {
+        Workbook wb = readExcel("/home/sven/user.xlsx");
+        List list = parseXls(wb, User.class);
+        System.out.println("ok");
+    }
+
 }

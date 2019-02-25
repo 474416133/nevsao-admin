@@ -45,4 +45,6 @@ public interface UserService extends IService<User> {
     void checkUsername(String username);
     void checkEmail(String email, String id);
     void checkMobile(String mobile, String id);
+
+    void resetPassword(User user);
 }

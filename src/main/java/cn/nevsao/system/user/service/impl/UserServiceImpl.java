@@ -199,6 +199,15 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
         checkList(findByProperty("mobile", mobile), id);
     }
 
+    @Override
+    @Transactional
+    public void resetPassword(User user) {
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setPassword(user.getPassword());
+        this.userMapper.updateByPrimaryKeySelective(updateUser);
+    }
+
     private List<User> findByProperty(String propertyName, Object value){
         Example example = new Example(User.class);
         example.createCriteria().andCondition("lower("+propertyName+")=", value);

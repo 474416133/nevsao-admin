@@ -68,7 +68,7 @@
 	<script th:inline="javascript">
 		var editFlag = [[${@permission.hasPermi('system:user:update')}]];
 		var removeFlag = [[${@permission.hasPermi('system:user:delete')}]];
-		var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
+		var resetPwdFlag = [[${@permission.hasPermi('system:user:password')}]];
 		var prefix = ctx + "system/user";
 
 		$(function() {
@@ -166,7 +166,7 @@
 
 		/*用户管理-重置密码*/
 		function resetPwd(userId) {
-		    var url = prefix + '/resetPwd/' + userId;
+		    var url = prefix + '/password/modify' + userId;
 		    $.modal.open("重置密码", url, '800', '300');
 		}
 	</script>
