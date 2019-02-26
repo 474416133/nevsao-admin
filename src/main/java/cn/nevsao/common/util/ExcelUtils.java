@@ -470,6 +470,28 @@ public class ExcelUtils {
         return wb;
     }
 
+    public static Workbook createByInputStream(String suffix, InputStream stream) throws IOException {
+        Workbook wb = null;
+        if ("xls".equals(suffix)) {
+            wb = new HSSFWorkbook(stream);
+        } else if ("xlsx".equals(suffix)) {
+            wb = new XSSFWorkbook(stream);
+        }
+
+        return wb;
+    }
+
+    public static List parseFile(MultipartFile file, Class clz){
+        String fileName = file.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf('.')+1);
+        try {
+            Workbook wb = createByInputStream(suffix, file.getInputStream());
+            return parseXls(wb, clz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public  static  void main(String[] args) {
         Workbook wb = readExcel("/home/sven/user.xlsx");
         List list = parseXls(wb, User.class);

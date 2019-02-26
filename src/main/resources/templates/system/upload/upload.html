@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<title>上传文件</title>
+<link th:href="@{/ajax/libs/uploader/css/jquery.dm-uploader.min.css}" rel="stylesheet"/>
+<body class="white-bg">
+    <div class="container">
+	   <div id="drop-area">
+			<h3>Drag and Drop Files Here<h3/>
+			<input type="file" title="Click to add Files">
+	   </div>
+    </div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/uploader/js/jquery.dm-uploader.min.js}"></script>
+<script type="text/javascript">
+//referr:https://danielmg.org/demo/java-script/uploader/controls
+$(window).load(function() {
+    $("#drop-area").dmUploader({
+  		url: '/system/upload/upload',
+  		multiple: false,
+  		dataType: "json",
+  		extFilter: ['xls', 'xlsx'],
+  		onInit: function(){
+    		console.log('Callback: Plugin initialized');
+  		},
+  		onFileTypeError: function(file){
+  			$.modal.msgError("只能上传excel文件");
+  		},
+  		onUploadSuccess: function(id, data){
+  			var codeText = "处理成功";
+  			if (data.code == 0){
+  				$.modal.msgSuccess(codeText);
+  			}else {
+  				$.modal.msgError("处理失败");
+  			}
+
+  			//$("#result-code").val(codeText);
+  			//$("#result-msg").val("已处理"+data.msg+"条数据!");
+  		},
+  		// ... More callbacks
+	});
+});
+
+</script>
+</body>
+</html>
