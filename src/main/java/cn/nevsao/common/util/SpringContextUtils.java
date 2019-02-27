@@ -40,4 +40,8 @@ public class SpringContextUtils implements ApplicationContextAware {
 		return applicationContext.getType(name);
 	}
 
+	public static <T> T getBean(Class<T> requiredType) {
+		return applicationContext.getBean(requiredType);
+	}
+
 }

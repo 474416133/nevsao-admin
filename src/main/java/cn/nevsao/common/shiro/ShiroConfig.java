@@ -4,9 +4,12 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import cn.nevsao.common.config.FebsProperties;
 import cn.nevsao.common.listener.ShiroSessionListener;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
+import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
+import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -14,12 +17,8 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.crazycake.shiro.RedisCacheManager;
-import org.crazycake.shiro.RedisManager;
-import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -39,17 +38,6 @@ public class ShiroConfig {
     @Autowired
     private FebsProperties febsProperties;
 
-    @Value("${spring.redis.host}")
-    private String host;
-
-    @Value("${spring.redis.port}")
-    private int port;
-
-    @Value("${spring.redis.password}")
-    private String password;
-
-    @Value("${spring.redis.timeout}")
-    private int timeout;
 
     @Bean(name = "lifecycleBeanPostProcessor")
     public static LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
@@ -61,24 +49,35 @@ public class ShiroConfig {
      * shiro 中配置 redis 缓存
      *
      * @return RedisManager
+     * <p>
+     * private RedisManager redisManager() {
+     * RedisManager redisManager = new RedisManager();
+     * // 缓存时间，单位为秒
+     * //redisManager.setExpire(febsProperties.getShiro().getExpireIn()); // removed from shiro-redis v3.1.0 api
+     * redisManager.setHost(host);
+     * redisManager.setPort(port);
+     * if (StringUtils.isNotBlank(password)) {
+     * redisManager.setPassword(password);
+     * }
+     * redisManager.setTimeout(timeout);
+     * return redisManager;
+     * }
+     * <p>
+     * private RedisCacheManager cacheManager() {
+     * RedisCacheManager redisCacheManager = new RedisCacheManager();
+     * redisCacheManager.setRedisManager(redisManager());
+     * return redisCacheManager;
+     * }
+     * @Bean public RedisSessionDAO redisSessionDAO() {
+     * RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+     * redisSessionDAO.setRedisManager(redisManager());
+     * return redisSessionDAO;
+     * }
      */
-    private RedisManager redisManager() {
-        RedisManager redisManager = new RedisManager();
-        // 缓存时间，单位为秒
-        //redisManager.setExpire(febsProperties.getShiro().getExpireIn()); // removed from shiro-redis v3.1.0 api
-        redisManager.setHost(host);
-        redisManager.setPort(port);
-        if (StringUtils.isNotBlank(password)) {
-            redisManager.setPassword(password);
-        }
-        redisManager.setTimeout(timeout);
-        return redisManager;
-    }
 
-    private RedisCacheManager cacheManager() {
-        RedisCacheManager redisCacheManager = new RedisCacheManager();
-        redisCacheManager.setRedisManager(redisManager());
-        return redisCacheManager;
+    @Bean(value = "shiroCacheManager")
+    public MemoryConstrainedCacheManager cacheManager() {
+        return new MemoryConstrainedCacheManager();
     }
 
     @Bean
@@ -184,12 +183,6 @@ public class ShiroConfig {
         return new ShiroDialect();
     }
 
-    @Bean
-    public RedisSessionDAO redisSessionDAO() {
-        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-        redisSessionDAO.setRedisManager(redisManager());
-        return redisSessionDAO;
-    }
 
     /**
      * session 管理对象
@@ -204,8 +197,15 @@ public class ShiroConfig {
         // 设置session超时时间，单位为毫秒
         sessionManager.setGlobalSessionTimeout(febsProperties.getShiro().getSessionTimeout());
         sessionManager.setSessionListeners(listeners);
-        sessionManager.setSessionDAO(redisSessionDAO());
+        sessionManager.setSessionDAO(sessionDAO());
         sessionManager.setSessionIdUrlRewritingEnabled(false);
         return sessionManager;
     }
+
+    @Bean
+    public SessionDAO sessionDAO() {
+        return new MemorySessionDAO();
+    }
+
+
 }
