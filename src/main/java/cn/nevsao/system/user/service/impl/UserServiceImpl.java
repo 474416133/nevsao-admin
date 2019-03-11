@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,9 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
 
     @Autowired
     private DeptService deptService;
+
+    @Value("${febs.services.system.user.login.defaultPassowrd:123456}")
+    private String defaultPassword;
 
 
     @Override
@@ -101,7 +105,7 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
     public void insert(User user, String[] roles) {
         user.setThemeUsing(User.DEFAULT_THEME);
         user.setAvatar(User.DEFAULT_AVATAR);
-        user.setPassword("88888888");
+        user.setPassword(defaultPassword);
         user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
         //this.save(user);
         super.insert(user);
@@ -133,7 +137,7 @@ public class UserServiceImpl extends ExtraService<User> implements UserService {
     @Override
     @Transactional
     public int delete(List<String> userIds) {
-        int ret = this.delete(userIds, "userId", User.class);
+        int ret = this.delete(userIds, "id", User.class);
         this.userRoleService.deleteByUserId(userIds);
         return ret;
     }

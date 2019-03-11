@@ -4,11 +4,10 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import cn.nevsao.common.config.FebsProperties;
 import cn.nevsao.common.listener.ShiroSessionListener;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.SessionListener;
-import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -17,6 +16,10 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.ehcache.CacheManager;
+import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.integrations.shiro.EhcacheShiroManager;
+import org.ehcache.xml.XmlConfiguration;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,39 +48,13 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
-    /**
-     * shiro 中配置 redis 缓存
-     *
-     * @return RedisManager
-     * <p>
-     * private RedisManager redisManager() {
-     * RedisManager redisManager = new RedisManager();
-     * // 缓存时间，单位为秒
-     * //redisManager.setExpire(febsProperties.getShiro().getExpireIn()); // removed from shiro-redis v3.1.0 api
-     * redisManager.setHost(host);
-     * redisManager.setPort(port);
-     * if (StringUtils.isNotBlank(password)) {
-     * redisManager.setPassword(password);
-     * }
-     * redisManager.setTimeout(timeout);
-     * return redisManager;
-     * }
-     * <p>
-     * private RedisCacheManager cacheManager() {
-     * RedisCacheManager redisCacheManager = new RedisCacheManager();
-     * redisCacheManager.setRedisManager(redisManager());
-     * return redisCacheManager;
-     * }
-     * @Bean public RedisSessionDAO redisSessionDAO() {
-     * RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-     * redisSessionDAO.setRedisManager(redisManager());
-     * return redisSessionDAO;
-     * }
-     */
-
     @Bean(value = "shiroCacheManager")
-    public MemoryConstrainedCacheManager cacheManager() {
-        return new MemoryConstrainedCacheManager();
+    public EhcacheShiroManager ehCacheShiroManager() {
+        //CacheManager cacheManager = CacheManagerBuilder.newCacheManager(new XmlConfiguration(getClass().getResource("/ehcache-shiro.xml")));
+        EhcacheShiroManager em = new EhcacheShiroManager();
+        //em.setCacheManager(cacheManager);
+        //em.setCacheManagerConfigFile("classpath:/ehcache-shiro.xml");
+        return em;
     }
 
     @Bean
@@ -115,8 +92,11 @@ public class ShiroConfig {
         // 配置 rememberMeCookie
         securityManager.setRememberMeManager(rememberMeManager());
         // 配置 缓存管理类 cacheManager
-        securityManager.setCacheManager(cacheManager());
-        securityManager.setSessionManager(sessionManager());
+        //EhcacheShiroManager em = ehCacheShiroManager(cacheManager);
+        securityManager.setCacheManager(ehCacheShiroManager());
+        //session
+        DefaultWebSessionManager sm = sessionManager();
+        securityManager.setSessionManager(sm);
         return securityManager;
     }
 
@@ -204,7 +184,9 @@ public class ShiroConfig {
 
     @Bean
     public SessionDAO sessionDAO() {
-        return new MemorySessionDAO();
+        EnterpriseCacheSessionDAO ed = new EnterpriseCacheSessionDAO();
+        ed.setCacheManager(ehCacheShiroManager());
+        return ed;
     }
 
 

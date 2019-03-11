@@ -63,9 +63,13 @@ public class LogAspect {
             result = point.proceed();
             userLog.setRetCode(0);
         } catch (Throwable e) {
+            String msg = e.getMessage();
             log.error(e.getMessage());
             userLog.setRetCode(1);
-            userLog.setRetMsg(e.getMessage().substring(0, 2000));
+            userLog.setRetMsg(msg);
+            if(userLog.getRetMsg().length() > 2000){
+                userLog.setRetMsg(userLog.getRetMsg().substring(0, 2000));
+            }
         }
         // 执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;

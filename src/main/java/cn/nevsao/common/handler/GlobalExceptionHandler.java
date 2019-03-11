@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
         }
     }
 
+    /*
     @ExceptionHandler(value = ExpiredSessionException.class)
     public String handleExpiredSessionException() {
         return "login";
@@ -55,10 +56,11 @@ public class GlobalExceptionHandler {
         return ResponseBo.error(e.getMessage());
     }
 
-
+     */
     private static boolean isAjaxRequest(HttpServletRequest request) {
         return (request.getHeader("X-Requested-With") != null
                 && "XMLHttpRequest".equals(request.getHeader("X-Requested-With")));
     }
+
 
 }

@@ -18,7 +18,7 @@ function login() {
 	$.modal.loading($("#btnSubmit").data("loading"));
 	var username = $.common.trim($("input[name='username']").val());
     var password = $.common.trim($("input[name='password']").val());
-    var code = $("input[name='validateCode']").val();
+    //var code = $("input[name='validateCode']").val();
     var rememberMe = $("input[name='rememberme']").is(':checked');
     $.ajax({
         type: "post",
@@ -26,7 +26,6 @@ function login() {
         data: {
             "username": username,
             "password": password,
-            "code" : code,
             "rememberMe": rememberMe
         },
         success: function(r) {
@@ -34,8 +33,8 @@ function login() {
                 location.href = ctx + 'index';
             } else {
             	$.modal.closeLoading();
-            	$('.imgcode').click();
-            	$(".code").val("");
+            	//$('.imgcode').click();
+            	//$(".code").val("");
             	$.modal.msg(r.msg);
             }
         }

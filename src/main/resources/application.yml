@@ -70,7 +70,7 @@ spring:
   aop:
     proxy-target-class: true
   cache:
-    ehcache:
+    jcache:
       config: classpath:ehcache.xml
 
 # spring boot admin配置开始
@@ -164,5 +164,10 @@ febs:
     height: 33
     # 验证码字符个数，默认4个字符
     length: 4
-
-
+  services:
+    system:
+      user:
+        login:
+          defaultPassword: 123456
+    upload:
+      path: /home/sven/upload

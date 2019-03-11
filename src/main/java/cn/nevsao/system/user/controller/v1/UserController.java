@@ -9,6 +9,7 @@ import cn.nevsao.common.mvc.vo.QueryRequest;
 import cn.nevsao.common.mvc.vo.ResponseBo;
 import cn.nevsao.common.util.FileUtil;
 import cn.nevsao.common.util.MD5Utils;
+import cn.nevsao.common.util.SpringContextUtils;
 import cn.nevsao.system.dict.entity.Dict;
 import cn.nevsao.system.dict.service.DictService;
 import cn.nevsao.system.role.entity.Role;
@@ -22,6 +23,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -147,6 +150,7 @@ public class UserController extends BaseController {
     @RequestMapping("user/add")
     @ResponseBody
     public String addUser(User user, String[] roleIds) {
+        CacheManager cacheManager = (CacheManager)SpringContextUtils.getBean("cacheManager");
         BitEnum activeEnum = BitEnum.getByCode(user.getIsActive());
         if (activeEnum == null) {
             throw new BaseException(ResponseCodeEnum.CLIENT_PARAMS_ERROR);
